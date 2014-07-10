@@ -25,6 +25,7 @@ Bundle 'matze/vim-move'
 Bundle 'ervandew/supertab'
 Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-session'
+Bundle 'bling/vim-airline'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -56,7 +57,7 @@ set softtabstop=2               " Let backspace delete indent
 
 set ai "Auto indent
 set si "Smart indent
-set wrap "Wrap lines
+"set wrap "Wrap lines
 
 set history=700
 
@@ -176,25 +177,21 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-" Opens a new tab with the current buffer's path
-" Super useful when editing files in the same directory
-map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
-
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " Some helpers to edit mode
-" http://vimcasts.org/e/14
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 map <leader>ew :e %%
 map <leader>es :sp %%
 map <leader>ev :vsp %%
-map <leader>et :tabe %%
 
-map <S-Right> :tabn<CR>
-map <S-Left>  :tabp<CR>
-map <S-w>     :tabc<CR>
-map <S-n>     :tabnew<CR>
+set hidden
+map <leader>l :bnext<CR>
+map <leader>h  :bprevious<CR>
+map <leader>bq     :bdelete<CR>
+map <leader>bf     :bdelete!<CR>
+map <leader>t :enew<CR>
 
 " Return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
@@ -249,7 +246,11 @@ let g:move_key_modifier = 'M'
 "Vim-session
 
 let g:session_autosave = 'yes'
+let g:session_autoload = 'yes'
 
+" Vim airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
 """"""""""""""""""""""""""" Functions """""""""""""""""""""""""""""""""""""
 
 " Returns true if paste mode is enabled
@@ -259,3 +260,4 @@ function! HasPaste()
      en
      return ''
 endfunction
+
