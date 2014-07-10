@@ -18,12 +18,13 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'scrooloose/syntastic'
 Bundle 'scrooloose/nerdtree'
 Bundle 'plasticboy/vim-markdown'
-
 Bundle 'mbbill/undotree'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'matze/vim-move'
 Bundle 'ervandew/supertab'
+Bundle 'xolox/vim-misc'
+Bundle 'xolox/vim-session'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -80,11 +81,7 @@ set wildmenu
 
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
-if has("win16") || has("win32")
-    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
-else
-    set wildignore+=.git\*,.hg\*,.svn\*
-endif
+set wildignore+=.git\*,.hg\*,.svn\*
 
 
 "Always show current position
@@ -110,16 +107,11 @@ set hlsearch
 " Makes search act like search in modern browsers
 set incsearch 
 
-" Don't redraw while executing macros (good performance config)
-set lazyredraw 
-
 " For regular expressions turn magic on
 set magic
 
 " Show matching brackets when text indicator is over them
 set showmatch 
-" How many tenths of a second to blink when matching brackets
-set mat=2
 
 " Add a bit extra margin to the left
 set foldcolumn=1
@@ -157,22 +149,12 @@ if has("gui_running")
     set guitablabel=%M\ %t
 endif
 
-if &term == 'xterm' || &term == 'screen'
-    set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
-endif
-
-" Set utf8 as standard encoding and en_US as the standard language
-set encoding=utf8
-
-" Use Unix as the standard file type
-set ffs=unix,dos,mac
-
+set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
 
 """""""""""""""""""""""""" Key Mappings """"""""""""""""""""""""""""""""""""""""
 
 "Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 map <space> /
-map <c-space> ?"
 
 """""""""""""""""""""""""" Moving Around """""""""""""""""""""""""""""""""""""""""
 
@@ -210,13 +192,6 @@ map <S-Right> :tabn<CR>
 map <S-Left>  :tabp<CR>
 map <S-w>     :tabc<CR>
 map <S-n>     :tabnew<CR>
-
-" Specify the behavior when switching between buffers 
-try
-  set switchbuf=useopen,usetab,newtab
-  set stal=2
-catch
-endtry
 
 " Return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
