@@ -23,6 +23,7 @@ Bundle 'mbbill/undotree'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'matze/vim-move'
+Bundle 'ervandew/supertab'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -250,7 +251,11 @@ let NERDTreeKeepTreeInNewTab=1
 
 " CtrlP
 let g:ctrlp_working_path_mode = 'ra'
-
+" Always open in new tab
+let g:ctrlp_prompt_mappings = {
+  \ 'AcceptSelection("e")': [],
+  \ 'AcceptSelection("t")': ['<cr>', '<c-m>'],
+  \ }
 
 " indent_guides {
     if isdirectory(expand("~/.vim/bundle/vim-indent-guides/"))
