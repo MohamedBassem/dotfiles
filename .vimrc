@@ -153,7 +153,7 @@ set t_Co=256            " Enable 256 colors to stop the CSApprox warning and mak
 
 """""""""""""""""""""""""" Key Mappings """"""""""""""""""""""""""""""""""""""""
 
-"Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
+"Map <Space> to / (search) 
 map <space> /
 
 """""""""""""""""""""""""" Moving Around """""""""""""""""""""""""""""""""""""""""
