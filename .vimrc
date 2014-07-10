@@ -189,7 +189,7 @@ map <leader>ev :vsp %%
 set hidden
 map <leader>l :bnext<CR>
 map <leader>h  :bprevious<CR>
-map <leader>bq     :bdelete<CR>
+map <leader>bd    :bdelete<CR>
 map <leader>bf     :bdelete!<CR>
 map <leader>t :enew<CR>
 
@@ -206,10 +206,6 @@ set viminfo^=%
 
 " Always show the status line
 set laststatus=2
-
-" Format the status line
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
-
 
 """"""""""""""""""""""""""" Others """""""""""""""""""""""""""""""""""""""""""""
 
