@@ -130,6 +130,9 @@ if has('clipboard')
         set clipboard=unnamed
     endif
 endif
+
+inoremap <S-Insert> <ESC>"+p`]a
+
 """""""""""""""""""""""""" Colors """""""""""""""""""""""""""""""""""""""""""""
 set background=dark
 
@@ -241,7 +244,11 @@ let g:ctrlp_prompt_mappings = {
 " }
 
 " Vim move
-let g:move_key_modifier = 'C'
+let g:move_key_modifier = 'M'
+
+"Vim-session
+
+let g:session_autosave = 'yes'
 
 """"""""""""""""""""""""""" Functions """""""""""""""""""""""""""""""""""""
 
