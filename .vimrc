@@ -14,6 +14,7 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 Bundle 'altercation/vim-colors-solarized'
+Bundle 'chriskempson/vim-tomorrow-theme'
 Bundle 'kien/ctrlp.vim'
 Bundle 'scrooloose/syntastic'
 Bundle 'scrooloose/nerdtree'
@@ -26,6 +27,11 @@ Bundle 'ervandew/supertab'
 Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-session'
 Bundle 'bling/vim-airline'
+Bundle 'tpope/vim-fugitive'
+Bundle 'ervandew/snipmate.vim'
+Bundle 'tpope/vim-rails'
+Bundle 'bling/vim-bufferline'
+Bundle 'gcmt/wildfire.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -126,24 +132,37 @@ set wildmode=list:longest,full  " Command <Tab> completion, list matches, then l
 
 if has('clipboard')
     if has('unnamedplus')  " When possible use + register for copy-paste
-        set clipboard=unnamed,unnamedplus
+      set clipboard=unnamed,unnamedplus
     else         " On mac and Windows, use * register for copy-paste
-        set clipboard=unnamed
+      set clipboard=unnamed
     endif
 endif
 
 inoremap <S-Insert> <ESC>"+p`]a
 
+" Black hole deletion/change (persist yanked lines in non-visual mode)
+nnoremap d "_d
+nnoremap dd "_dd
+nnoremap D "_D
+nnoremap c "_c
+nnoremap C "_C
+nnoremap x "_x
+
 """""""""""""""""""""""""" Colors """""""""""""""""""""""""""""""""""""""""""""
 set background=dark
+color Tomorrow-Night
 
-if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
-    let g:solarized_termcolors=256
-    let g:solarized_termtrans=1
-    let g:solarized_contrast="normal"
-    let g:solarized_visibility="normal"
-    color solarized             " Load a colorscheme
-endif
+let g:indent_guides_auto_colors = 0 
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=black ctermbg=black
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=darkgrey
+
+"if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
+"    let g:solarized_termcolors=256
+"    let g:solarized_termtrans=1
+"    let g:solarized_contrast="normal"
+"    let g:solarized_visibility="normal"
+"    color solarized             " Load a colorscheme
+"endif
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -222,38 +241,35 @@ let NERDTreeKeepTreeInNewTab=1
 
 " CtrlP
 let g:ctrlp_working_path_mode = 'ra'
-" Always open in new tab
-let g:ctrlp_prompt_mappings = {
-  \ 'AcceptSelection("e")': [],
-  \ 'AcceptSelection("t")': ['<cr>', '<c-m>'],
-  \ }
 
-" indent_guides {
-    if isdirectory(expand("~/.vim/bundle/vim-indent-guides/"))
-        let g:indent_guides_start_level = 2
-        let g:indent_guides_guide_size = 1
-        let g:indent_guides_enable_on_vim_startup = 1
-    endif
-" }
+" indent_guides
+let g:indent_guides_start_level = 2
+let g:indent_guides_guide_size = 1
+let g:indent_guides_enable_on_vim_startup = 1
 
 " Vim move
 let g:move_key_modifier = 'M'
 
 "Vim-session
-
 let g:session_autosave = 'yes'
 let g:session_autoload = 'yes'
 
 " Vim airline
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#left_sep = '>'
+let g:airline_branch_prefix = '⎇ '
+let g:airline_section_y = ''
+let g:airline#extensions#whitespace#enabled = 0
+
+"Bufferline
+let g:bufferline_echo = 0
+
 """"""""""""""""""""""""""" Functions """""""""""""""""""""""""""""""""""""
 
 " Returns true if paste mode is enabled
 function! HasPaste()
-     if &paste
-       return 'PASTE MODE  '
-     en
-     return ''
+    if &paste
+      return 'PASTE MODE  '
+    en
+    return ''
 endfunction
-
