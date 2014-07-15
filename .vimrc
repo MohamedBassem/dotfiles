@@ -62,11 +62,16 @@ set tabstop=2                   " An indentation every four columns
 set softtabstop=2               " Let backspace delete indent
 
 set ai "Auto indent
+" Configure backspace so it acts as it should act
+set backspace=eol,start,indent
+set whichwrap+=<,>,h,l
 set si "Smart indent
-"set wrap "Wrap lines
+set nowrap "Don't Wrap lines
 
 set history=700
 
+" while typing a command, show it in the bottom right corner
+set showcmd
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
@@ -89,7 +94,11 @@ set wildmenu
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
 set wildignore+=.git\*,.hg\*,.svn\*
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/cache/*
 
+set autowrite
+
+set autoread
 
 "Always show current position
 set ruler
@@ -138,7 +147,7 @@ if has('clipboard')
     endif
 endif
 
-inoremap <S-Insert> <ESC>"+p`]a
+inoremap <C-v> <ESC>"+p`]a
 
 " Black hole deletion/change (persist yanked lines in non-visual mode)
 nnoremap d "_d
@@ -176,8 +185,6 @@ set t_Co=256            " Enable 256 colors to stop the CSApprox warning and mak
 
 """""""""""""""""""""""""" Key Mappings """"""""""""""""""""""""""""""""""""""""
 
-"Map <Space> to / (search) 
-map <space> /
 
 """""""""""""""""""""""""" Moving Around """""""""""""""""""""""""""""""""""""""""
 
@@ -231,6 +238,13 @@ set laststatus=2
 au BufRead,BufNewFile *.rabl setfiletype ruby
 au BufRead,BufNewFile *.angular setfiletype html
 
+autocmd FileType C      call CPPSET()
+autocmd FileType cc     call CPPSET()
+autocmd FileType cpp    call CPPSET()
+autocmd FileType java   call JAVASET()
+autocmd FileType python call PYSET()
+
+
 
 """""""""""""""""""""""""" Plugins """"""""""""""""""""""""""""""""""
 
@@ -245,7 +259,7 @@ let g:ctrlp_working_path_mode = 'ra'
 " indent_guides
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
-let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_enable_on_vim_startup = 0
 
 " Vim move
 let g:move_key_modifier = 'M'
@@ -255,8 +269,8 @@ let g:session_autosave = 'yes'
 let g:session_autoload = 'yes'
 
 " Vim airline
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = '>'
+"let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#tabline#left_sep = '>'
 let g:airline_branch_prefix = '⎇ '
 let g:airline_section_y = ''
 let g:airline#extensions#whitespace#enabled = 0
@@ -273,3 +287,32 @@ function! HasPaste()
     en
     return ''
 endfunction
+
+" Python
+function! PYSET()
+  noremap py :!python<CR>
+  noremap apy :%!python<CR>
+endfunction
+
+" C/C++:
+function! CSET()
+  set makeprg=if\ \[\ -f\ \"Makefile\"\ \];then\ make\ $*;else\ if\ \[\ -f\ \"makefile\"\ \];then\ make\ $*;else\ gcc\ -O2\ -g\ -Wall\ -Wextra\ -o%.bin\ %\ -lm;fi;fi
+  set cindent
+  set textwidth=0
+  set nowrap
+endfunction
+
+function! CPPSET()
+  set makeprg=if\ \[\ -f\ \"Makefile\"\ \];then\ make\ $*;else\ if\ \[\ -f\ \"makefile\"\ \];then\ make\ $*;else\ g++\ -std=gnu++0x\ -O2\ -g\ -Wall\ -Wextra\ -o%.bin\ %;fi;fi
+  set cindent
+  set textwidth=0
+  set nowrap
+endfunction
+
+" Java
+function! JAVASET()
+  set makeprg=if\ \[\ -f\ \"Makefile\"\ \];then\ make\ $*;else\ if\ \[\ -f\ \"makefile\"\ \];then\ make\ $*;else\ javac\ -g\ %;fi;fi
+  set cindent
+  set textwidth=0
+  set nowrap
+e
