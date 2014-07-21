@@ -30,8 +30,9 @@ Bundle 'bling/vim-airline'
 Bundle 'tpope/vim-fugitive'
 Bundle 'ervandew/snipmate.vim'
 Bundle 'tpope/vim-rails'
-Bundle 'bling/vim-bufferline'
+"Bundle 'bling/vim-bufferline'
 Bundle 'gcmt/wildfire.vim'
+Bundle 'fholgado/minibufexpl.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -157,6 +158,8 @@ nnoremap c "_c
 nnoremap C "_C
 nnoremap x "_x
 
+set autochdir
+
 """""""""""""""""""""""""" Colors """""""""""""""""""""""""""""""""""""""""""""
 set background=dark
 color Tomorrow-Night
@@ -278,6 +281,10 @@ let g:airline#extensions#whitespace#enabled = 0
 "Bufferline
 let g:bufferline_echo = 0
 
+"MiniBuffExpl
+let g:miniBufExplBRSplit = 0
+let g:miniBufExplUseSingleClick = 1
+
 """"""""""""""""""""""""""" Functions """""""""""""""""""""""""""""""""""""
 
 " Returns true if paste mode is enabled
@@ -315,4 +322,4 @@ function! JAVASET()
   set cindent
   set textwidth=0
   set nowrap
-e
+endfunction
