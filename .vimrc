@@ -158,8 +158,6 @@ nnoremap c "_c
 nnoremap C "_C
 nnoremap x "_x
 
-set autochdir
-
 """""""""""""""""""""""""" Colors """""""""""""""""""""""""""""""""""""""""""""
 set background=dark
 color Tomorrow-Night
@@ -196,9 +194,14 @@ set t_Co=256            " Enable 256 colors to stop the CSApprox warning and mak
 map j gj
 map k gk
 
-" Disable highlight when <leader><cr> is pressed
-map <silent> <leader><cr> :noh<cr>
+" Fast scrolling
+noremap <Right> 20zl
+noremap <Left> 20zh
+noremap <Up> 20<C-y>
+noremap <Down> 20<C-e>
 
+" Disable highlight
+nnoremap // :noh<cr>
 
 " Smart way to move between windows
 map <C-j> <C-W>j
@@ -216,8 +219,8 @@ map <leader>es :sp %%
 map <leader>ev :vsp %%
 
 set hidden
-map <leader>l :bnext<CR>
-map <leader>h  :bprevious<CR>
+map tl :bnext<CR>
+map th  :bprevious<CR>
 map <leader>bd    :bdelete<CR>
 map <leader>bf     :bdelete!<CR>
 map <leader>t :enew<CR>
@@ -264,9 +267,6 @@ let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 let g:indent_guides_enable_on_vim_startup = 0
 
-" Vim move
-let g:move_key_modifier = 'M'
-
 "Vim-session
 let g:session_autosave = 'yes'
 let g:session_autoload = 'yes'
@@ -284,6 +284,7 @@ let g:bufferline_echo = 0
 "MiniBuffExpl
 let g:miniBufExplBRSplit = 0
 let g:miniBufExplUseSingleClick = 1
+let g:miniBufExplBuffersNeeded = 0
 
 """"""""""""""""""""""""""" Functions """""""""""""""""""""""""""""""""""""
 
@@ -299,6 +300,9 @@ endfunction
 function! PYSET()
   noremap py :!python<CR>
   noremap apy :%!python<CR>
+  set shiftwidth=4
+  set tabstop=4
+  set softtabstop=4
 endfunction
 
 " C/C++:
