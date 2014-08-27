@@ -18,14 +18,14 @@ Bundle 'chriskempson/vim-tomorrow-theme'
 Bundle 'kien/ctrlp.vim'
 Bundle 'scrooloose/syntastic'
 Bundle 'scrooloose/nerdtree'
-Bundle 'plasticboy/vim-markdown'
+Bundle 'gabrielelana/vim-markdown'
 Bundle 'mbbill/undotree'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'matze/vim-move'
 Bundle 'ervandew/supertab'
 Bundle 'xolox/vim-misc'
-Bundle 'xolox/vim-session'
+"Bundle 'xolox/vim-session'
 Bundle 'bling/vim-airline'
 Bundle 'tpope/vim-fugitive'
 Bundle 'ervandew/snipmate.vim'
@@ -33,7 +33,9 @@ Bundle 'tpope/vim-rails'
 "Bundle 'bling/vim-bufferline'
 Bundle 'gcmt/wildfire.vim'
 Bundle 'fholgado/minibufexpl.vim'
-
+Bundle 'mutewinter/nginx.vim'
+Bundle 'mhinz/vim-startify'
+"Bundle 'Valloric/YouCompleteMe'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -201,7 +203,7 @@ noremap <Up> 20<C-y>
 noremap <Down> 20<C-e>
 
 " Disable highlight
-nnoremap // :noh<cr>
+nnoremap <leader><CR> :noh<cr>
 
 " Smart way to move between windows
 map <C-j> <C-W>j
@@ -219,10 +221,9 @@ map <leader>es :sp %%
 map <leader>ev :vsp %%
 
 set hidden
-map tl :bnext<CR>
-map th  :bprevious<CR>
-map <leader>bd    :bdelete<CR>
-map <leader>bf     :bdelete!<CR>
+map tl :MBEbn<CR>
+map th  :MBEbp<CR>
+cabbrev bd MBEbd
 map <leader>t :enew<CR>
 
 " Return to last edit position when opening files (You want this!)
@@ -268,8 +269,8 @@ let g:indent_guides_guide_size = 1
 let g:indent_guides_enable_on_vim_startup = 0
 
 "Vim-session
-let g:session_autosave = 'yes'
-let g:session_autoload = 'yes'
+"let g:session_autosave = 'yes'
+"let g:session_autoload = 'yes'
 
 " Vim airline
 "let g:airline#extensions#tabline#enabled = 1
@@ -279,12 +280,16 @@ let g:airline_section_y = ''
 let g:airline#extensions#whitespace#enabled = 0
 
 "Bufferline
-let g:bufferline_echo = 0
+"let g:bufferline_echo = 0
 
 "MiniBuffExpl
 let g:miniBufExplBRSplit = 0
 let g:miniBufExplUseSingleClick = 1
 let g:miniBufExplBuffersNeeded = 0
+let g:miniBufExplCycleArround = 1
+
+"Startify
+let g:startify_session_persistence = 1
 
 """"""""""""""""""""""""""" Functions """""""""""""""""""""""""""""""""""""
 
