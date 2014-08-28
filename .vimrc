@@ -214,6 +214,11 @@ map <C-l> <C-W>l
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
+" move to end of pasted text, to ease multiple pastes
+vnoremap y y`]
+vnoremap p p`]
+nnoremap p p`]
+
 " Some helpers to edit mode
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 map <leader>ew :e %%
