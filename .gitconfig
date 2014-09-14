@@ -6,3 +6,10 @@
   ls = log --pretty=format:"%C(green)%h\\ %C(yellow)[%ad]%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
   amend = commit --amend
   st = status -s
+  b = "!git for-each-ref --sort='-authordate' --format=\"%(authordate)%09%(objectname:short)%09   %(refname)\" refs/heads | sed -e 's-refs/heads/--' | sed \"s/\\(.*\\)  \\($(git rev-parse --abbrev-ref HEAD)\\)\\(.*\\)/$(echo \"\\033[32m\")\\1* \\2\\3$(echo \"\\033[0m\")/\""
+  c = commit
+  ch = checkout
+  a = add -p
+  #http://stackoverflow.com/questions/8483041/git-color-words-excluding
+  dw = diff --color-words='\\w+|[^[:space:]]'
+  dcw = diff --cached --color-words='\\w+|[^[:space:]]'

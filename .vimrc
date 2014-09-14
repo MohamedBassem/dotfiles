@@ -70,6 +70,7 @@ set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
 set si "Smart indent
 set nowrap "Don't Wrap lines
+set noswapfile
 
 set history=700
 
@@ -134,6 +135,9 @@ set showmatch
 
 " Add a bit extra margin to the left
 set foldcolumn=1
+
+" Don't move cursor to beginning to line
+set nosol
 
 " Visual shifting (does not exit Visual mode)
 vnoremap < <gv
