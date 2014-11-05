@@ -23,7 +23,7 @@ Bundle 'mbbill/undotree'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'matze/vim-move'
-Bundle 'ervandew/supertab'
+"Bundle 'ervandew/supertab'
 Bundle 'xolox/vim-misc'
 "Bundle 'xolox/vim-session'
 Bundle 'bling/vim-airline'
@@ -35,12 +35,23 @@ Bundle 'gcmt/wildfire.vim'
 Bundle 'fholgado/minibufexpl.vim'
 Bundle 'mutewinter/nginx.vim'
 Bundle 'mhinz/vim-startify'
-"Bundle 'Valloric/YouCompleteMe'
+Bundle 'StanAngeloff/php.vim'
+Bundle 'bkad/CamelCaseMotion'
+Bundle 'kana/vim-textobj-user'
+Bundle 'nelstrom/vim-textobj-rubyblock'
+"Bundle 'Rip-Rip/clang_complete'
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'mintplant/vim-literate-coffeescript'
+Bundle "ekalinin/Dockerfile.vim"
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 
 """"""""""""""""""""""""""""""""""  General  """"""""""""""""""""""""""""""""""""""""
+
+runtime macros/matchit.vim
 
 set mouse=a
 
@@ -277,10 +288,6 @@ let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 let g:indent_guides_enable_on_vim_startup = 0
 
-"Vim-session
-"let g:session_autosave = 'yes'
-"let g:session_autoload = 'yes'
-
 " Vim airline
 "let g:airline#extensions#tabline#enabled = 1
 "let g:airline#extensions#tabline#left_sep = '>'
@@ -299,6 +306,13 @@ let g:miniBufExplCycleArround = 1
 
 "Startify
 let g:startify_session_persistence = 1
+
+"You compelete Me
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+let g:ycm_show_diagnostics_ui = 0
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+set completeopt-=preview
 
 """"""""""""""""""""""""""" Functions """""""""""""""""""""""""""""""""""""
 
