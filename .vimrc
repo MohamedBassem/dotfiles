@@ -44,6 +44,7 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'mintplant/vim-literate-coffeescript'
 Plugin 'ekalinin/Dockerfile.vim'
+Plugin 'terryma/vim-multiple-cursors'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -327,7 +328,7 @@ endfunction
 " Python
 function! PYSET()
   noremap ,py :!python<CR>
-  noremap apy :%!python<CR>
+  noremap ,apy :%!python<CR>
   set shiftwidth=4
   set tabstop=4
   set softtabstop=4
