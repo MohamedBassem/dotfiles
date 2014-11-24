@@ -326,7 +326,7 @@ endfunction
 
 " Python
 function! PYSET()
-  noremap py :!python<CR>
+  noremap ,py :!python<CR>
   noremap apy :%!python<CR>
   set shiftwidth=4
   set tabstop=4
