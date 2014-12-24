@@ -34,7 +34,7 @@ Plugin 'tpope/vim-rails'
 Plugin 'gcmt/wildfire.vim'
 Plugin 'fholgado/minibufexpl.vim'
 Plugin 'mutewinter/nginx.vim'
-Plugin 'mhinz/vim-startify'
+"Plugin 'mhinz/vim-startify'
 Plugin 'StanAngeloff/php.vim'
 Plugin 'bkad/CamelCaseMotion'
 Plugin 'kana/vim-textobj-user'
@@ -45,6 +45,7 @@ Plugin 'kchmck/vim-coffee-script'
 Plugin 'mintplant/vim-literate-coffeescript'
 Plugin 'ekalinin/Dockerfile.vim'
 Plugin 'terryma/vim-multiple-cursors'
+Plugin 'benmills/vimux'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -63,7 +64,8 @@ set pastetoggle=<F2>           " pastetoggle (sane indentation on pastes)
 
 set nu    " Show line numbers
 
-set nolist
+" Show trailing white spaces as dots
+set list listchars=tab:»~,trail:~
 
 " Use spaces instead of tabs
 set expandtab
@@ -280,6 +282,7 @@ autocmd FileType python call PYSET()
 map <C-E> :NERDTreeToggle<cr>
 let NERDTreeShowHidden=1
 let NERDTreeKeepTreeInNewTab=1
+let NERDTreeChDirMode=2
 
 " CtrlP
 let g:ctrlp_working_path_mode = 'ra'
@@ -306,7 +309,7 @@ let g:miniBufExplBuffersNeeded = 0
 let g:miniBufExplCycleArround = 1
 
 "Startify
-let g:startify_session_persistence = 1
+"let g:startify_session_persistence = 1
 
 "You compelete Me
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
