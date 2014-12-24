@@ -38,7 +38,7 @@ esac
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
-#force_color_prompt=yes
+force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
@@ -128,6 +128,19 @@ function extract()      # Handy Extract Program
         echo "'$1' is not a valid file!"
     fi
 }
+
+function color_my_prompt {
+    local __user_and_host="\[\033[01;35m\]\u@\h"
+    local __cur_location="\w"
+    local __git_branch_color="\[\033[01;31m\]"
+    local __git_branch='`git branch 2> /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/[\\\\\1]\ /`'
+    local __prompt_tail="\[\033[35m\]\$"
+    local __last_color="\[\033[00m\]"
+    export PS1="$__user_and_host $__cur_location $__git_branch_color$__git_branch$__prompt_tail$__last_color "
+}
+color_my_prompt
+
+complete -W "$(echo $(grep '^ssh ' .bash_history | sort -u | sed 's/^ssh //'))" ssh
 
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
