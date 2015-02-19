@@ -13,3 +13,4 @@
   #http://stackoverflow.com/questions/8483041/git-color-words-excluding
   dw = diff --color-words='\\w+|[^[:space:]]'
   dcw = diff --cached --color-words='\\w+|[^[:space:]]'
+  pom = push origin master
