@@ -46,6 +46,7 @@ Plugin 'mintplant/vim-literate-coffeescript'
 Plugin 'ekalinin/Dockerfile.vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'benmills/vimux'
+"Plugin 'xuhdev/SingleCompile'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
