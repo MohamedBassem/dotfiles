@@ -244,6 +244,9 @@ map <leader>ew :e %%
 map <leader>es :sp %%
 map <leader>ev :vsp %%
 
+" Map the compile and run custom function
+map <leader>r :call MakeAndRun()<cr>
+
 set hidden
 map tl :MBEbn<CR>
 map th  :MBEbp<CR>
@@ -344,6 +347,7 @@ function! CSET()
   set cindent
   set textwidth=0
   set nowrap
+  command! Execute call VimuxRunCommand('./' . expand('%') . '.bin') | call system("tmux select-"._VimuxRunnerType()." -t ".g:VimuxRunnerIndex)
 endfunction
 
 function! CPPSET()
@@ -351,6 +355,7 @@ function! CPPSET()
   set cindent
   set textwidth=0
   set nowrap
+  command! Execute call VimuxRunCommand('./' . expand('%') . '.bin') | call system("tmux select-"._VimuxRunnerType()." -t ".g:VimuxRunnerIndex)
 endfunction
 
 " Java
@@ -359,4 +364,11 @@ function! JAVASET()
   set cindent
   set textwidth=0
   set nowrap
+endfunction
+
+function! MakeAndRun()
+  :make!
+  if len(getqflist()) == 0
+    :Execute
+  endif
 endfunction
