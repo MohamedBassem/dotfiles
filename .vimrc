@@ -245,7 +245,8 @@ map <leader>es :sp %%
 map <leader>ev :vsp %%
 
 " Map the compile and run custom function
-map <leader>r :call MakeAndRun()<cr>
+map <leader>r :call MakeAndRun(0)<cr>
+map <leader>rf :call MakeAndRun(1)<cr>
 
 set hidden
 map tl :MBEbn<CR>
@@ -344,6 +345,7 @@ endfunction
 " C/C++:
 function! CSET()
   set makeprg=if\ \[\ -f\ \"Makefile\"\ \];then\ make\ $*;else\ if\ \[\ -f\ \"makefile\"\ \];then\ make\ $*;else\ gcc\ -O2\ -g\ -Wall\ -o%.bin\ %\ -lm;fi;fi
+  set errorformat^=%-G%f:%l:\ warning:%m
   set cindent
   set textwidth=0
   set nowrap
@@ -352,6 +354,7 @@ endfunction
 
 function! CPPSET()
   set makeprg=if\ \[\ -f\ \"Makefile\"\ \];then\ make\ $*;else\ if\ \[\ -f\ \"makefile\"\ \];then\ make\ $*;else\ g++\ -std=gnu++0x\ -O2\ -g\ -Wall\ -o%.bin\ %;fi;fi
+  set errorformat^=%-G%f:%l:\ warning:%m
   set cindent
   set textwidth=0
   set nowrap
@@ -366,9 +369,9 @@ function! JAVASET()
   set nowrap
 endfunction
 
-function! MakeAndRun()
+function! MakeAndRun(forceRun)
   :make!
-  if len(getqflist()) == 0
+  if len(getqflist()) == 0 || a:forceRun == 1
     :Execute
   endif
 endfunction
