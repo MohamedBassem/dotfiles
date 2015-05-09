@@ -50,6 +50,8 @@ Plugin 'benmills/vimux'
 "Plugin 'vim-scripts/a.vim'
 "Plugin 'xolox/vim-easytags'
 Plugin 'craigemery/vim-autotag'
+"Plugin 'xuhdev/vim-latex-live-preview'
+Plugin 'jcf/vim-latex'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -294,6 +296,11 @@ let NERDTreeChDirMode=2
 
 " CtrlP
 let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'file': '\v\.(exe|so|dll|aux|lof|bbl|blg|log|toc|out)$',
+  \ 'link': '',
+  \ }
 
 " indent_guides
 let g:indent_guides_start_level = 2
@@ -326,6 +333,15 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 set completeopt-=preview
 
+" LaTeX-Suite
+let g:Tex_DefaultTargetFormat = 'pdf'
+let g:Tex_GotoError = 0
+let g:Tex_AutoFolding = 0
+let g:Tex_Folding = 0
+
+" Syntastic
+let g:syntastic_cpp_compiler_options = ' -std=c++11'
+
 """"""""""""""""""""""""""" Functions """""""""""""""""""""""""""""""""""""
 
 " Returns true if paste mode is enabled
@@ -352,7 +368,7 @@ function! CSET()
   set cindent
   set textwidth=0
   set nowrap
-  command! Execute call VimuxRunCommand('./' . expand('%') . '.bin') | call system("tmux select-"._VimuxRunnerType()." -t ".g:VimuxRunnerIndex)
+  command! Execute call VimuxRunCommand(expand('%:p') . '.bin') | call system("tmux select-"._VimuxRunnerType()." -t ".g:VimuxRunnerIndex)
 endfunction
 
 function! CPPSET()
@@ -361,7 +377,7 @@ function! CPPSET()
   set cindent
   set textwidth=0
   set nowrap
-  command! Execute call VimuxRunCommand('./' . expand('%') . '.bin') | call system("tmux select-"._VimuxRunnerType()." -t ".g:VimuxRunnerIndex)
+  command! Execute call VimuxRunCommand(expand('%:p') . '.bin') | call system("tmux select-"._VimuxRunnerType()." -t ".g:VimuxRunnerIndex)
 endfunction
 
 " Java
@@ -377,4 +393,9 @@ function! MakeAndRun(forceRun)
   if len(getqflist()) == 0 || a:forceRun == 1
     :Execute
   endif
+endfunction
+
+function! FixTabs()
+  :set tabstop=2 shiftwidth=2 expandtab
+  :retab
 endfunction
