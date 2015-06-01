@@ -149,3 +149,4 @@ PATH=$PATH:$HOME/usr/bin
 
 
 MB="/media/MohamedBassem"
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
