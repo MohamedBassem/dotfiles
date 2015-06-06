@@ -184,6 +184,9 @@ nnoremap c "_c
 nnoremap C "_C
 nnoremap x "_x
 
+" Stop the stupid windows
+map q: :q
+
 """""""""""""""""""""""""" Colors """""""""""""""""""""""""""""""""""""""""""""
 set background=dark
 color Tomorrow-Night
