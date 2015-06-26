@@ -80,7 +80,7 @@ set expandtab
 set smarttab
 
 " Tabs sizes
-set shiftwidth=2                " Use indents of 4 spaces
+set shiftwidth=2                " Use indents of 2 spaces
 set tabstop=2                   " An indentation every four columns
 set softtabstop=2               " Let backspace delete indent
 
@@ -101,9 +101,6 @@ set showcmd
 " like <leader>w saves the current file
 let mapleader = ","
 let g:mapleader = ","
-
-" fast save
-nmap <leader>w :w!<cr>
 
 " Root Save
 command! W w !sudo tee % > /dev/null
@@ -174,8 +171,6 @@ if has('clipboard')
     endif
 endif
 
-inoremap <C-v> <ESC>"+p`]a
-
 " Black hole deletion/change (persist yanked lines in non-visual mode)
 nnoremap d "_d
 nnoremap dd "_dd
@@ -194,14 +189,6 @@ color Tomorrow-Night
 let g:indent_guides_auto_colors = 0 
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=black ctermbg=black
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=darkgrey
-
-"if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
-"    let g:solarized_termcolors=256
-"    let g:solarized_termtrans=1
-"    let g:solarized_contrast="normal"
-"    let g:solarized_visibility="normal"
-"    color solarized             " Load a colorscheme
-"endif
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -240,9 +227,6 @@ map <C-l> <C-W>l
 
 " Disable latex conflict with <C-j>
 map <silent>$# <Plug>IMAP_JumpForward
-
-" Switch CWD to the directory of the open buffer
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " move to end of pasted text, to ease multiple pastes
 vnoremap y y`]
@@ -308,29 +292,19 @@ let g:ctrlp_custom_ignore = {
   \ 'link': '',
   \ }
 
-" indent_guides
-let g:indent_guides_start_level = 2
-let g:indent_guides_guide_size = 1
-let g:indent_guides_enable_on_vim_startup = 0
-
 " Vim airline
 "let g:airline#extensions#tabline#enabled = 1
 "let g:airline#extensions#tabline#left_sep = '>'
-let g:airline_branch_prefix = '⎇ '
+let g:airline_symbols = {}
+let g:airline_symbols.branch = '⎇ '
 let g:airline_section_y = ''
 let g:airline#extensions#whitespace#enabled = 0
-
-"Bufferline
-"let g:bufferline_echo = 0
 
 "MiniBuffExpl
 let g:miniBufExplBRSplit = 0
 let g:miniBufExplUseSingleClick = 1
 let g:miniBufExplBuffersNeeded = 0
 let g:miniBufExplCycleArround = 1
-
-"Startify
-"let g:startify_session_persistence = 1
 
 "You compelete Me
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
