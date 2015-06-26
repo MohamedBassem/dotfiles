@@ -142,11 +142,16 @@ color_my_prompt
 
 complete -W "$(echo $(grep '^ssh ' ~/.bash_history | sort -u | sed 's/^ssh //'))" ssh
 
+# rbenv Installation
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 PATH=$PATH:$HOME/bin
 PATH=$PATH:$HOME/usr/bin
 
+# Go Installation
+export GOPATH=~/.go
+export PATH="$PATH:/usr/local/go/bin"
+export PATH="$PATH:$GOPATH/bin"
 
 MB="/media/MohamedBassem"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
