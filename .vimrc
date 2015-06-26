@@ -52,6 +52,7 @@ Plugin 'benmills/vimux'
 Plugin 'craigemery/vim-autotag'
 "Plugin 'xuhdev/vim-latex-live-preview'
 Plugin 'jcf/vim-latex'
+Plugin 'fatih/vim-go'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -321,6 +322,13 @@ let g:Tex_Folding = 0
 
 " Syntastic
 let g:syntastic_cpp_compiler_options = ' -std=c++11'
+
+"vim-go
+let g:go_fmt_command = "goimports"
+let g:go_fmt_fail_silently = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
 
 """"""""""""""""""""""""""" Functions """""""""""""""""""""""""""""""""""""
 
