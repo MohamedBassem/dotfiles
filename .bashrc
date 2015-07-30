@@ -153,7 +153,7 @@ PATH=$PATH:$HOME/bin
 PATH=$PATH:$HOME/usr/bin
 
 # Go Installation
-export GOPATH=~/.go
+export GOPATH=~/repos/go
 export PATH="$PATH:/usr/local/go/bin"
 export PATH="$PATH:$GOPATH/bin"
 
