@@ -142,6 +142,10 @@ color_my_prompt
 
 complete -W "$(echo $(grep '^ssh ' ~/.bash_history | sort -u | sed 's/^ssh //'))" ssh
 
+#Custom Vars
+export EDITOR=vim
+source /home/mohamedbassem/.rbenv/versions/1.9.3-p392-railsexpress/lib/ruby/gems/1.9.1/gems/tmuxinator-0.6.11/completion/tmuxinator.bash
+
 # rbenv Installation
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
