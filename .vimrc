@@ -27,21 +27,20 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'xolox/vim-misc'
 "Plugin 'xolox/vim-session'
 Plugin 'bling/vim-airline'
-Plugin 'tpope/vim-fugitive'
-Plugin 'ervandew/snipmate.vim'
-Plugin 'tpope/vim-rails'
+"Plugin 'tpope/vim-fugitive'
+"Plugin 'tpope/vim-rails'
 "Plugin 'bling/vim-bufferline'
 Plugin 'gcmt/wildfire.vim'
 Plugin 'fholgado/minibufexpl.vim'
 Plugin 'mutewinter/nginx.vim'
 "Plugin 'mhinz/vim-startify'
-Plugin 'StanAngeloff/php.vim'
+"Plugin 'StanAngeloff/php.vim'
 Plugin 'bkad/CamelCaseMotion'
 Plugin 'kana/vim-textobj-user'
-Plugin 'nelstrom/vim-textobj-rubyblock'
+"Plugin 'nelstrom/vim-textobj-rubyblock'
 "Plugin 'Rip-Rip/clang_complete'
 Plugin 'Valloric/YouCompleteMe'
-Plugin 'kchmck/vim-coffee-script'
+"Plugin 'kchmck/vim-coffee-script'
 "Plugin 'mintplant/vim-literate-coffeescript'
 Plugin 'ekalinin/Dockerfile.vim'
 "Plugin 'terryma/vim-multiple-cursors'
@@ -53,7 +52,9 @@ Plugin 'craigemery/vim-autotag'
 "Plugin 'xuhdev/vim-latex-live-preview'
 "Plugin 'jcf/vim-latex'
 Plugin 'fatih/vim-go'
-Plugin 'godlygeek/tabular'
+"Plugin 'godlygeek/tabular'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 Plugin 'christoomey/vim-tmux-navigator'
 
 " All of your Plugins must be added before the following line
@@ -203,9 +204,6 @@ endif
 
 set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
 
-"""""""""""""""""""""""""" Key Mappings """"""""""""""""""""""""""""""""""""""""
-
-
 """""""""""""""""""""""""" Moving Around """""""""""""""""""""""""""""""""""""""""
 
 
@@ -326,6 +324,10 @@ let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 
+"Utlisnips
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 "vim-tmux-navigator
 let g:tmux_navigator_no_mappings = 1
