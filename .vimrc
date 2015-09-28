@@ -54,6 +54,7 @@ Plugin 'craigemery/vim-autotag'
 "Plugin 'jcf/vim-latex'
 Plugin 'fatih/vim-go'
 Plugin 'godlygeek/tabular'
+Plugin 'christoomey/vim-tmux-navigator'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -221,12 +222,6 @@ noremap <Down> 20<C-e>
 " Disable highlight
 nnoremap <leader><CR> :noh<cr>
 
-" Smart way to move between windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
-
 " Disable latex conflict with <C-j>
 map <silent>$# <Plug>IMAP_JumpForward
 
@@ -330,6 +325,16 @@ let g:go_fmt_fail_silently = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
+
+
+"vim-tmux-navigator
+let g:tmux_navigator_no_mappings = 1
+
+nnoremap <silent> <c-a>h :TmuxNavigateLeft<cr>
+nnoremap <silent> <c-a>j :TmuxNavigateDown<cr>
+nnoremap <silent> <c-a>k :TmuxNavigateUp<cr>
+nnoremap <silent> <c-a>l :TmuxNavigateRight<cr>
+
 
 """"""""""""""""""""""""""" Functions """""""""""""""""""""""""""""""""""""
 
