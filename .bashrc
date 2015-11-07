@@ -159,3 +159,6 @@ export PATH="$PATH:$GOPATH/bin"
 
 MB="/media/MohamedBassem"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+export TERM=screen-256color
+eval "$(thefuck --alias)"
