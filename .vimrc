@@ -40,8 +40,8 @@ Plugin 'kana/vim-textobj-user'
 "Plugin 'nelstrom/vim-textobj-rubyblock'
 "Plugin 'Rip-Rip/clang_complete'
 Plugin 'Valloric/YouCompleteMe'
-"Plugin 'kchmck/vim-coffee-script'
-"Plugin 'mintplant/vim-literate-coffeescript'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'mintplant/vim-literate-coffeescript'
 Plugin 'ekalinin/Dockerfile.vim'
 "Plugin 'terryma/vim-multiple-cursors'
 Plugin 'benmills/vimux'
@@ -56,6 +56,7 @@ Plugin 'fatih/vim-go'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'majutsushi/tagbar'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -323,6 +324,7 @@ let g:go_fmt_fail_silently = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
+let g:go_auto_type_info = 0
 
 "Utlisnips
 let g:UltiSnipsExpandTrigger="<c-j>"
