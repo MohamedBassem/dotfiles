@@ -26,7 +26,8 @@ Plugin 'scrooloose/nerdcommenter'
 "Plugin 'ervandew/supertab'
 Plugin 'xolox/vim-misc'
 "Plugin 'xolox/vim-session'
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 "Plugin 'tpope/vim-fugitive'
 "Plugin 'tpope/vim-rails'
 "Plugin 'bling/vim-bufferline'
@@ -34,7 +35,7 @@ Plugin 'gcmt/wildfire.vim'
 Plugin 'fholgado/minibufexpl.vim'
 Plugin 'mutewinter/nginx.vim'
 "Plugin 'mhinz/vim-startify'
-"Plugin 'StanAngeloff/php.vim'
+Plugin 'StanAngeloff/php.vim'
 Plugin 'bkad/CamelCaseMotion'
 Plugin 'kana/vim-textobj-user'
 "Plugin 'nelstrom/vim-textobj-rubyblock'
@@ -57,6 +58,8 @@ Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'majutsushi/tagbar'
+Plugin 'godlygeek/tabular'
+Plugin 'wellle/tmux-complete.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -308,6 +311,8 @@ let g:ycm_show_diagnostics_ui = 0
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 set completeopt-=preview
+let g:EclimCompletionMethod = 'omnifunc'
+let g:tmuxcomplete#trigger = 'omnifunc'
 
 " LaTeX-Suite
 let g:Tex_DefaultTargetFormat = 'pdf'
@@ -317,6 +322,8 @@ let g:Tex_Folding = 0
 
 " Syntastic
 let g:syntastic_cpp_compiler_options = ' -std=c++11'
+"let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+"let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 
 "vim-go
 let g:go_fmt_command = "goimports"
@@ -324,6 +331,7 @@ let g:go_fmt_fail_silently = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
+let g:go_highlight_interfaces = 1
 let g:go_auto_type_info = 0
 
 "Utlisnips
@@ -333,6 +341,9 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 "vim-tmux-navigator
 let g:tmux_navigator_no_mappings = 1
+
+"tagbar
+autocmd FileType go nested :TagbarOpen
 
 nnoremap <silent> <c-a>h :TmuxNavigateLeft<cr>
 nnoremap <silent> <c-a>j :TmuxNavigateDown<cr>
