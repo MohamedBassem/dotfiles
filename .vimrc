@@ -41,8 +41,6 @@ Plugin 'kana/vim-textobj-user'
 "Plugin 'nelstrom/vim-textobj-rubyblock'
 "Plugin 'Rip-Rip/clang_complete'
 Plugin 'Valloric/YouCompleteMe'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'mintplant/vim-literate-coffeescript'
 Plugin 'ekalinin/Dockerfile.vim'
 "Plugin 'terryma/vim-multiple-cursors'
 Plugin 'benmills/vimux'
@@ -171,13 +169,8 @@ vnoremap > >gv
 set wildmenu                    " Show list instead of just completing
 set wildmode=list:longest,full  " Command <Tab> completion, list matches, then longest common part, then all
 
-if has('clipboard')
-    if has('unnamedplus')  " When possible use + register for copy-paste
-      set clipboard=unnamed,unnamedplus
-    else         " On mac and Windows, use * register for copy-paste
-      set clipboard=unnamed
-    endif
-endif
+" Setting the clipboard
+set clipboard=unnamed
 
 " Black hole deletion/change (persist yanked lines in non-visual mode)
 nnoremap d "_d

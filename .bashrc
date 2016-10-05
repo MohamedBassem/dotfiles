@@ -144,11 +144,11 @@ complete -W "$(echo $(grep '^ssh ' ~/.bash_history | sort -u | sed 's/^ssh //'))
 
 #Custom Vars
 export EDITOR=vim
-source /home/mohamedbassem/.rbenv/versions/1.9.3-p392-railsexpress/lib/ruby/gems/1.9.1/gems/tmuxinator-0.6.11/completion/tmuxinator.bash
+#source /home/mohamedbassem/.rbenv/versions/1.9.3-p392-railsexpress/lib/ruby/gems/1.9.1/gems/tmuxinator-0.6.11/completion/tmuxinator.bash
 
 # rbenv Installation
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
+#export PATH="$HOME/.rbenv/bin:$PATH"
+#eval "$(rbenv init -)"
 PATH=$PATH:$HOME/bin
 PATH=$PATH:$HOME/usr/bin
 
@@ -161,4 +161,3 @@ MB="/media/MohamedBassem"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 export TERM=screen-256color
-eval "$(thefuck --alias)"
