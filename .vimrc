@@ -58,6 +58,11 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'majutsushi/tagbar'
 Plugin 'godlygeek/tabular'
 Plugin 'wellle/tmux-complete.vim'
+"Plugin 'pangloss/vim-javascript'
+Plugin 'othree/javascript-libraries-syntax.vim'
+"Plugin 'burnettk/vim-angular'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'vim-scripts/groovy.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -315,8 +320,8 @@ let g:Tex_Folding = 0
 
 " Syntastic
 let g:syntastic_cpp_compiler_options = ' -std=c++11'
-"let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-"let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+let g:syntastic_check_on_open = 1
+let g:syntastic_go_checkers = ['go']
 
 "vim-go
 let g:go_fmt_command = "goimports"
@@ -326,6 +331,16 @@ let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_interfaces = 1
 let g:go_auto_type_info = 0
+let g:go_info_mode = 'guru'
+let g:go_auto_type_info = 1
+let g:go_gocode_unimported_packages = 1
+
+set statusline+=%#goStatuslineColor#
+set statusline+=%{go#statusline#Show()}
+set statusline+=%*
+
+" javascript-syntax
+let g:used_javascript_libs = 'angularjs'
 
 "Utlisnips
 let g:UltiSnipsExpandTrigger="<c-j>"
@@ -336,7 +351,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 let g:tmux_navigator_no_mappings = 1
 
 "tagbar
-autocmd FileType go nested :TagbarOpen
+"autocmd FileType go nested :TagbarOpen
 
 nnoremap <silent> <c-a>h :TmuxNavigateLeft<cr>
 nnoremap <silent> <c-a>j :TmuxNavigateDown<cr>
@@ -388,6 +403,7 @@ function! JAVASET()
   set cindent
   set textwidth=0
   set nowrap
+  command! Execute call VimuxRunCommand('java ' . expand('%:r')) | call system("tmux select-"._VimuxRunnerType()." -t ".g:VimuxRunnerIndex)
 endfunction
 
 function! MakeAndRun(forceRun)

@@ -161,3 +161,9 @@ MB="/media/MohamedBassem"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 export TERM=screen-256color
+
+alias resetaudio='sudo killall coreaudiod'
+
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+
+export PATH="$HOME/.cargo/bin:$PATH"
