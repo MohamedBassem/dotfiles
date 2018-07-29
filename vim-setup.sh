@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt-get install -y vim git cmake python-dev
+brew install vim git cmake python-dev
 pushd ~/
 wget https://raw.githubusercontent.com/MohamedBassem/dotfiles/master/.vimrc
 popd
