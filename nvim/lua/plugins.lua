@@ -5,9 +5,50 @@ return {
 			require("onedark").load()
 		end,
 	},
-	"nvim-treesitter/nvim-treesitter",
-	"simrat39/symbols-outline.nvim",
-	"nvim-tree/nvim-web-devicons",
+	{
+		"nvim-treesitter/nvim-treesitter",
+		build = ":TSUpdate",
+		config = function()
+			require("nvim-treesitter.configs").setup({
+				ensure_installed = {
+					"bash",
+					"c",
+					"cpp",
+					"rust",
+					"python",
+					"javascript",
+					"typescript",
+					"dockerfile",
+					"go",
+					"java",
+					"json",
+					"markdown",
+					"toml",
+					"yaml",
+					"html",
+					"css",
+					"scss",
+					"lua",
+				},
+				auto_install = true,
+				highlight = {
+					enable = true,
+					additional_vim_regex_highlighting = false,
+				},
+				incremental_selection = { enable = true },
+				textobjects = { enable = true },
+			})
+		end,
+	},
+	{
+		"simrat39/symbols-outline.nvim",
+		config = function()
+			require("symbols-outline").setup()
+		end,
+	},
+	{
+		"nvim-tree/nvim-web-devicons",
+	},
 	{
 		"nvim-tree/nvim-tree.lua",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -72,6 +113,9 @@ return {
 		"nvim-lualine/lualine.nvim",
 		config = function()
 			require("lualine").setup({
+				options = {
+					theme = "onedark",
+				},
 				extensions = { "nvim-tree" },
 				sections = {
 					lualine_c = {
@@ -170,15 +214,14 @@ return {
 			}
 		end,
 	},
-
-	"airblade/vim-gitgutter",
-
 	{
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
 		opts = {}, -- this is equalent to setup({}) function
 	},
-	"simrat39/rust-tools.nvim",
+	{
+		"simrat39/rust-tools.nvim",
+	},
 	{
 		"aserowy/tmux.nvim",
 		config = function()
@@ -187,8 +230,73 @@ return {
 	},
 	{
 		"rcarriga/nvim-notify",
+		config = function()
+			vim.notify = require("notify")
+		end,
 	},
 	{
-		"mhinz/vim-startify",
+		"goolord/alpha-nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			require("alpha").setup(require("alpha.themes.startify").config)
+		end,
+	},
+	{
+		"folke/flash.nvim",
+		event = "VeryLazy",
+		keys = {
+			{
+				"s",
+				mode = { "n", "x", "o" },
+				function()
+					require("flash").jump()
+				end,
+				desc = "Flash",
+			},
+		},
+	},
+	{
+		"lewis6991/gitsigns.nvim",
+		config = function()
+			require("gitsigns").setup({
+				current_line_blame = true,
+			})
+		end,
+	},
+	{
+		"lukas-reineke/indent-blankline.nvim",
+		event = { "BufReadPost", "BufNewFile" },
+		opts = {
+			filetype_exclude = {
+				"help",
+				"alpha",
+				"dashboard",
+				"neo-tree",
+				"Trouble",
+				"lazy",
+				"mason",
+				"notify",
+				"toggleterm",
+				"lazyterm",
+			},
+			show_current_context = true,
+		},
+	},
+
+	-- Navic + Barbecue provide the breadcrumbs above the buffer
+	{
+		"SmiteshP/nvim-navic",
+	},
+	{
+		"utilyre/barbecue.nvim",
+		name = "barbecue",
+		version = "*",
+		dependencies = {
+			"SmiteshP/nvim-navic",
+			"nvim-tree/nvim-web-devicons", -- optional dependency
+		},
+		opts = {
+			-- configurations go here
+		},
 	},
 }

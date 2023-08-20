@@ -16,7 +16,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-
 vim.g.mapleader = ","
 
 require("lazy").setup("plugins")
@@ -25,4 +24,3 @@ require("options")
 require("keymaps")
 require("autocmds")
 require("lsp")
-require("editor")

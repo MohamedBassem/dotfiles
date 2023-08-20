@@ -7,7 +7,7 @@ vim.keymap.set("v", "<", "<gv", { noremap = true })
 vim.keymap.set("v", ">", ">gv", { noremap = true })
 
 -- Disable highlight
-vim.keymap.set({"n", "i"}, "<leader><CR>", "<cmd>noh<CR><esc>")
+vim.keymap.set("n", "<leader><CR>", "<cmd>noh<CR><esc>")
 
 -- Copy to end
 vim.keymap.set("n", "Y", "yg$", { remap = true })
@@ -50,20 +50,20 @@ vim.keymap.set("n", "<Right>", "20l", { noremap = true })
 vim.keymap.set("n", "<leader>q", ":qa<CR>")
 
 -- Execute code action
-vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, {})
+vim.keymap.set("n", "<leader>a", vim.lsp.buf.code_action, {})
 
 -- Center search results
 vim.keymap.set("n", "n", "nzz", { noremap = true, silent = true })
 vim.keymap.set("n", "N", "Nzz", { noremap = true, silent = true })
 
 -- Better split switching
-vim.keymap.set('', '<C-j>', '<C-W>j')
-vim.keymap.set('', '<C-k>', '<C-W>k')
-vim.keymap.set('', '<C-h>', '<C-W>h')
-vim.keymap.set('', '<C-l>', '<C-W>l')
+vim.keymap.set("", "<C-j>", "<C-W>j")
+vim.keymap.set("", "<C-k>", "<C-W>k")
+vim.keymap.set("", "<C-h>", "<C-W>h")
+vim.keymap.set("", "<C-l>", "<C-W>l")
 
 -- Telescope
 local telescope_builtins = require("telescope.builtin")
 --vim.keymap.set("n", "<leader>td", telescope_builtins.diagnostics, {})
 vim.keymap.set("n", "<leader>gg", telescope_builtins.live_grep, {})
-vim.keymap.set('n', '<C-p>', telescope_builtins.find_files, {})
+vim.keymap.set("n", "<C-p>", telescope_builtins.find_files, {})
