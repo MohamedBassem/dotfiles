@@ -1,13 +1,13 @@
 -- Check if we need to reload the file when it changed
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
-  command = "checktime",
+	command = "checktime",
 })
 
 -- resize splits if window got resized
 vim.api.nvim_create_autocmd({ "VimResized" }, {
-  callback = function()
-    vim.cmd("tabdo wincmd =")
-  end,
+	callback = function()
+		vim.cmd("tabdo wincmd =")
+	end,
 })
 
 -- automatically switch to insert mode when entering a Term buffer
@@ -36,14 +36,21 @@ vim.api.nvim_create_autocmd({ "BufWinEnter", "BufNewFile" }, {
 
 -- wrap and check for spell in text filetypes
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "gitcommit", "markdown" },
-  callback = function()
-    vim.opt_local.wrap = true
-    vim.opt_local.spell = true
-  end,
+	pattern = { "gitcommit", "markdown" },
+	callback = function()
+		vim.opt_local.wrap = true
+		vim.opt_local.spell = true
+	end,
 })
 
-
+-- Auto format on save
 vim.api.nvim_create_autocmd("BufWritePre", {
-    command= [[lua vim.lsp.buf.format()]]
+	command = [[lua vim.lsp.buf.format()]],
+})
+
+-- Open Nvim-tree on startup
+vim.api.nvim_create_autocmd({ "VimEnter" }, {
+	callback = function()
+		require("nvim-tree.api").tree.toggle({ focus = false })
+	end,
 })

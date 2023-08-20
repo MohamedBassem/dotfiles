@@ -14,6 +14,11 @@ return {
 		config = function()
 			require("nvim-tree").setup({
 				sort_by = "case_sensitive",
+				actions = {
+					change_dir = {
+						enable = true,
+					},
+				},
 				filters = {
 					dotfiles = true,
 				},
