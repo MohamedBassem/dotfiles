@@ -55,7 +55,6 @@ vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, {})
 -- Center search results
 vim.keymap.set("n", "n", "nzz", { noremap = true, silent = true })
 vim.keymap.set("n", "N", "Nzz", { noremap = true, silent = true })
-vim.keymap.set("n", "*", "*zz", { noremap = true, silent = true })
 
 -- Better split switching
 vim.keymap.set('', '<C-j>', '<C-W>j')
@@ -63,9 +62,8 @@ vim.keymap.set('', '<C-k>', '<C-W>k')
 vim.keymap.set('', '<C-h>', '<C-W>h')
 vim.keymap.set('', '<C-l>', '<C-W>l')
 
--- FZF
---vim.keymap.set("n", "<C-p>", function()
---	--local utils = require('telescope.utils')
---	local fzf = require("fzf-lua")
---	fzf.files()
---end, { silent = true })
+-- Telescope
+local telescope_builtins = require("telescope.builtin")
+--vim.keymap.set("n", "<leader>td", telescope_builtins.diagnostics, {})
+vim.keymap.set("n", "<leader>gg", telescope_builtins.live_grep, {})
+vim.keymap.set('n', '<C-p>', telescope_builtins.find_files, {})

@@ -6,6 +6,7 @@ return {
 		end,
 	},
 	"nvim-treesitter/nvim-treesitter",
+	"simrat39/symbols-outline.nvim",
 	"nvim-tree/nvim-web-devicons",
 	{
 		"nvim-tree/nvim-tree.lua",
@@ -22,11 +23,25 @@ return {
 	{
 		"nvim-telescope/telescope.nvim",
 		config = function()
-			-- require("telescope").setup({})
+			require("telescope").setup({
+				extensions = {
+					fzf = {
+						fuzzy = true, -- false will only do exact matching
+						override_generic_sorter = true, -- override the generic sorter
+						override_file_sorter = true, -- override the file sorter
+						case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+						-- the default case_mode is "smart_case"
+					},
+					["ui-select"] = {},
+				},
+			})
+			-- To get fzf loaded and working with telescope, you need to call
+			-- load_extension, somewhere after setup function:
+			require("telescope").load_extension("fzf")
 
 			-- To get ui-select loaded and working with telescope, you need to call
 			-- load_extension, somewhere after setup function:
-			-- require("telescope").load_extension("ui-select")
+			require("telescope").load_extension("ui-select")
 		end,
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
@@ -37,6 +52,15 @@ return {
 		end,
 	},
 	{
+		"j-hui/fidget.nvim",
+		tag = "legacy",
+		event = "LspAttach",
+		opts = {},
+		config = function()
+			require("fidget").setup({})
+		end,
+	},
+	{
 		"nvim-lua/plenary.nvim",
 	},
 	{
@@ -44,10 +68,19 @@ return {
 		config = function()
 			require("lualine").setup({
 				extensions = { "nvim-tree" },
+				sections = {
+					lualine_c = {
+						{
+							"filename",
+							file_status = true, -- displays file status (readonly status, modified status)
+							path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
+						},
+					},
+				},
 			})
 		end,
 	},
-    { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+	{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 	{ "nvim-telescope/telescope-ui-select.nvim" },
 	{
 		"akinsho/bufferline.nvim",
@@ -132,6 +165,8 @@ return {
 			}
 		end,
 	},
+
+	"airblade/vim-gitgutter",
 
 	{
 		"windwp/nvim-autopairs",
