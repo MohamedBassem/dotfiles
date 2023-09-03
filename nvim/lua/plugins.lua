@@ -27,8 +27,9 @@ return {
 					"yaml",
 					"html",
 					"css",
-					"scss",
 					"lua",
+					"thrift",
+					"starlark",
 				},
 				auto_install = true,
 				highlight = {
@@ -58,6 +59,11 @@ return {
 				actions = {
 					change_dir = {
 						enable = true,
+					},
+					open_file = {
+						window_picker = {
+							enable = false,
+						}
 					},
 				},
 				filters = {
@@ -176,7 +182,19 @@ return {
 			},
 		},
 	},
-
+    {
+		"lvimuser/lsp-inlayhints.nvim",
+		config = function()
+			require("lsp-inlayhints").setup {
+				enabled_at_startup = true,
+				inlay_hints = {
+					parameter_hints = {
+					  show = false,
+					}
+				},
+			}
+		end
+    },
 	{
 		"VonHeikemen/lsp-zero.nvim",
 		dependencies = {

@@ -24,6 +24,23 @@ vim.opt.undodir = vim.fn.stdpath("data") .. "undo"
 vim.opt.expandtab = true -- expand tabs into spaces
 vim.opt.shiftwidth = 4 -- number of spaces to use for each step of indent.
 vim.opt.tabstop = 4 -- number of spaces a TAB counts for
+vim.opt.list = true 
+vim.opt.listchars = "tab:>~" -- Show tabs as chars
 vim.opt.autoindent = true -- copy indent from current line when starting a new line
 vim.opt.wrap = false -- Don't wrap
 
+-- show absolute numbers in insert mode, relative in normal mode
+vim.opt.relativenumber = true
+vim.cmd([[
+  augroup numbertoggle
+    autocmd!
+    autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+    autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+  augroup END
+]])
+
+-- Tab complete for cmd mode should autocomplete the first result immediately.
+vim.opt.wildmode = "full"
+
+-- Refresh files edited on disk automatically
+vim.opt.autoread = true
