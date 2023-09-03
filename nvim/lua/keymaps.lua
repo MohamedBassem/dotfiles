@@ -13,7 +13,7 @@ vim.keymap.set("n", "<leader><CR>", "<cmd>noh<CR><esc>")
 vim.keymap.set("n", "Y", "yg$", { remap = true })
 
 -- LSP Format
-vim.keymap.set("n", "<C-f>", ":LspZeroFormat<CR>")
+vim.keymap.set("n", "<C-f>", ":LspZeroFormat!<CR>")
 
 -- Toggle Nvim-Tree
 vim.keymap.set("n", "<C-e>", ":NvimTreeToggle<CR>")
