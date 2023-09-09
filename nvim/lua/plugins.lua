@@ -1,8 +1,9 @@
 return {
 	{
-		"navarasu/onedark.nvim",
+		"olimorris/onedarkpro.nvim",
+		priority = 1000, -- Ensure it loads first
 		config = function()
-			require("onedark").load()
+			vim.cmd("colorscheme onedark")
 		end,
 	},
 	{
@@ -316,5 +317,61 @@ return {
 		opts = {
 			-- configurations go here
 		},
+	},
+	{
+		"folke/zen-mode.nvim",
+		opts = {
+			window = {
+				width = 1, -- 100% width
+			}
+		},
+	},
+	{
+		-- Detect tabstop and shiftwidth automatically
+		"tpope/vim-sleuth",
+	},
+
+	-- "gc" to comment visual regions/lines
+	{ 'numToStr/Comment.nvim', opts = {} },
+	{
+		-- Show the diff of the code action before applying it
+		"aznhe21/actions-preview.nvim",
+	},
+	{
+		"petertriho/nvim-scrollbar",
+		config = function()
+			require("scrollbar").setup({})
+		end
+	},
+
+	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		init = function()
+			vim.o.timeout = true
+			vim.o.timeoutlen = 300
+		end,
+		opts = {
+			-- your configuration comes here
+			-- or leave it empty to use the default settings
+			-- refer to the configuration section below
+		}
+	},
+	{
+		"nvim-treesitter/nvim-treesitter-textobjects",
+	},
+	{
+		"RRethy/vim-illuminate",
+		config = function()
+			require('illuminate').configure({})
+		end
+	},
+	{
+		'rmagatti/goto-preview',
+		config = function()
+			require('goto-preview').setup {
+				default_mappings = true;
+			}
+		end
 	},
 }

@@ -40,17 +40,12 @@ vim.keymap.set("n", "x", '"_x')
 -- switch to normal mode with esc in terminal mode
 vim.keymap.set("t", "<ESC>", "<C-\\><C-n>")
 
--- Switch arrows to jump up and down
-vim.keymap.set("n", "<Up>", "20k", { noremap = true })
-vim.keymap.set("n", "<Down>", "20j", { noremap = true })
-vim.keymap.set("n", "<Left>", "20h", { noremap = true })
-vim.keymap.set("n", "<Right>", "20l", { noremap = true })
-
 -- Quick exit
 vim.keymap.set("n", "<leader>q", ":qa<CR>")
 
 -- Execute code action
-vim.keymap.set("n", "<leader>a", vim.lsp.buf.code_action, {})
+vim.keymap.set({ "v", "n" }, "<leader>a", require("actions-preview").code_actions)
+
 
 -- Center search results
 vim.keymap.set("n", "n", "nzz", { noremap = true, silent = true })
@@ -67,3 +62,6 @@ local telescope_builtins = require("telescope.builtin")
 --vim.keymap.set("n", "<leader>td", telescope_builtins.diagnostics, {})
 vim.keymap.set("n", "<leader>gg", telescope_builtins.live_grep, {})
 vim.keymap.set("n", "<C-p>", telescope_builtins.find_files, {})
+
+-- Enable zen mode
+vim.keymap.set("n", "<leader>zz", "<cmd>ZenMode<CR>")
