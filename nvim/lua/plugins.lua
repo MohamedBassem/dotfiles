@@ -37,8 +37,50 @@ return {
 					enable = true,
 					additional_vim_regex_highlighting = false,
 				},
-				incremental_selection = { enable = true },
-				textobjects = { enable = true },
+				incremental_selection = {
+					enable = true,
+					keymaps = {
+						init_selection = "<CR>",
+						node_incremental = "<CR>",
+						scope_incremental = nil,
+						node_decremental = "<BS>",
+					},
+				},
+				textobjects = {
+					enable = true,
+					select = {
+						 enable = true,
+						 lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+						 keymaps = {
+							['aa'] = '@parameter.outer',
+							['ia'] = '@parameter.inner',
+							['af'] = '@function.outer',
+							['if'] = '@function.inner',
+							['ac'] = '@class.outer',
+							['ic'] = '@class.inner',
+						},
+					},
+					move = {
+						enable = true,
+						set_jumps = true, -- whether to set jumps in the jumplist
+						goto_next_start = {
+							[']m'] = '@function.outer',
+							[']]'] = '@class.outer',
+						},
+						 goto_next_end = {
+							[']M'] = '@function.outer',
+							[']['] = '@class.outer',
+						},
+						goto_previous_start = {
+							['[m'] = '@function.outer',
+							['[['] = '@class.outer',
+						},
+						goto_previous_end = {
+							['[M'] = '@function.outer',
+							['[]'] = '@class.outer',
+						},
+					},
+				},
 			})
 		end,
 	},
@@ -70,6 +112,19 @@ return {
 				filters = {
 					dotfiles = true,
 				},
+				on_attach = function(bufnr)
+					local api = require "nvim-tree.api"
+
+					local function opts(desc)
+					  return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+					end
+					-- default mappings
+					api.config.mappings.default_on_attach(bufnr)
+
+					-- Custom mappings
+					vim.keymap.set('n', '<C-t>', api.tree.change_root_to_parent,        opts('Up'))
+					vim.keymap.set('n', '?',     api.tree.toggle_help,                  opts('Help'))
+				end,
 			})
 		end,
 	},

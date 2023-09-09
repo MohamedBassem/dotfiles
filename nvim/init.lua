@@ -2,6 +2,7 @@
 --   - https://github.com/AhmedSoliman/dotfiles
 --   - https://github.com/fatih/dotfiles
 --   - https://github.com/LazyVim/LazyVim
+--   - https://github.com/nvim-lua/kickstart.nvim
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
