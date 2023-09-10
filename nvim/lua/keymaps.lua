@@ -26,9 +26,6 @@ vim.keymap.set("n", "tl", ":BufferLineCycleNext<CR>", { desc = "Go to next buffe
 vim.keymap.set("n", "th", ":BufferLineCyclePrev<CR>", { desc = "Got to prev buffer" })
 vim.keymap.set("n", "<leader>t", ":enew<CR>", { desc = "Open a new file" })
 
--- Don't close the window when closing the buffer
-vim.keymap.set("n", "<leader>d", ":bp<bar>sp<bar>bn<bar>bd<CR>", { desc = "close buffer" })
-
 -- Black hole deletion/change (persist yanked lines in non-visual mode)
 vim.keymap.set("n", "d", '"_d')
 vim.keymap.set("n", "dd", '"_dd')
@@ -83,3 +80,7 @@ vim.api.nvim_set_keymap("n", "<leader>ls", [[<cmd>lua require("persistence").loa
 
 -- Vim notify
 vim.api.nvim_set_keymap("n", "<leader>un", [[<cmd>lua require("notify").dismiss({ silent = true, pending = true })<cr>]], { desc = 'Dismiss all notifications' })
+
+-- Bufremove
+vim.keymap.set('n', '<leader>bd', function() require("mini.bufremove").delete(0, false) end, { desc = 'Delete buffer' })
+vim.keymap.set('n', '<leader>bD', function() require("mini.bufremove").delete(0, true) end, { desc = 'Delete buffer (Force)' })
