@@ -4,6 +4,11 @@ return {
 		priority = 1000, -- Ensure it loads first
 		config = function()
 			vim.cmd("colorscheme onedark")
+			require("onedarkpro").setup({
+				options = {
+					highlight_inactive_windows = true
+				}
+			})
 		end,
 	},
 	{
