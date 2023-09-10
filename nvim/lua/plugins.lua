@@ -49,35 +49,35 @@ return {
 				textobjects = {
 					enable = true,
 					select = {
-						 enable = true,
-						 lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-						 keymaps = {
-							['aa'] = '@parameter.outer',
-							['ia'] = '@parameter.inner',
-							['af'] = '@function.outer',
-							['if'] = '@function.inner',
-							['ac'] = '@class.outer',
-							['ic'] = '@class.inner',
+						enable = true,
+						lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+						keymaps = {
+							["aa"] = "@parameter.outer",
+							["ia"] = "@parameter.inner",
+							["af"] = "@function.outer",
+							["if"] = "@function.inner",
+							["ac"] = "@class.outer",
+							["ic"] = "@class.inner",
 						},
 					},
 					move = {
 						enable = true,
 						set_jumps = true, -- whether to set jumps in the jumplist
 						goto_next_start = {
-							[']m'] = '@function.outer',
-							[']]'] = '@class.outer',
+							["]m"] = "@function.outer",
+							["]]"] = "@class.outer",
 						},
-						 goto_next_end = {
-							[']M'] = '@function.outer',
-							[']['] = '@class.outer',
+						goto_next_end = {
+							["]M"] = "@function.outer",
+							["]["] = "@class.outer",
 						},
 						goto_previous_start = {
-							['[m'] = '@function.outer',
-							['[['] = '@class.outer',
+							["[m"] = "@function.outer",
+							["[["] = "@class.outer",
 						},
 						goto_previous_end = {
-							['[M'] = '@function.outer',
-							['[]'] = '@class.outer',
+							["[M"] = "@function.outer",
+							["[]"] = "@class.outer",
 						},
 					},
 				},
@@ -106,24 +106,30 @@ return {
 					open_file = {
 						window_picker = {
 							enable = false,
-						}
+						},
 					},
 				},
 				filters = {
 					dotfiles = true,
 				},
 				on_attach = function(bufnr)
-					local api = require "nvim-tree.api"
+					local api = require("nvim-tree.api")
 
 					local function opts(desc)
-					  return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+						return {
+							desc = "nvim-tree: " .. desc,
+							buffer = bufnr,
+							noremap = true,
+							silent = true,
+							nowait = true,
+						}
 					end
 					-- default mappings
 					api.config.mappings.default_on_attach(bufnr)
 
 					-- Custom mappings
-					vim.keymap.set('n', '<C-t>', api.tree.change_root_to_parent,        opts('Up'))
-					vim.keymap.set('n', '?',     api.tree.toggle_help,                  opts('Help'))
+					vim.keymap.set("n", "<C-t>", api.tree.change_root_to_parent, opts("Up"))
+					vim.keymap.set("n", "?", api.tree.toggle_help, opts("Help"))
 				end,
 			})
 		end,
@@ -238,19 +244,19 @@ return {
 			},
 		},
 	},
-    {
+	{
 		"lvimuser/lsp-inlayhints.nvim",
 		config = function()
-			require("lsp-inlayhints").setup {
+			require("lsp-inlayhints").setup({
 				enabled_at_startup = true,
 				inlay_hints = {
 					parameter_hints = {
-					  show = false,
-					}
+						show = false,
+					},
 				},
-			}
-		end
-    },
+			})
+		end,
+	},
 	{
 		"VonHeikemen/lsp-zero.nvim",
 		dependencies = {
@@ -327,6 +333,14 @@ return {
 				end,
 				desc = "Flash",
 			},
+			{
+				"S",
+				mode = { "n", "o", "x" },
+				function()
+					require("flash").treesitter()
+				end,
+				desc = "Flash Treesitter",
+			},
 		},
 	},
 	{
@@ -378,7 +392,7 @@ return {
 		opts = {
 			window = {
 				width = 1, -- 100% width
-			}
+			},
 		},
 	},
 	{
@@ -387,7 +401,7 @@ return {
 	},
 
 	-- "gc" to comment visual regions/lines
-	{ 'numToStr/Comment.nvim', opts = {} },
+	{ "numToStr/Comment.nvim", opts = {} },
 	{
 		-- Show the diff of the code action before applying it
 		"aznhe21/actions-preview.nvim",
@@ -396,7 +410,7 @@ return {
 		"petertriho/nvim-scrollbar",
 		config = function()
 			require("scrollbar").setup({})
-		end
+		end,
 	},
 
 	{
@@ -410,7 +424,7 @@ return {
 			-- your configuration comes here
 			-- or leave it empty to use the default settings
 			-- refer to the configuration section below
-		}
+		},
 	},
 	{
 		"nvim-treesitter/nvim-treesitter-textobjects",
@@ -418,15 +432,15 @@ return {
 	{
 		"RRethy/vim-illuminate",
 		config = function()
-			require('illuminate').configure({})
-		end
+			require("illuminate").configure({})
+		end,
 	},
 	{
-		'rmagatti/goto-preview',
+		"rmagatti/goto-preview",
 		config = function()
-			require('goto-preview').setup {
-				default_mappings = true;
-			}
-		end
+			require("goto-preview").setup({
+				default_mappings = true,
+			})
+		end,
 	},
 }
