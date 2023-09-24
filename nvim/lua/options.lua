@@ -16,7 +16,7 @@ vim.opt.clipboard = "unnamedplus" -- Copy/paste to system clipboard
 vim.opt.swapfile = false -- Don't use swapfile
 vim.opt.ignorecase = true -- Search case insensitive...
 vim.opt.smartcase = true -- ... but not it begins with upper case
-vim.opt.completeopt = "menuone,noinsert" -- Autocomplete options
+vim.opt.completeopt = "menuone,noselect" -- Autocomplete options
 
 vim.opt.undofile = true
 vim.opt.undodir = vim.fn.stdpath("data") .. "undo"
