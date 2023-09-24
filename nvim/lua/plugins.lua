@@ -6,8 +6,8 @@ return {
 			vim.cmd("colorscheme onedark")
 			require("onedarkpro").setup({
 				options = {
-					highlight_inactive_windows = true
-				}
+					highlight_inactive_windows = true,
+				},
 			})
 		end,
 	},
@@ -152,6 +152,9 @@ return {
 						-- the default case_mode is "smart_case"
 					},
 					["ui-select"] = {},
+					undo = {
+						diff_context_lines = 8,
+					},
 				},
 			})
 			-- To get fzf loaded and working with telescope, you need to call
@@ -161,8 +164,11 @@ return {
 			-- To get ui-select loaded and working with telescope, you need to call
 			-- load_extension, somewhere after setup function:
 			require("telescope").load_extension("ui-select")
+
+			-- Undo tree
+			require("telescope").load_extension("undo")
 		end,
-		dependencies = { "nvim-lua/plenary.nvim" },
+		dependencies = { "nvim-lua/plenary.nvim", "debugloop/telescope-undo.nvim" },
 	},
 	{
 		"folke/trouble.nvim",
@@ -449,10 +455,10 @@ return {
 		end,
 	},
 	{
-		'echasnovski/mini.bufremove',
+		"echasnovski/mini.bufremove",
 		version = false,
 		config = function()
-			require('mini.bufremove').setup()
+			require("mini.bufremove").setup()
 		end,
 	},
 }
