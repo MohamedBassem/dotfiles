@@ -142,7 +142,15 @@ return {
 	{
 		"nvim-telescope/telescope.nvim",
 		config = function()
+			local actions = require("telescope.actions")
 			require("telescope").setup({
+				defaults = {
+					mappings = {
+						i = {
+							["<esc>"] = actions.close,
+						},
+					},
+				},
 				extensions = {
 					fzf = {
 						fuzzy = true, -- false will only do exact matching
@@ -364,10 +372,30 @@ return {
 	},
 	{
 		"lewis6991/gitsigns.nvim",
+		enabled = function()
+			-- We'll use vim-signify in meta as gitsigns doesn't support mercurial
+			return not meta_mode;
+		end,
 		config = function()
 			require("gitsigns").setup({
 				current_line_blame = true,
 			})
+		end,
+	},
+	{
+		"mhinz/vim-signify",
+		enabled = function()
+			return meta_mode;
+		end,
+		config = function()
+			vim.cmd("highlight link SignifySignAdd GitSignsAdd");
+			vim.cmd("highlight link SignifySignChange GitSignsChange");
+			vim.cmd("highlight link SignifySignChangeDelete GitSignsChange");
+			vim.cmd("highlight link SignifySignDelete GitSignsDelete");
+			vim.cmd("highlight link SignifySignDeleteFirstLine GitSignsDelete");
+			vim.g.signify_sign_change = "│"
+			vim.g.signify_sign_add = "│"
+			vim.g.signify_sign_change_delete = "_"
 		end,
 	},
 	{

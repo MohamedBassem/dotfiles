@@ -58,12 +58,6 @@ vim.keymap.set("n", "N", "Nzz", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Jump half page down and center curson" })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Jump half page up and center curson" })
 
--- Better split switching
-vim.keymap.set("", "<C-j>", "<C-W>j")
-vim.keymap.set("", "<C-k>", "<C-W>k")
-vim.keymap.set("", "<C-h>", "<C-W>h")
-vim.keymap.set("", "<C-l>", "<C-W>l")
-
 -- Telescope
 local telescope_builtins = require("telescope.builtin")
 vim.keymap.set("n", "<leader>rf", require("telescope.builtin").oldfiles, { desc = "Search [R]ecently opened [F]iles" })

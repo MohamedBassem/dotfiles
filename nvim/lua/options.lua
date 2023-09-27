@@ -29,6 +29,10 @@ vim.opt.listchars = "tab:>~" -- Show tabs as chars
 vim.opt.autoindent = true -- copy indent from current line when starting a new line
 vim.opt.wrap = false -- Don't wrap
 
+-- Decrease update time
+vim.o.updatetime = 250
+vim.o.timeoutlen = 300
+
 -- show absolute numbers in insert mode, relative in normal mode
 vim.opt.relativenumber = true
 vim.cmd([[
