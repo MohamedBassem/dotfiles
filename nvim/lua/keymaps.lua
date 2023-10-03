@@ -29,8 +29,8 @@ vim.keymap.set("n", "<C-e>", ":NvimTreeToggle<CR>")
 vim.keymap.set("n", "<leader>f", ":NvimTreeFindFile!<CR>", { desc = "Show current file in nvim tree" })
 
 -- Buffer movements
-vim.keymap.set("n", "tl", ":BufferLineCycleNext<CR>", { desc = "Go to next buffer" })
-vim.keymap.set("n", "th", ":BufferLineCyclePrev<CR>", { desc = "Got to prev buffer" })
+vim.keymap.set("n", "<S-l>", ":BufferLineCycleNext<CR>", { desc = "Go to next buffer" })
+vim.keymap.set("n", "<S-h>", ":BufferLineCyclePrev<CR>", { desc = "Got to prev buffer" })
 vim.keymap.set("n", "<leader>t", ":enew<CR>", { desc = "Open a new file" })
 
 -- Black hole deletion/change (persist yanked lines in non-visual mode)
@@ -61,7 +61,7 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Jump half page up and center c
 -- Telescope
 local telescope_builtins = require("telescope.builtin")
 vim.keymap.set("n", "<leader>rf", require("telescope.builtin").oldfiles, { desc = "Search [R]ecently opened [F]iles" })
-vim.keymap.set("n", "<leader><space>", require("telescope.builtin").buffers, { desc = "Find existing buffers" })
+vim.keymap.set("n", "<leader><space>", function() require("telescope.builtin").buffers({sort_mru = true}) end, { desc = "Find existing buffers" })
 vim.keymap.set("n", "<leader>/", function()
   -- You can pass additional configuration to telescope to change theme, layout, etc.
   require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
@@ -103,3 +103,13 @@ end, { desc = "Delete buffer" })
 vim.keymap.set("n", "<leader>bD", function()
   require("mini.bufremove").delete(0, true)
 end, { desc = "Delete buffer (Force)" })
+
+-- Harpoon
+vim.keymap.set("n", "<leader>`", function() require("harpoon.mark").add_file() end, { desc = "Harpoon Mark file"})
+vim.keymap.set("n", "<S-p>", function() require("harpoon.ui").toggle_quick_menu() end, { desc = "Harpoon Toggle quick menu"})
+vim.keymap.set("n", "<leader>1", function() require('harpoon.ui').nav_file(1) end, { desc = "Harpoon First file"})
+vim.keymap.set("n", "<leader>2", function() require('harpoon.ui').nav_file(2) end, { desc = "Harpoon Second file"})
+vim.keymap.set("n", "<leader>3", function() require('harpoon.ui').nav_file(3) end, { desc = "Harpoon Third file"})
+
+
+

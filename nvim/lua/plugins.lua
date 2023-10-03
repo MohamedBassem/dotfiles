@@ -165,9 +165,7 @@ return {
 						mappings = {
 							-- Those are the defaults, keeping them here just as a reminder
 							i = {
-								["<cr>"] = require("telescope-undo.actions").yank_additions,
-								["<S-cr>"] = require("telescope-undo.actions").yank_deletions,
-								["<C-cr>"] = require("telescope-undo.actions").restore,
+								["<cr>"] = require("telescope-undo.actions").restore,
 							},
 						},
 					},
@@ -243,7 +241,12 @@ return {
 		},
 	},
 
-	{ "onsails/lspkind.nvim" },
+	{
+		"onsails/lspkind.nvim",
+		config = function()
+			require('lspkind').init({});
+		end,
+	},
 
 	-- save my last cursor position
 	{
@@ -350,7 +353,7 @@ return {
 	},
 	{
 		"folke/flash.nvim",
-		event = "VeryLazy",
+		lazy = false,
 		keys = {
 			{
 				"s",
@@ -496,5 +499,31 @@ return {
 		config = function()
 			require("mini.bufremove").setup()
 		end,
+	},
+	{
+		"ThePrimeagen/harpoon",
+		config = function()
+			require('harpoon').setup({})
+			require("telescope").load_extension('harpoon');
+		end
+	},
+	{
+		-- For switching between .h and .cpp files
+		"vim-scripts/a.vim",
+	},
+	{
+		"natecraddock/workspaces.nvim",
+		config = function()
+			require("workspaces").setup({
+				hooks = {
+					open = function()
+						vim.cmd("%bd");
+						require"alpha".start(true);
+					end,
+				}
+			})
+			require'telescope'.load_extension('workspaces');
+		end,
+
 	},
 }
