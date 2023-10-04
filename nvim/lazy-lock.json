@@ -1,7 +1,6 @@
 {
   "Comment.nvim": { "branch": "master", "commit": "0236521ea582747b58869cb72f70ccfa967d2e89" },
   "LuaSnip": { "branch": "master", "commit": "0b4950a237ce441a6a3a947d501622453f6860ea" },
-  "a.vim": { "branch": "master", "commit": "2cbe946206ec622d9d8cf2c99317f204c4d41885" },
   "actions-preview.nvim": { "branch": "master", "commit": "5650c76abfb84d6498330dd045657ba630ecdbba" },
   "alpha-nvim": { "branch": "main", "commit": "712dc1dccd4fd515ef8bd126b3718f79d3e23b0d" },
   "barbecue": { "branch": "main", "commit": "cd7e7da622d68136e13721865b4d919efd6325ed" },
@@ -37,6 +36,7 @@
   "nvim-treesitter-textobjects": { "branch": "master", "commit": "bd103502252027434ec42f628d2dbf54821d4ce6" },
   "nvim-web-devicons": { "branch": "master", "commit": "925e2aa30dc9fe9332060199c19f132ec0f3d493" },
   "onedarkpro.nvim": { "branch": "main", "commit": "fa861b992471d55f653751f1fea8769ca536a554" },
+  "other.nvim": { "branch": "main", "commit": "cba4e5feb0c0a703acc9b78bc64422ac1469c468" },
   "persistence.nvim": { "branch": "main", "commit": "4b8051c01f696d8849a5cb8afa9767be8db16e40" },
   "plenary.nvim": { "branch": "master", "commit": "0232372b906f275f76ac42029eba25eaf95e76b9" },
   "rust-tools.nvim": { "branch": "master", "commit": "0cc8adab23117783a0292a0c8a2fbed1005dc645" },

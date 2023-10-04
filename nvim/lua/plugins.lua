@@ -509,7 +509,25 @@ return {
 	},
 	{
 		-- For switching between .h and .cpp files
-		"vim-scripts/a.vim",
+		'rgroli/other.nvim',
+		config = function()
+			require("other-nvim").setup({
+				mappings = {
+					{
+						pattern = "/(.*)/(.*).h$",
+						target = "/%1/%2.cpp",
+						context = "cpp",
+					},
+					{
+						pattern = "/(.*)/(.*).cpp$",
+						target = "/%1/%2.h",
+						context = "header",
+					},
+				},
+				-- Don't create the file if it doesn't exist
+				showMissingFiles = false,
+			})
+		end
 	},
 	{
 		"natecraddock/workspaces.nvim",
@@ -518,7 +536,10 @@ return {
 				hooks = {
 					open = function()
 						vim.cmd("%bd");
-						require"alpha".start(true);
+						require("persistence").load();
+					end,
+					open_pre = function()
+						require("persistence").save();
 					end,
 				}
 			})

@@ -110,6 +110,8 @@ vim.keymap.set("n", "<S-p>", function() require("harpoon.ui").toggle_quick_menu(
 vim.keymap.set("n", "<leader>1", function() require('harpoon.ui').nav_file(1) end, { desc = "Harpoon First file"})
 vim.keymap.set("n", "<leader>2", function() require('harpoon.ui').nav_file(2) end, { desc = "Harpoon Second file"})
 vim.keymap.set("n", "<leader>3", function() require('harpoon.ui').nav_file(3) end, { desc = "Harpoon Third file"})
+vim.keymap.set("n", "<leader>4", function() require('harpoon.ui').nav_file(4) end, { desc = "Harpoon Fourth file"})
+vim.keymap.set("n", "<leader>5", function() require('harpoon.ui').nav_file(5) end, { desc = "Harpoon Fifth file"})
 
 
 
