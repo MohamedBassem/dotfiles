@@ -148,7 +148,7 @@ return {
 					mappings = {
 						i = {
 							["<esc>"] = actions.close,
-							['<c-d>'] = require('telescope.actions').delete_buffer,
+							["<c-d>"] = require("telescope.actions").delete_buffer,
 						},
 					},
 				},
@@ -245,7 +245,7 @@ return {
 	{
 		"onsails/lspkind.nvim",
 		config = function()
-			require('lspkind').init({});
+			require("lspkind").init({})
 		end,
 	},
 
@@ -317,7 +317,13 @@ return {
 		opts = function()
 			local nls = require("null-ls")
 			return {
-				root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git", ".hg"),
+				root_dir = require("null-ls.utils").root_pattern(
+					".null-ls-root",
+					".neoconf.json",
+					"Makefile",
+					".git",
+					".hg"
+				),
 				sources = {
 					nls.builtins.formatting.stylua,
 					nls.builtins.formatting.shfmt,
@@ -378,7 +384,7 @@ return {
 		"lewis6991/gitsigns.nvim",
 		enabled = function()
 			-- We'll use vim-signify in meta as gitsigns doesn't support mercurial
-			return not meta_mode;
+			return not meta_mode
 		end,
 		config = function()
 			require("gitsigns").setup({
@@ -389,14 +395,14 @@ return {
 	{
 		"mhinz/vim-signify",
 		enabled = function()
-			return meta_mode;
+			return meta_mode
 		end,
 		config = function()
-			vim.cmd("highlight link SignifySignAdd GitSignsAdd");
-			vim.cmd("highlight link SignifySignChange GitSignsChange");
-			vim.cmd("highlight link SignifySignChangeDelete GitSignsChange");
-			vim.cmd("highlight link SignifySignDelete GitSignsDelete");
-			vim.cmd("highlight link SignifySignDeleteFirstLine GitSignsDelete");
+			vim.cmd("highlight link SignifySignAdd GitSignsAdd")
+			vim.cmd("highlight link SignifySignChange GitSignsChange")
+			vim.cmd("highlight link SignifySignChangeDelete GitSignsChange")
+			vim.cmd("highlight link SignifySignDelete GitSignsDelete")
+			vim.cmd("highlight link SignifySignDeleteFirstLine GitSignsDelete")
 			vim.g.signify_sign_change = "│"
 			vim.g.signify_sign_add = "│"
 			vim.g.signify_sign_change_delete = "_"
@@ -421,7 +427,7 @@ return {
 					"toggleterm",
 					"lazyterm",
 				},
-			}
+			},
 		},
 	},
 
@@ -507,23 +513,23 @@ return {
 	{
 		"ThePrimeagen/harpoon",
 		config = function()
-			require('harpoon').setup({
+			require("harpoon").setup({
 				menu = {
 					width = vim.api.nvim_win_get_width(0) * 2 / 3,
 				},
 				tabline = true,
 			})
-			require("telescope").load_extension('harpoon');
-			vim.cmd('highlight! HarpoonInactive guibg=NONE guifg=#63698c')
-			vim.cmd('highlight! HarpoonActive guibg=NONE guifg=white')
-			vim.cmd('highlight! HarpoonNumberActive guibg=NONE guifg=#7aa2f7')
-			vim.cmd('highlight! HarpoonNumberInactive guibg=NONE guifg=#7aa2f7')
-			vim.cmd('highlight! TabLineFill guibg=NONE guifg=white')
-		end
+			require("telescope").load_extension("harpoon")
+			vim.cmd("highlight! HarpoonInactive guibg=NONE guifg=#63698c")
+			vim.cmd("highlight! HarpoonActive guibg=NONE guifg=white")
+			vim.cmd("highlight! HarpoonNumberActive guibg=NONE guifg=#7aa2f7")
+			vim.cmd("highlight! HarpoonNumberInactive guibg=NONE guifg=#7aa2f7")
+			vim.cmd("highlight! TabLineFill guibg=NONE guifg=white")
+		end,
 	},
 	{
 		-- For switching between .h and .cpp files
-		'rgroli/other.nvim',
+		"rgroli/other.nvim",
 		config = function()
 			require("other-nvim").setup({
 				mappings = {
@@ -541,22 +547,36 @@ return {
 				-- Don't create the file if it doesn't exist
 				showMissingFiles = false,
 			})
-		end
+		end,
 	},
 	{
-		'karb94/neoscroll.nvim',
+		"karb94/neoscroll.nvim",
 		config = function()
-			require('neoscroll').setup({
-				mappings = {'<C-d>', '<C-u>', 'zz' },
-			});
+			require("neoscroll").setup({
+				mappings = { "<C-d>", "<C-u>", "zz" },
+			})
 			local t = {}
 			-- Syntax: t[keys] = {function, {function arguments}}
-			t['<C-u>'] = {'scroll', {'-vim.wo.scroll', 'true', '10'}}
-			t['<C-d>'] = {'scroll', { 'vim.wo.scroll', 'true', '50'}}
-			t['zz']    = {'zz', {'250'}}
+			t["<C-u>"] = { "scroll", { "-vim.wo.scroll", "true", "10" } }
+			t["<C-d>"] = { "scroll", { "vim.wo.scroll", "true", "50" } }
+			t["zz"] = { "zz", { "250" } }
 
-			require('neoscroll.config').set_mappings(t)
+			require("neoscroll.config").set_mappings(t)
 		end,
+	},
+	{
+		"kylechui/nvim-surround",
+		version = "*", -- Use for stability; omit to use `main` branch for the latest features
+		event = "VeryLazy",
+		config = function()
+			require("nvim-surround").setup({
+				-- Configuration here, or leave empty to use defaults
+			})
+		end,
+	},
+	{
+		"folke/neodev.nvim",
+		opts = {},
 	},
 	{
 		"natecraddock/workspaces.nvim",
@@ -564,16 +584,15 @@ return {
 			require("workspaces").setup({
 				hooks = {
 					open = function()
-						vim.cmd("%bd");
-						require("persistence").load();
+						vim.cmd("%bd")
+						require("persistence").load()
 					end,
 					open_pre = function()
-						require("persistence").save();
+						require("persistence").save()
 					end,
-				}
+				},
 			})
-			require'telescope'.load_extension('workspaces');
+			require("telescope").load_extension("workspaces")
 		end,
-
 	},
 }
