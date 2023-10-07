@@ -148,6 +148,7 @@ return {
 					mappings = {
 						i = {
 							["<esc>"] = actions.close,
+							['<c-d>'] = require('telescope.actions').delete_buffer,
 						},
 					},
 				},
@@ -224,14 +225,14 @@ return {
 	},
 	{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 	{ "nvim-telescope/telescope-ui-select.nvim" },
-	{
-		"akinsho/bufferline.nvim",
-		version = "*",
-		dependencies = "nvim-tree/nvim-web-devicons",
-		config = function()
-			require("bufferline").setup({})
-		end,
-	},
+	-- {
+	-- 	"akinsho/bufferline.nvim",
+	-- 	version = "*",
+	-- 	dependencies = "nvim-tree/nvim-web-devicons",
+	-- 	config = function()
+	-- 		require("bufferline").setup({})
+	-- 	end,
+	-- },
 
 	{
 		"folke/persistence.nvim",
@@ -316,7 +317,7 @@ return {
 		opts = function()
 			local nls = require("null-ls")
 			return {
-				root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git"),
+				root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git", ".hg"),
 				sources = {
 					nls.builtins.formatting.stylua,
 					nls.builtins.formatting.shfmt,
@@ -403,21 +404,24 @@ return {
 	},
 	{
 		"lukas-reineke/indent-blankline.nvim",
+		main = "ibl",
 		event = { "BufReadPost", "BufNewFile" },
 		opts = {
-			filetype_exclude = {
-				"help",
-				"alpha",
-				"dashboard",
-				"neo-tree",
-				"Trouble",
-				"lazy",
-				"mason",
-				"notify",
-				"toggleterm",
-				"lazyterm",
-			},
-			show_current_context = true,
+			scope = { enabled = false },
+			exclude = {
+				filetypes = {
+					"help",
+					"alpha",
+					"dashboard",
+					"neo-tree",
+					"Trouble",
+					"lazy",
+					"mason",
+					"notify",
+					"toggleterm",
+					"lazyterm",
+				},
+			}
 		},
 	},
 
@@ -456,12 +460,12 @@ return {
 		-- Show the diff of the code action before applying it
 		"aznhe21/actions-preview.nvim",
 	},
-	{
-		"petertriho/nvim-scrollbar",
-		config = function()
-			require("scrollbar").setup({})
-		end,
-	},
+	-- {
+	-- 	"petertriho/nvim-scrollbar",
+	-- 	config = function()
+	-- 		require("scrollbar").setup({})
+	-- 	end,
+	-- },
 
 	{
 		"folke/which-key.nvim",
@@ -503,8 +507,18 @@ return {
 	{
 		"ThePrimeagen/harpoon",
 		config = function()
-			require('harpoon').setup({})
+			require('harpoon').setup({
+				menu = {
+					width = vim.api.nvim_win_get_width(0) * 2 / 3,
+				},
+				tabline = true,
+			})
 			require("telescope").load_extension('harpoon');
+			vim.cmd('highlight! HarpoonInactive guibg=NONE guifg=#63698c')
+			vim.cmd('highlight! HarpoonActive guibg=NONE guifg=white')
+			vim.cmd('highlight! HarpoonNumberActive guibg=NONE guifg=#7aa2f7')
+			vim.cmd('highlight! HarpoonNumberInactive guibg=NONE guifg=#7aa2f7')
+			vim.cmd('highlight! TabLineFill guibg=NONE guifg=white')
 		end
 	},
 	{
@@ -528,6 +542,21 @@ return {
 				showMissingFiles = false,
 			})
 		end
+	},
+	{
+		'karb94/neoscroll.nvim',
+		config = function()
+			require('neoscroll').setup({
+				mappings = {'<C-d>', '<C-u>', 'zz' },
+			});
+			local t = {}
+			-- Syntax: t[keys] = {function, {function arguments}}
+			t['<C-u>'] = {'scroll', {'-vim.wo.scroll', 'true', '10'}}
+			t['<C-d>'] = {'scroll', { 'vim.wo.scroll', 'true', '50'}}
+			t['zz']    = {'zz', {'250'}}
+
+			require('neoscroll.config').set_mappings(t)
+		end,
 	},
 	{
 		"natecraddock/workspaces.nvim",

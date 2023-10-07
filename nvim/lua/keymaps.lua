@@ -29,8 +29,8 @@ vim.keymap.set("n", "<C-e>", ":NvimTreeToggle<CR>")
 vim.keymap.set("n", "<leader>f", ":NvimTreeFindFile!<CR>", { desc = "Show current file in nvim tree" })
 
 -- Buffer movements
-vim.keymap.set("n", "<S-l>", ":BufferLineCycleNext<CR>", { desc = "Go to next buffer" })
-vim.keymap.set("n", "<S-h>", ":BufferLineCyclePrev<CR>", { desc = "Got to prev buffer" })
+vim.keymap.set("n", "tl", ":lua require('harpoon.ui').nav_next()<CR>", { desc = "Go to next buffer" })
+vim.keymap.set("n", "th", ":lua require('harpoon.ui').nav_prev()<CR>", { desc = "Got to prev buffer" })
 vim.keymap.set("n", "<leader>t", ":enew<CR>", { desc = "Open a new file" })
 
 -- Black hole deletion/change (persist yanked lines in non-visual mode)
@@ -55,8 +55,8 @@ vim.keymap.set("n", "n", "nzz", { noremap = true, silent = true }, { desc = "Cen
 vim.keymap.set("n", "N", "Nzz", { noremap = true, silent = true })
 
 -- When jumping by half-pages, always keep the cursor in the middle
-vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Jump half page down and center curson" })
-vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Jump half page up and center curson" })
+-- vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Jump half page down and center curson" })
+-- vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Jump half page up and center curson" })
 
 -- Telescope
 local telescope_builtins = require("telescope.builtin")
@@ -105,8 +105,8 @@ vim.keymap.set("n", "<leader>bD", function()
 end, { desc = "Delete buffer (Force)" })
 
 -- Harpoon
-vim.keymap.set("n", "<leader>`", function() require("harpoon.mark").add_file() end, { desc = "Harpoon Mark file"})
-vim.keymap.set("n", "<S-p>", function() require("harpoon.ui").toggle_quick_menu() end, { desc = "Harpoon Toggle quick menu"})
+vim.keymap.set("n", "<leader>`", function() require("harpoon.mark").toggle_file() end, { desc = "Harpoon Mark file"})
+vim.keymap.set("n", "|", function() require("harpoon.ui").toggle_quick_menu() end, { desc = "Harpoon Toggle quick menu"})
 vim.keymap.set("n", "<leader>1", function() require('harpoon.ui').nav_file(1) end, { desc = "Harpoon First file"})
 vim.keymap.set("n", "<leader>2", function() require('harpoon.ui').nav_file(2) end, { desc = "Harpoon Second file"})
 vim.keymap.set("n", "<leader>3", function() require('harpoon.ui').nav_file(3) end, { desc = "Harpoon Third file"})
