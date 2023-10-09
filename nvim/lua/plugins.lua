@@ -117,6 +117,11 @@ return {
 				filters = {
 					dotfiles = true,
 				},
+				view = {
+					width = {
+						-- An empty table results into dynamic sizing of the nvim tree
+					},
+				},
 				on_attach = function(bufnr)
 					local api = require("nvim-tree.api")
 
@@ -451,7 +456,7 @@ return {
 		"folke/zen-mode.nvim",
 		opts = {
 			window = {
-				width = 1, -- 100% width
+				width = 0.75, -- 75% width
 			},
 		},
 	},
@@ -515,7 +520,7 @@ return {
 		config = function()
 			require("harpoon").setup({
 				menu = {
-					width = vim.api.nvim_win_get_width(0) * 2 / 3,
+					width = math.floor(vim.api.nvim_win_get_width(0) * 2 / 3),
 				},
 				tabline = true,
 			})
