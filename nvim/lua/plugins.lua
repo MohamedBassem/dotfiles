@@ -318,7 +318,7 @@ return {
 		version = "2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
 	},
 	{
-		"jose-elias-alvarez/null-ls.nvim",
+		"nvimtools/none-ls.nvim",
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = { "mason.nvim" },
 		opts = function()
@@ -377,14 +377,6 @@ return {
 				end,
 				desc = "Flash",
 			},
-			{
-				"S",
-				mode = { "n", "o", "x" },
-				function()
-					require("flash").treesitter()
-				end,
-				desc = "Flash Treesitter",
-			},
 		},
 	},
 	{
@@ -420,6 +412,10 @@ return {
 		main = "ibl",
 		event = { "BufReadPost", "BufNewFile" },
 		opts = {
+			indent = {
+				char = "│",
+				tab_char = "│",
+			},
 			scope = { enabled = false },
 			exclude = {
 				filetypes = {
