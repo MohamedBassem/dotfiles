@@ -154,6 +154,8 @@ return {
 						i = {
 							["<esc>"] = actions.close,
 							["<c-d>"] = require("telescope.actions").delete_buffer,
+							-- After using live grep, use that to filter the search results
+							["<c-f>"] = actions.to_fuzzy_refine,
 						},
 					},
 				},
@@ -582,6 +584,14 @@ return {
 	{
 		"folke/neodev.nvim",
 		opts = {},
+	},
+	{
+		"LunarVim/bigfile.nvim",
+		config = function()
+			require("bigfile").setup({
+				filesize = 0.5, -- In MiB
+			})
+		end,
 	},
 	{
 		"natecraddock/workspaces.nvim",
