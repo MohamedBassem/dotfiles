@@ -112,5 +112,12 @@ for i=1,9,1 do
   vim.keymap.set("n", "<leader>" .. tostring(i), function() require('harpoon.ui').nav_file(i) end, { desc = "Harpoon switch to file #" .. tostring(i)})
 end
 
+-- nvim-ufo
+vim.keymap.set('n', 'zR', require('ufo').openAllFolds, { desc = "Open all folds" })
+vim.keymap.set('n', 'zM', require('ufo').closeAllFolds, { desc = "Close all folds" })
+vim.keymap.set('n', 'zP', function()
+    require('ufo').peekFoldedLinesUnderCursor()
+end, { desc = "Preview fold under cursor" })
+
 
 

@@ -48,3 +48,9 @@ vim.opt.wildmode = "full"
 
 -- Refresh files edited on disk automatically
 vim.opt.autoread = true
+
+-- Fold configuration (copied from nvim-ufo)
+vim.o.foldcolumn = '0' -- Disabling the fold column
+vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
