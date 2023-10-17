@@ -35,13 +35,13 @@ vim.o.timeoutlen = 300
 
 -- show absolute numbers in insert mode, relative in normal mode
 vim.opt.relativenumber = true
-vim.cmd([[
-  augroup numbertoggle
-    autocmd!
-    autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-    autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-  augroup END
-]])
+-- vim.cmd([[
+--   augroup numbertoggle
+--     autocmd!
+--     autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+--     autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+--   augroup END
+-- ]])
 
 -- Tab complete for cmd mode should autocomplete the first result immediately.
 vim.opt.wildmode = "full"

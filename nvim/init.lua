@@ -19,6 +19,9 @@ vim.opt.rtp:prepend(lazypath)
 
 vim.g.mapleader = ","
 
+-- Enable meta-specific plugins/settings
+meta_mode = true;
+
 require("lazy").setup(
 	"plugins",
 	{
@@ -44,3 +47,4 @@ require("options")
 require("keymaps")
 require("autocmds")
 require("lsp")
+require("custom_meta")

@@ -59,7 +59,6 @@ vim.keymap.set("n", "N", "Nzz", { noremap = true, silent = true })
 -- vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Jump half page up and center curson" })
 
 -- Telescope
-local telescope_builtins = require("telescope.builtin")
 vim.keymap.set("n", "<leader>rf", require("telescope.builtin").oldfiles, { desc = "Search [R]ecently opened [F]iles" })
 vim.keymap.set("n", "<leader><space>", function() require("telescope.builtin").buffers({sort_mru = true}) end, { desc = "Find existing buffers" })
 vim.keymap.set("n", "<leader>/", function()
@@ -69,13 +68,14 @@ vim.keymap.set("n", "<leader>/", function()
     previewer = false,
   }))
 end, { desc = "[/] Fuzzily search in current buffer" })
-vim.keymap.set("n", "<C-p>", telescope_builtins.find_files, {})
+vim.keymap.set("n", "<C-p>", require("telescope.builtin").find_files, {})
 vim.keymap.set("n", "<leader>sf", require("telescope.builtin").find_files, { desc = "[S]earch [F]iles" })
 vim.keymap.set("n", "<leader>sw", require("telescope.builtin").grep_string, { desc = "[S]earch current [W]ord" })
 vim.keymap.set("n", "<leader>sg", require("telescope.builtin").live_grep, { desc = "[S]earch by [G]rep" })
 vim.keymap.set("n", "<leader>sd", require("telescope.builtin").diagnostics, { desc = "[S]earch [D]iagnostics" })
 vim.keymap.set("n", "<leader>sr", require("telescope.builtin").resume, { desc = "[S]earch [R]resume" })
 vim.keymap.set("n", "<leader>su", "<cmd>Telescope undo<cr>", { desc = "[S]earch [Undo]"})
+vim.keymap.set("n", "<leader>sc", function() require("telescope.builtin").find_files({ cwd = require("telescope.utils").buffer_dir() }) end, { desc = "[S]earch files in buffer's current dir"})
 
 -- Enable zen mode
 vim.keymap.set("n", "<leader>zz", "<cmd>ZenMode<CR>", { desc = "Toggle ZenMode" })

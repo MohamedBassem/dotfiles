@@ -3,12 +3,12 @@ return {
 		"olimorris/onedarkpro.nvim",
 		priority = 1000, -- Ensure it loads first
 		config = function()
-			vim.cmd("colorscheme onedark")
 			require("onedarkpro").setup({
 				options = {
-					highlight_inactive_windows = true,
+					cursorline = true,
 				},
 			})
+			vim.cmd("colorscheme onedark")
 		end,
 	},
 	{
@@ -624,5 +624,17 @@ return {
 			})
 			require("telescope").load_extension("workspaces")
 		end,
+	},
+	{
+		dir = "/usr/share/fb-editor-support/nvim",
+		-- dir = "~/fbsource/fbcode/editor_support/nvim",
+		name = "meta.nvim",
+		opts = {
+			lsp = {
+				vscode_extensions = {
+					shim_show_status_to_progress_handler = true,
+				},
+			},
+		},
 	},
 }
