@@ -115,5 +115,5 @@ vim.keymap.set('n', 'zP', function()
     require('ufo').peekFoldedLinesUnderCursor()
 end, { desc = "Preview fold under cursor" })
 
-
-
+-- Oil
+vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })

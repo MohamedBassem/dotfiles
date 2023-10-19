@@ -1,15 +1,15 @@
 return {
 	{
-		'navarasu/onedark.nvim',
+		"navarasu/onedark.nvim",
 		config = function()
-			require('onedark').load();
+			require("onedark").load()
 			-- Make namespaces white (specially in cpp) to easily distinguish
 			-- the actual type from its namespace.
-			vim.api.nvim_set_hl(0, "@namespace", { link = "@variable" });
-			vim.api.nvim_set_hl(0, "@type.qualifier", { link = "@keyword" });
-			vim.api.nvim_set_hl(0, "@type.builtin", { link = "@keyword" });
-			vim.api.nvim_set_hl(0, "@constructor", { link = "@function.call" });
-			vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" });
+			vim.api.nvim_set_hl(0, "@namespace", { link = "@variable" })
+			vim.api.nvim_set_hl(0, "@type.qualifier", { link = "@keyword" })
+			vim.api.nvim_set_hl(0, "@type.builtin", { link = "@keyword" })
+			vim.api.nvim_set_hl(0, "@constructor", { link = "@function.call" })
+			vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
 		end,
 		priority = 99,
 	},
@@ -229,7 +229,7 @@ return {
 						},
 						{
 							function()
-								return require("nvim-navic").get_location();
+								return require("nvim-navic").get_location()
 							end,
 						},
 					},
@@ -442,36 +442,36 @@ return {
 	{
 		"SmiteshP/nvim-navic",
 		config = function()
-			require('nvim-navic').setup({
+			require("nvim-navic").setup({
 				highlight = true,
 				icons = {
-					File = ' ',
-					Module = ' ',
-					Namespace = ' ',
-					Package = ' ',
-					Class = ' ',
-					Method = ' ',
-					Property = ' ',
-					Field = ' ',
-					Constructor = ' ',
-					Enum = ' ',
-					Interface = ' ',
-					Function = ' ',
-					Variable = ' ',
-					Constant = ' ',
-					String = ' ',
-					Number = ' ',
-					Boolean = ' ',
-					Array = ' ',
-					Object = ' ',
-					Key = ' ',
-					Null = ' ',
-					EnumMember = ' ',
-					Struct = ' ',
-					Event = ' ',
-					Operator = ' ',
-					TypeParameter = ' '
-				}
+					File = " ",
+					Module = " ",
+					Namespace = " ",
+					Package = " ",
+					Class = " ",
+					Method = " ",
+					Property = " ",
+					Field = " ",
+					Constructor = " ",
+					Enum = " ",
+					Interface = " ",
+					Function = " ",
+					Variable = " ",
+					Constant = " ",
+					String = " ",
+					Number = " ",
+					Boolean = " ",
+					Array = " ",
+					Object = " ",
+					Key = " ",
+					Null = " ",
+					EnumMember = " ",
+					Struct = " ",
+					Event = " ",
+					Operator = " ",
+					TypeParameter = " ",
+				},
 			})
 		end,
 	},
@@ -599,16 +599,16 @@ return {
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities.textDocument.foldingRange = {
 				dynamicRegistration = false,
-				lineFoldingOnly = true
+				lineFoldingOnly = true,
 			}
 			local language_servers = require("lspconfig").util.available_servers() -- or list servers manually like {'gopls', 'clangd'}
 			for _, ls in ipairs(language_servers) do
-				require('lspconfig')[ls].setup({
-					capabilities = capabilities
+				require("lspconfig")[ls].setup({
+					capabilities = capabilities,
 					-- you can add other fields for setting up lsp server in this table
 				})
 			end
-			require('ufo').setup()
+			require("ufo").setup()
 		end,
 	},
 	{
@@ -635,6 +635,16 @@ return {
 	-- 		require "nvim-treesitter.configs".setup{};
 	-- 	end,
 	-- },
+	{
+		"stevearc/oil.nvim",
+		opts = {
+			view_options = {
+				show_hidden = true,
+			},
+			skip_confirm_for_simple_edits = true,
+		},
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+	},
 	{
 		dir = "/usr/share/fb-editor-support/nvim",
 		-- dir = "~/fbsource/fbcode/editor_support/nvim",
