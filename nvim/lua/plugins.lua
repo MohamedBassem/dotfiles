@@ -1,15 +1,17 @@
 return {
 	{
-		"olimorris/onedarkpro.nvim",
-		priority = 1000, -- Ensure it loads first
+		'navarasu/onedark.nvim',
 		config = function()
-			require("onedarkpro").setup({
-				options = {
-					cursorline = true,
-				},
-			})
-			vim.cmd("colorscheme onedark")
+			require('onedark').load();
+			-- Make namespaces white (specially in cpp) to easily distinguish
+			-- the actual type from its namespace.
+			vim.api.nvim_set_hl(0, "@namespace", { link = "@variable" });
+			vim.api.nvim_set_hl(0, "@type.qualifier", { link = "@keyword" });
+			vim.api.nvim_set_hl(0, "@type.builtin", { link = "@keyword" });
+			vim.api.nvim_set_hl(0, "@constructor", { link = "@function.call" });
+			vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" });
 		end,
+		priority = 99,
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
@@ -225,6 +227,11 @@ return {
 							file_status = true, -- displays file status (readonly status, modified status)
 							path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
 						},
+						{
+							function()
+								return require("nvim-navic").get_location();
+							end,
+						},
 					},
 				},
 			})
@@ -413,8 +420,9 @@ return {
 		event = { "BufReadPost", "BufNewFile" },
 		opts = {
 			indent = {
-				char = "│",
-				tab_char = "│",
+				char = "▏",
+				tab_char = "▏",
+				smart_indent_cap = false,
 			},
 			scope = { enabled = false },
 			exclude = {
@@ -434,21 +442,42 @@ return {
 		},
 	},
 
-	-- Navic + Barbecue provide the breadcrumbs above the buffer
+	-- Navic provide the breadcrumbs in lualine
 	{
 		"SmiteshP/nvim-navic",
-	},
-	{
-		"utilyre/barbecue.nvim",
-		name = "barbecue",
-		version = "*",
-		dependencies = {
-			"SmiteshP/nvim-navic",
-			"nvim-tree/nvim-web-devicons", -- optional dependency
-		},
-		opts = {
-			-- configurations go here
-		},
+		config = function()
+			require('nvim-navic').setup({
+				highlight = true,
+				icons = {
+					File = ' ',
+					Module = ' ',
+					Namespace = ' ',
+					Package = ' ',
+					Class = ' ',
+					Method = ' ',
+					Property = ' ',
+					Field = ' ',
+					Constructor = ' ',
+					Enum = ' ',
+					Interface = ' ',
+					Function = ' ',
+					Variable = ' ',
+					Constant = ' ',
+					String = ' ',
+					Number = ' ',
+					Boolean = ' ',
+					Array = ' ',
+					Object = ' ',
+					Key = ' ',
+					Null = ' ',
+					EnumMember = ' ',
+					Struct = ' ',
+					Event = ' ',
+					Operator = ' ',
+					TypeParameter = ' '
+				}
+			})
+		end,
 	},
 	{
 		"folke/zen-mode.nvim",
@@ -469,13 +498,6 @@ return {
 		-- Show the diff of the code action before applying it
 		"aznhe21/actions-preview.nvim",
 	},
-	-- {
-	-- 	"petertriho/nvim-scrollbar",
-	-- 	config = function()
-	-- 		require("scrollbar").setup({})
-	-- 	end,
-	-- },
-
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
@@ -553,21 +575,6 @@ return {
 		end,
 	},
 	{
-		"karb94/neoscroll.nvim",
-		config = function()
-			require("neoscroll").setup({
-				mappings = { "<C-d>", "<C-u>", "zz" },
-			})
-			local t = {}
-			-- Syntax: t[keys] = {function, {function arguments}}
-			t["<C-u>"] = { "scroll", { "-vim.wo.scroll", "true", "10" } }
-			t["<C-d>"] = { "scroll", { "vim.wo.scroll", "true", "50" } }
-			t["zz"] = { "zz", { "250" } }
-
-			require("neoscroll.config").set_mappings(t)
-		end,
-	},
-	{
 		"kylechui/nvim-surround",
 		version = "*", -- Use for stability; omit to use `main` branch for the latest features
 		event = "VeryLazy",
@@ -625,6 +632,13 @@ return {
 			require("telescope").load_extension("workspaces")
 		end,
 	},
+	-- Only needed when customizing the theme colors.
+	-- {
+	-- 	'nvim-treesitter/playground',
+	-- 	config = function()
+	-- 		require "nvim-treesitter.configs".setup{};
+	-- 	end,
+	-- },
 	{
 		dir = "/usr/share/fb-editor-support/nvim",
 		-- dir = "~/fbsource/fbcode/editor_support/nvim",
