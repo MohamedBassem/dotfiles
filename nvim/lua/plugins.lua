@@ -388,10 +388,8 @@ return {
 	},
 	{
 		"lewis6991/gitsigns.nvim",
-		enabled = function()
-			-- We'll use vim-signify in meta as gitsigns doesn't support mercurial
-			return not meta_mode
-		end,
+		-- We'll use vim-signify in meta as gitsigns doesn't support mercurial
+		enabled = not require("utils").meta_mode(),
 		config = function()
 			require("gitsigns").setup({
 				current_line_blame = true,
@@ -400,9 +398,7 @@ return {
 	},
 	{
 		"mhinz/vim-signify",
-		enabled = function()
-			return meta_mode
-		end,
+		enabled = require("utils").meta_mode(),
 		config = function()
 			vim.cmd("highlight link SignifySignAdd GitSignsAdd")
 			vim.cmd("highlight link SignifySignChange GitSignsChange")
@@ -642,6 +638,7 @@ return {
 	{
 		dir = "/usr/share/fb-editor-support/nvim",
 		-- dir = "~/fbsource/fbcode/editor_support/nvim",
+		enabled = require("utils").meta_mode(),
 		name = "meta.nvim",
 		opts = {
 			lsp = {
