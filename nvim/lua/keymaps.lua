@@ -18,12 +18,6 @@ vim.keymap.set("n", "Y", "yg$", { remap = true })
 -- LSP Format
 vim.keymap.set("n", "<C-f>", ":LspZeroFormat!<CR>")
 
--- Toggle Nvim-Tree
-vim.keymap.set("n", "<C-e>", ":NvimTreeToggle<CR>")
-
--- Show current file in Nvim-Tree
-vim.keymap.set("n", "<leader>f", ":NvimTreeFindFile!<CR>", { desc = "Show current file in nvim tree" })
-
 -- Buffer movements
 vim.keymap.set("n", "tl", ":lua require('harpoon.ui').nav_next()<CR>", { desc = "Go to next buffer" })
 vim.keymap.set("n", "th", ":lua require('harpoon.ui').nav_prev()<CR>", { desc = "Got to prev buffer" })

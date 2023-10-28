@@ -101,52 +101,6 @@ return {
 		"nvim-tree/nvim-web-devicons",
 	},
 	{
-		"nvim-tree/nvim-tree.lua",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		config = function()
-			require("nvim-tree").setup({
-				sort_by = "case_sensitive",
-				actions = {
-					change_dir = {
-						enable = true,
-					},
-					open_file = {
-						window_picker = {
-							enable = false,
-						},
-					},
-				},
-				filters = {
-					dotfiles = true,
-				},
-				view = {
-					width = {
-						-- An empty table results into dynamic sizing of the nvim tree
-					},
-				},
-				on_attach = function(bufnr)
-					local api = require("nvim-tree.api")
-
-					local function opts(desc)
-						return {
-							desc = "nvim-tree: " .. desc,
-							buffer = bufnr,
-							noremap = true,
-							silent = true,
-							nowait = true,
-						}
-					end
-					-- default mappings
-					api.config.mappings.default_on_attach(bufnr)
-
-					-- Custom mappings
-					vim.keymap.set("n", "<C-t>", api.tree.change_root_to_parent, opts("Up"))
-					vim.keymap.set("n", "?", api.tree.toggle_help, opts("Help"))
-				end,
-			})
-		end,
-	},
-	{
 		"nvim-telescope/telescope.nvim",
 		config = function()
 			local actions = require("telescope.actions")
