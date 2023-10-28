@@ -24,6 +24,17 @@ lsp.set_sign_icons({
 	info = "»",
 })
 
+lsp.set_server_config({
+  capabilities = {
+    textDocument = {
+      foldingRange = {
+        dynamicRegistration = false,
+        lineFoldingOnly = true
+      }
+    }
+  }
+})
+
 lsp.setup()
 
 -- Setup auto completion
