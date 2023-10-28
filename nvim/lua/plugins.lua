@@ -583,6 +583,12 @@ return {
 			view_options = {
 				show_hidden = true,
 			},
+			keymaps = {
+				["q"] = "actions.close",
+				["?"] = "actions.show_help",
+				["g?"] = false, -- The default help
+				["<C-c>"] = false, -- The default close
+			},
 			skip_confirm_for_simple_edits = true,
 		},
 		dependencies = { "nvim-tree/nvim-web-devicons" },
