@@ -156,11 +156,14 @@ return {
 	},
 	{
 		"j-hui/fidget.nvim",
-		tag = "legacy",
 		event = "LspAttach",
 		opts = {},
 		config = function()
-			require("fidget").setup({})
+			require("fidget").setup({
+				notification = {
+					override_vim_notify = true,
+				},
+			});
 		end,
 	},
 	{
@@ -311,12 +314,6 @@ return {
 		"aserowy/tmux.nvim",
 		config = function()
 			require("tmux").setup()
-		end,
-	},
-	{
-		"rcarriga/nvim-notify",
-		config = function()
-			vim.notify = require("notify")
 		end,
 	},
 	{
