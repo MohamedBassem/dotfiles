@@ -106,6 +106,7 @@ return {
 			local actions = require("telescope.actions")
 			require("telescope").setup({
 				defaults = {
+					layout_strategy = "vertical",
 					mappings = {
 						i = {
 							["<esc>"] = actions.close,
@@ -507,13 +508,42 @@ return {
 				mappings = {
 					{
 						pattern = "/(.*)/(.*).h$",
-						target = "/%1/%2.cpp",
-						context = "cpp",
+						target = {
+							{
+								target = "/%1/%2.cpp",
+								context = "cpp",
+							},
+							{
+								target = "/%1/%2-inl.h",
+								context = "inline_header",
+							},
+						}
 					},
 					{
 						pattern = "/(.*)/(.*).cpp$",
-						target = "/%1/%2.h",
-						context = "header",
+						target = {
+							{
+								target = "/%1/%2.h",
+								context = "header",
+							},
+							{
+								target = "/%1/%2-inl.h",
+								context = "inline_header",
+							},
+						},
+					},
+					{
+						pattern = "/(.*)/(.*)-inl.h$",
+						target = {
+							{
+								target = "/%1/%2.cpp",
+								context = "cpp",
+							},
+							{
+								target = "/%1/%2.h",
+								context = "header",
+							},
+						},
 					},
 				},
 				-- Don't create the file if it doesn't exist
@@ -582,6 +612,7 @@ return {
 			},
 			keymaps = {
 				["q"] = "actions.close",
+				["<ESC>"] = "actions.close",
 				["?"] = "actions.show_help",
 				["g?"] = false, -- The default help
 				["<C-c>"] = false, -- The default close
