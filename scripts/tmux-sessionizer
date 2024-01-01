@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+# Idea stolen from:
+# https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
+
+SESSIONS_FILE=~/.tmux-sessions-cache
+
+touch $SESSIONS_FILE
+
+if [[ $# -gt 0 ]]; then
+	case $1 in
+	-a | --add)
+
+		if grep "$PWD" "$SESSIONS_FILE" >/dev/null; then
+			echo "$PWD already exists in session file"
+			exit 0
+		fi
+		echo $(realpath "$PWD") >>"$SESSIONS_FILE"
+		echo "Added $PWD to the sessions file"
+		;;
+	-r | --rm)
+		selected=$(cat $SESSIONS_FILE | fzf)
+		if [[ -z $selected ]]; then
+			exit 0
+		fi
+		matches=$(grep -n "$selected" $SESSIONS_FILE | head -n1)
+		if [[ -z $matches ]]; then
+			echo "Couldn't find match in session file"
+			exit 1
+		fi
+		line_number=$(echo $matches | tr ':' ' ' | awk '{print $1}')
+		sed -ie "${line_number}d" "$SESSIONS_FILE"
+		echo "Deleted $selected from the sessions file"
+		;;
+	-e | --edit)
+		nvim "$SESSIONS_FILE"
+		;;
+	-l | --list)
+		cat "$SESSIONS_FILE"
+		;;
+	-* | --*)
+		echo "Unknown option $1"
+		exit 1
+		;;
+	esac
+	exit 0
+fi
+
+selected=$(cat $SESSIONS_FILE | fzf)
+if [[ -z $selected ]]; then
+	exit 0
+fi
+selected_name=$(basename "$selected" | tr . _)
+tmux_running=$(pgrep tmux)
+
+if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+	tmux new-session -s $selected_name -c $selected
+	exit 0
+fi
+
+if ! tmux has-session -t=$selected_name 2>/dev/null; then
+	tmux new-session -ds $selected_name -c $selected
+fi
+
+# Switch if inside of Tmux
+if [[ "${TMUX-}" != '' ]]; then
+	exec tmux switch-client -t "$selected_name"
+fi
+
+# Attach if outside of Tmux
+exec tmux attach -t "$selected_name"
