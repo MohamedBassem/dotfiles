@@ -186,15 +186,27 @@ return {
 							path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
 						},
 						{
-							function()
-								return require("nvim-navic").get_location()
-							end,
+							"navic",
+							color_correction = nil,
+							navic_opts = {
+								depth_limit = 1,
+							}
 						},
 					},
 				},
 			})
 		end,
 	},
+	-- {
+	-- 	'nvim-treesitter/nvim-treesitter-context',
+	-- 	config = function()
+	-- 		require'treesitter-context'.setup{
+	-- 			-- max_lines = 1,
+	-- 			multiline_threshold = 1,
+	-- 			trim_scope = 'inner'
+	-- 		};
+	-- 	end
+	-- },
 	{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 	{ "nvim-telescope/telescope-ui-select.nvim" },
 	-- {
