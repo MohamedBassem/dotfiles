@@ -66,6 +66,7 @@ vim.keymap.set("n", "<leader>sd", require("telescope.builtin").diagnostics, { de
 vim.keymap.set("n", "<leader>sr", require("telescope.builtin").resume, { desc = "[S]earch [R]resume" })
 vim.keymap.set("n", "<leader>su", "<cmd>Telescope undo<cr>", { desc = "[S]earch [Undo]"})
 vim.keymap.set("n", "<leader>sc", function() require("telescope.builtin").find_files({ cwd = require("telescope.utils").buffer_dir() }) end, { desc = "[S]earch files in buffer's current dir"})
+vim.keymap.set("n", "<leader>sa", function() require("telescope.builtin").find_files({ search_file = vim.fn.expand("<cword>") }) end, { desc = "[S]earch for file under cusror"})
 
 -- Enable zen mode
 vim.keymap.set("n", "<leader>zz", "<cmd>ZenMode<CR>", { desc = "Toggle ZenMode" })
