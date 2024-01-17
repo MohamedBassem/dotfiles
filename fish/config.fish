@@ -7,6 +7,3 @@ end
 
 abbr -a vim nvim
 abbr -a vi nvim
-
-# Make Ctrl+c work like zsh
-bind \cc 'custom_fish_cancel_commandline'
