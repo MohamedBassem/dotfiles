@@ -30,3 +30,5 @@
 
 [gpg]
   format = ssh
+[pull]
+	rebase = true
