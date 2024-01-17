@@ -1,4 +1,5 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
+direnv hook fish | source
 
 if status is-interactive
     atuin init fish --disable-up-arrow | source
