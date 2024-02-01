@@ -19,8 +19,8 @@ vim.keymap.set("n", "Y", "yg$", { remap = true })
 vim.keymap.set("n", "<C-f>", ":LspZeroFormat!<CR>")
 
 -- Buffer movements
-vim.keymap.set("n", "tl", ":lua require('harpoon.ui').nav_next()<CR>", { desc = "Go to next buffer" })
-vim.keymap.set("n", "th", ":lua require('harpoon.ui').nav_prev()<CR>", { desc = "Got to prev buffer" })
+vim.keymap.set("n", "tl", ":lua require('harpoon'):list():next()<CR>", { desc = "Go to next buffer" })
+vim.keymap.set("n", "th", ":lua require('harpoon'):list():prev()<CR>", { desc = "Got to prev buffer" })
 vim.keymap.set("n", "<leader>t", ":enew<CR>", { desc = "Open a new file" })
 
 -- Black hole deletion/change (persist yanked lines in non-visual mode)
@@ -96,11 +96,11 @@ vim.keymap.set("n", "<leader>bD", function()
 end, { desc = "Delete buffer (Force)" })
 
 -- Harpoon
-vim.keymap.set("n", "<leader>`", function() require("harpoon.mark").toggle_file() end, { desc = "Harpoon Mark file"})
-vim.keymap.set("n", "|", function() require("harpoon.ui").toggle_quick_menu() end, { desc = "Harpoon Toggle quick menu"})
+vim.keymap.set("n", "<leader>`", function(item) require("harpoon"):list():append() end, { desc = "Harpoon Mark file"})
+vim.keymap.set("n", "|", function() require("harpoon").ui:toggle_quick_menu(require("harpoon"):list()) end, { desc = "Harpoon Toggle quick menu"})
 
 for i=1,9,1 do
-  vim.keymap.set("n", "<leader>" .. tostring(i), function() require('harpoon.ui').nav_file(i) end, { desc = "Harpoon switch to file #" .. tostring(i)})
+  vim.keymap.set("n", "<leader>" .. tostring(i), function() require('harpoon'):list():select(i) end, { desc = "Harpoon switch to file #" .. tostring(i)})
 end
 
 -- nvim-ufo

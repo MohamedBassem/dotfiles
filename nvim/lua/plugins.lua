@@ -178,6 +178,11 @@ return {
 					theme = "onedark",
 				},
 				extensions = { "nvim-tree" },
+				tabline = {
+					lualine_c = {
+						{ require("utils").harpoon_files },
+					},
+				},
 				sections = {
 					lualine_c = {
 						{
@@ -447,7 +452,7 @@ return {
 				},
 				lsp = {
 					auto_attach = true,
-				}
+				},
 			})
 		end,
 	},
@@ -509,14 +514,10 @@ return {
 	},
 	{
 		"ThePrimeagen/harpoon",
+		branch="harpoon2",
 		config = function()
-			require("harpoon").setup({
-				menu = {
-					width = math.floor(vim.api.nvim_win_get_width(0) * 2 / 3),
-				},
-				tabline = true,
-			})
-			require("telescope").load_extension("harpoon")
+			require("harpoon").setup({})
+			-- require("telescope").load_extension("harpoon")
 			vim.cmd("highlight! HarpoonInactive guibg=NONE guifg=#63698c")
 			vim.cmd("highlight! HarpoonActive guibg=NONE guifg=white")
 			vim.cmd("highlight! HarpoonNumberActive guibg=NONE guifg=#7aa2f7")
