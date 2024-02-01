@@ -164,7 +164,7 @@ return {
 				notification = {
 					override_vim_notify = true,
 				},
-			});
+			})
 		end,
 	},
 	{
@@ -187,10 +187,12 @@ return {
 						},
 						{
 							"navic",
-							color_correction = nil,
+							color_correction = "static",
+							padding = { left = 1, right = 0 },
 							navic_opts = {
-								depth_limit = 1,
-							}
+								depth_limit = 4,
+								click = true,
+							},
 						},
 					},
 				},
@@ -309,8 +311,15 @@ return {
 					".hg"
 				),
 				sources = {
+					-- Lua
 					nls.builtins.formatting.stylua,
 					nls.builtins.formatting.shfmt,
+
+					-- Typescript
+					nls.builtins.diagnostics.eslint_d,
+					nls.builtins.code_actions.eslint_d,
+					nls.builtins.formatting.eslint_d,
+					nls.builtins.diagnostics.tsc,
 				},
 			}
 		end,
@@ -436,6 +445,9 @@ return {
 					Operator = " ",
 					TypeParameter = " ",
 				},
+				lsp = {
+					auto_attach = true,
+				}
 			})
 		end,
 	},
@@ -529,7 +541,7 @@ return {
 								target = "/%1/%2-inl.h",
 								context = "inline_header",
 							},
-						}
+						},
 					},
 					{
 						pattern = "/(.*)/(.*).cpp$",
