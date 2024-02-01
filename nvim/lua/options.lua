@@ -25,7 +25,7 @@ vim.opt.expandtab = true -- expand tabs into spaces
 vim.opt.shiftwidth = 4 -- number of spaces to use for each step of indent.
 vim.opt.tabstop = 4 -- number of spaces a TAB counts for
 vim.opt.list = true 
-vim.opt.listchars = "tab:>~" -- Show tabs as chars
+vim.opt.listchars = "tab:  ,trail:~" -- Show trailing spaces and hide tab chars
 vim.opt.autoindent = true -- copy indent from current line when starting a new line
 vim.opt.wrap = false -- Don't wrap
 
@@ -54,3 +54,8 @@ vim.o.foldcolumn = '0' -- Disabling the fold column
 vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
+
+-- Neovide
+vim.g.neovide_cursor_animation_length = 0
+-- vim.g.neovide_scroll_animation_length = 0
+vim.o.guifont = "MesloLGL_Nerd_Font"
