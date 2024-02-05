@@ -267,6 +267,7 @@ return {
 				"tsserver",
 				"eslint",
 				"tailwindcss-language-server",
+				"prisma-language-server",
 			},
 		},
 	},
