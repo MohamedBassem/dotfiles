@@ -39,6 +39,9 @@ return {
 					"thrift",
 					"starlark",
 				},
+				indent = {
+					enable = true
+				},
 				auto_install = true,
 				highlight = {
 					enable = true,
@@ -263,6 +266,7 @@ return {
 				"rust-analyzer",
 				"tsserver",
 				"eslint",
+				"tailwindcss-language-server",
 			},
 		},
 	},
@@ -291,6 +295,7 @@ return {
 			{ "hrsh7th/nvim-cmp" },
 			{ "hrsh7th/cmp-buffer" },
 			{ "hrsh7th/cmp-path" },
+			{ "hrsh7th/cmp-nvim-lsp-signature-help" },
 			{ "saadparwaiz1/cmp_luasnip" },
 			{ "hrsh7th/cmp-nvim-lsp" },
 			{ "hrsh7th/cmp-nvim-lua" },
@@ -622,6 +627,22 @@ return {
 			require("telescope").load_extension("workspaces")
 		end,
 	},
+	{
+		'saecki/crates.nvim',
+		tag = 'stable',
+		config = function()
+			require('crates').setup({
+				popup = {
+					autofocus = true,
+				},
+				null_ls = {
+					enabled = true,
+					name = "crates.nvim",
+				},
+			})
+		end,
+	},
+
 	-- Only needed when customizing the theme colors.
 	-- {
 	-- 	'nvim-treesitter/playground',

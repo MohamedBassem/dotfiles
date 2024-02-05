@@ -490,7 +490,7 @@
 			<key>Guid</key>
 			<string>783A8DF7-1787-43C9-938F-8A939739F2B6</string>
 			<key>Horizontal Spacing</key>
-			<real>1.01</real>
+			<real>1</real>
 			<key>Idle Code</key>
 			<integer>0</integer>
 			<key>Jobs to Ignore</key>
