@@ -123,3 +123,6 @@ vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory
 
 -- Crates
 vim.api.nvim_create_user_command('CratesPopup', 'lua require("crates").show_popup()', {})
+
+-- Trouble
+vim.keymap.set("n", "<leader>dx", function() require("trouble").toggle("workspace_diagnostics") end)

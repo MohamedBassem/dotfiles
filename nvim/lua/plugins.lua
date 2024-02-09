@@ -40,7 +40,7 @@ return {
 					"starlark",
 				},
 				indent = {
-					enable = true
+					enable = true,
 				},
 				auto_install = true,
 				highlight = {
@@ -107,6 +107,8 @@ return {
 		"nvim-telescope/telescope.nvim",
 		config = function()
 			local actions = require("telescope.actions")
+			local trouble = require("trouble.providers.telescope")
+
 			require("telescope").setup({
 				defaults = {
 					layout_strategy = "vertical",
@@ -116,6 +118,13 @@ return {
 							["<c-d>"] = require("telescope.actions").delete_buffer,
 							-- After using live grep, use that to filter the search results
 							["<c-f>"] = actions.to_fuzzy_refine,
+
+							-- Send results to trouble menu
+							["<c-t>"] = trouble.open_with_trouble,
+						},
+						n = {
+							-- Send results to trouble menu
+							["<c-t>"] = trouble.open_with_trouble,
 						},
 					},
 				},
@@ -155,7 +164,9 @@ return {
 	{
 		"folke/trouble.nvim",
 		config = function()
-			require("trouble").setup({ use_diagnostic_signs = true })
+			require("trouble").setup({
+				use_diagnostic_signs = true,
+			})
 		end,
 	},
 	{
@@ -180,13 +191,14 @@ return {
 				options = {
 					theme = "onedark",
 				},
-				extensions = { "nvim-tree" },
+				extensions = { "trouble" },
 				tabline = {
 					lualine_c = {
 						{ require("utils").harpoon_files },
 					},
 				},
 				sections = {
+					lualine_b = { "branch", "diff", { "diagnostics", sources = { "nvim_workspace_diagnostic" } } },
 					lualine_c = {
 						{
 							"filename",
@@ -327,10 +339,10 @@ return {
 					nls.builtins.formatting.shfmt,
 
 					-- Typescript
+					nls.builtins.diagnostics.tsc,
 					nls.builtins.diagnostics.eslint_d,
 					nls.builtins.code_actions.eslint_d,
-					nls.builtins.formatting.eslint_d,
-					nls.builtins.diagnostics.tsc,
+					nls.builtins.formatting.prettierd,
 				},
 			}
 		end,
@@ -520,7 +532,7 @@ return {
 	},
 	{
 		"ThePrimeagen/harpoon",
-		branch="harpoon2",
+		branch = "harpoon2",
 		config = function()
 			require("harpoon").setup({})
 			-- require("telescope").load_extension("harpoon")
@@ -629,10 +641,10 @@ return {
 		end,
 	},
 	{
-		'saecki/crates.nvim',
-		tag = 'stable',
+		"saecki/crates.nvim",
+		tag = "stable",
 		config = function()
-			require('crates').setup({
+			require("crates").setup({
 				popup = {
 					autofocus = true,
 				},
