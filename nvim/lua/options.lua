@@ -57,8 +57,3 @@ vim.o.foldenable = true
 
 -- lualine
 vim.o.laststatus = 3 -- Make the status line global instead of per pane
-
--- Neovide
-vim.g.neovide_cursor_animation_length = 0
--- vim.g.neovide_scroll_animation_length = 0
-vim.o.guifont = "MesloLGL_Nerd_Font"

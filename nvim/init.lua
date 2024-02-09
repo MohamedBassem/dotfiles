@@ -44,6 +44,7 @@ require("options")
 require("keymaps")
 require("autocmds")
 require("lsp")
+require("neovide")
 if require("utils").meta_mode() then
 	require("custom_meta")
 end

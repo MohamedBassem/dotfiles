@@ -231,6 +231,7 @@ return {
 	-- },
 	{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 	{ "nvim-telescope/telescope-ui-select.nvim" },
+	{'numToStr/FTerm.nvim'},
 	-- {
 	-- 	"akinsho/bufferline.nvim",
 	-- 	version = "*",
@@ -339,10 +340,10 @@ return {
 					nls.builtins.formatting.shfmt,
 
 					-- Typescript
-					nls.builtins.diagnostics.tsc,
+					-- nls.builtins.diagnostics.tsc,
 					nls.builtins.diagnostics.eslint,
 					nls.builtins.code_actions.eslint,
-					nls.builtins.formatting.prettierd,
+					nls.builtins.formatting.prettier,
 				},
 			}
 		end,
