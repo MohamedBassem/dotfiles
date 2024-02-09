@@ -340,8 +340,8 @@ return {
 
 					-- Typescript
 					nls.builtins.diagnostics.tsc,
-					nls.builtins.diagnostics.eslint_d,
-					nls.builtins.code_actions.eslint_d,
+					nls.builtins.diagnostics.eslint,
+					nls.builtins.code_actions.eslint,
 					nls.builtins.formatting.prettierd,
 				},
 			}
