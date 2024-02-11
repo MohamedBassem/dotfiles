@@ -1,17 +1,29 @@
 return {
 	{
-		"navarasu/onedark.nvim",
+		"catppuccin/nvim",
+		name = "catppuccin",
+		priority = 1000,
 		config = function()
-			require("onedark").load()
+			require("catppuccin").setup({
+				flavour = "frappe",
+				integrations = {
+					fidget = true,
+					mason = true,
+					navic = true,
+					lsp_trouble = true,
+					which_key = true,
+				},
+			})
 			-- Make namespaces white (specially in cpp) to easily distinguish
 			-- the actual type from its namespace.
-			vim.api.nvim_set_hl(0, "@namespace", { link = "@variable" })
-			vim.api.nvim_set_hl(0, "@type.qualifier", { link = "@keyword" })
-			vim.api.nvim_set_hl(0, "@type.builtin", { link = "@keyword" })
-			vim.api.nvim_set_hl(0, "@constructor", { link = "@function.call" })
-			vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
+			--  vim.api.nvim_set_hl(0, "@namespace", { link = "@variable" })
+			--  vim.api.nvim_set_hl(0, "@type.qualifier", { link = "@keyword" })
+			--  vim.api.nvim_set_hl(0, "@type.builtin", { link = "@keyword" })
+			--  vim.api.nvim_set_hl(0, "@constructor", { link = "@function.call" })
+			--  vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
+
+			vim.cmd.colorscheme "catppuccin"
 		end,
-		priority = 99,
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
@@ -177,6 +189,9 @@ return {
 			require("fidget").setup({
 				notification = {
 					override_vim_notify = true,
+					window = {
+						winblend = 0,
+					},
 				},
 			})
 		end,
@@ -189,7 +204,7 @@ return {
 		config = function()
 			require("lualine").setup({
 				options = {
-					theme = "onedark",
+					theme = "catppuccin",
 				},
 				extensions = { "trouble" },
 				tabline = {
@@ -231,7 +246,7 @@ return {
 	-- },
 	{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 	{ "nvim-telescope/telescope-ui-select.nvim" },
-	{'numToStr/FTerm.nvim'},
+	{ "numToStr/FTerm.nvim" },
 	-- {
 	-- 	"akinsho/bufferline.nvim",
 	-- 	version = "*",

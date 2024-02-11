@@ -1,6 +1,5 @@
 -- Neovide specific settings
 if vim.g.neovide then
-
   -- Disable horizontal scroll with mouse as it's annoying
   vim.keymap.set("n", "<ScrollWheelRight>", "<Nop>", {});
   vim.keymap.set("n", "<ScrollWheelLeft>", "<Nop>", {});
@@ -37,7 +36,7 @@ if vim.g.neovide then
   vim.api.nvim_set_keymap('v', '<D-v>', '<C-R>+', { noremap = true, silent = true})
 
 
-  -- FTerm 
+  -- FTerm
   vim.keymap.set('n', '<C-b>z', '<CMD>lua require("FTerm").toggle()<CR>')
   vim.keymap.set('t', '<C-b>z', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>')
 
