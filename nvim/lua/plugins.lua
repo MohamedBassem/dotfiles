@@ -22,7 +22,7 @@ return {
 			--  vim.api.nvim_set_hl(0, "@constructor", { link = "@function.call" })
 			--  vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
 
-			vim.cmd.colorscheme "catppuccin"
+			vim.cmd.colorscheme("catppuccin")
 		end,
 	},
 	{
@@ -524,6 +524,12 @@ return {
 	},
 	{
 		"nvim-treesitter/nvim-treesitter-textobjects",
+		config = function()
+			require('nvim-ts-autotag').setup()
+		end
+	},
+	{
+		"windwp/nvim-ts-autotag",
 	},
 	{
 		"RRethy/vim-illuminate",
@@ -697,7 +703,7 @@ return {
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
 	{
-		'nvim-pack/nvim-spectre',
+		"nvim-pack/nvim-spectre",
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
 	{
