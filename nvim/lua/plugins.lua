@@ -697,6 +697,10 @@ return {
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
 	{
+		'nvim-pack/nvim-spectre',
+		dependencies = { "nvim-lua/plenary.nvim" },
+	},
+	{
 		dir = "/usr/share/fb-editor-support/nvim",
 		-- dir = "~/fbsource/fbcode/editor_support/nvim",
 		enabled = require("utils").meta_mode(),
