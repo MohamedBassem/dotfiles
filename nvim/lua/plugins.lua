@@ -504,7 +504,7 @@ return {
 	},
 
 	-- "gc" to comment visual regions/lines
-	{ "numToStr/Comment.nvim", opts = {} },
+	{ "numToStr/Comment.nvim",               opts = {} },
 	{
 		-- Show the diff of the code action before applying it
 		"aznhe21/actions-preview.nvim",
@@ -525,8 +525,8 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter-textobjects",
 		config = function()
-			require('nvim-ts-autotag').setup()
-		end
+			require("nvim-ts-autotag").setup()
+		end,
 	},
 	{
 		"windwp/nvim-ts-autotag",
@@ -705,6 +705,9 @@ return {
 	{
 		"nvim-pack/nvim-spectre",
 		dependencies = { "nvim-lua/plenary.nvim" },
+	},
+	{
+		"artemave/workspace-diagnostics.nvim",
 	},
 	{
 		dir = "/usr/share/fb-editor-support/nvim",

@@ -8,6 +8,7 @@ lsp.on_attach(function(client, bufnr)
 	vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr, desc = "Rename" })
 
 	client.server_capabilities.semanticTokensProvider = nil
+	require("workspace-diagnostics").populate_workspace_diagnostics(client, bufnr)
 
 	require("lsp-inlayhints").on_attach(client, bufnr)
 end)
