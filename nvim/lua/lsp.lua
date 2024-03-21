@@ -83,7 +83,7 @@ cmp.setup({
 		-- `Enter` key to confirm completion
 		["<CR>"] = cmp.mapping.confirm({
 			behavior = cmp.ConfirmBehavior.Replace,
-			select = true,
+			select = false,
 		}),
 		["<Tab>"] = cmp.mapping(function(fallback)
 			if cmp.visible() then
