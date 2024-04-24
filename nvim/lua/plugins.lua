@@ -247,15 +247,6 @@ return {
 	{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 	{ "nvim-telescope/telescope-ui-select.nvim" },
 	{ "numToStr/FTerm.nvim" },
-	-- {
-	-- 	"akinsho/bufferline.nvim",
-	-- 	version = "*",
-	-- 	dependencies = "nvim-tree/nvim-web-devicons",
-	-- 	config = function()
-	-- 		require("bufferline").setup({})
-	-- 	end,
-	-- },
-
 	{
 		"folke/persistence.nvim",
 		event = "BufReadPre", -- this will only start session saving when an actual file was opened
@@ -292,10 +283,8 @@ return {
 				"stylua",
 				"shfmt",
 				"rust-analyzer",
-				"tsserver",
 				"eslint",
 				"tailwindcss-language-server",
-				"prisma-language-server",
 			},
 		},
 	},
@@ -356,8 +345,8 @@ return {
 
 					-- Typescript
 					-- nls.builtins.diagnostics.tsc,
-					nls.builtins.diagnostics.eslint,
-					nls.builtins.code_actions.eslint,
+					nls.builtins.diagnostics.eslint_d,
+					nls.builtins.code_actions.eslint_d,
 					nls.builtins.formatting.prettier,
 				},
 			}
@@ -504,7 +493,7 @@ return {
 	},
 
 	-- "gc" to comment visual regions/lines
-	{ "numToStr/Comment.nvim",               opts = {} },
+	{ "numToStr/Comment.nvim", opts = {} },
 	{
 		-- Show the diff of the code action before applying it
 		"aznhe21/actions-preview.nvim",
@@ -646,23 +635,6 @@ return {
 		end,
 	},
 	{
-		"natecraddock/workspaces.nvim",
-		config = function()
-			require("workspaces").setup({
-				hooks = {
-					open = function()
-						vim.cmd("%bd")
-						require("persistence").load()
-					end,
-					open_pre = function()
-						require("persistence").save()
-					end,
-				},
-			})
-			require("telescope").load_extension("workspaces")
-		end,
-	},
-	{
 		"saecki/crates.nvim",
 		tag = "stable",
 		config = function()
@@ -707,7 +679,30 @@ return {
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
 	{
-		"artemave/workspace-diagnostics.nvim",
+		"github/copilot.vim",
+	},
+	{
+		"pmizio/typescript-tools.nvim",
+		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+		opts = {
+			on_attach = function(client)
+				-- Formatting is handled by none-ls
+				client.server_capabilities.documentFormattingProvider = false
+				client.server_capabilities.documentRangeFormattingProvider = false
+			end,
+			settings = {
+				tsserver_file_preferences = {
+					includeInlayParameterNameHints = "all",
+					includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+					includeInlayFunctionParameterTypeHints = true,
+					includeInlayVariableTypeHints = true,
+					includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+					includeInlayPropertyDeclarationTypeHints = true,
+					includeInlayFunctionLikeReturnTypeHints = true,
+					includeInlayEnumMemberValueHints = true,
+				},
+			},
+		},
 	},
 	{
 		dir = "/usr/share/fb-editor-support/nvim",

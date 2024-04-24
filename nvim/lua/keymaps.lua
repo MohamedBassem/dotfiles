@@ -130,3 +130,16 @@ vim.keymap.set("n", "<leader>dx", function() require("trouble").toggle("workspac
 -- Fterm
 vim.keymap.set('n', '<leader>zt', '<CMD>lua require("FTerm").toggle()<CR>', { desc = "Toggle FTerm" })
 vim.keymap.set('t', '<leader>zt', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>', { desc = "Toggle Fterm" })
+
+-- Typescript
+vim.keymap.set("n", "<leader>ip", '<CMD>TSToolsAddMissingImports<CR>', { desc = "Typescript: Add missing imports" })
+vim.keymap.set("n", "<leader>io", '<CMD>TSToolsOrganizeImports<CR>', { desc = "Typescript: Organize imports" })
+
+-- Copilot
+
+vim.keymap.set('i', '<C-J>', 'copilot#Accept("\\<CR>")', {
+  expr = true,
+  replace_keycodes = false,
+  desc = "Copilot: Accept completion"
+})
+vim.g.copilot_no_tab_map = true
