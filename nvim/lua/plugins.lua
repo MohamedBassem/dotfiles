@@ -686,6 +686,7 @@ return {
 	},
 	{
 		"github/copilot.vim",
+		enabled = not require("utils").meta_mode(),
 	},
 	{
 		"pmizio/typescript-tools.nvim",
