@@ -126,13 +126,19 @@ return {
 					-- layout_strategy = "vertical",
 					mappings = {
 						i = {
-							["<esc>"] = actions.close,
+							-- ["<esc>"] = actions.close,
 							["<c-d>"] = require("telescope.actions").delete_buffer,
 							-- After using live grep, use that to filter the search results
 							["<c-f>"] = actions.to_fuzzy_refine,
 
 							-- Send results to trouble menu
 							["<c-t>"] = trouble.open_with_trouble,
+							
+							["<c-o>"] = function(prompt_bufnr)
+								local entry = require("telescope.actions.state").get_selected_entry();
+								require("telescope.actions").close(prompt_bufnr);
+								vim.cmd("Oil --float " .. vim.fn.fnamemodify(entry.path, ':h'));
+							end,
 						},
 						n = {
 							-- Send results to trouble menu

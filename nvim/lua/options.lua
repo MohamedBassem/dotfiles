@@ -16,7 +16,7 @@ vim.opt.clipboard = "unnamedplus" -- Copy/paste to system clipboard
 vim.opt.swapfile = false -- Don't use swapfile
 vim.opt.ignorecase = true -- Search case insensitive...
 vim.opt.smartcase = true -- ... but not it begins with upper case
-vim.opt.completeopt = "menuone,noselect" -- Autocomplete options
+vim.opt.completeopt = "menu,menuone,noselect" -- Autocomplete options
 
 vim.opt.undofile = true
 vim.opt.undodir = vim.fn.stdpath("data") .. "undo"
@@ -42,6 +42,12 @@ vim.opt.relativenumber = true
 --     autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 --   augroup END
 -- ]])
+
+-- Enable break indent
+vim.opt.breakindent = true
+
+-- Minimal number of screen lines to keep above and below the cursor.
+vim.opt.scrolloff = 10
 
 -- Tab complete for cmd mode should autocomplete the first result immediately.
 vim.opt.wildmode = "full"

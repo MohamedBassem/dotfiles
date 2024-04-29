@@ -45,8 +45,11 @@ vim.keymap.set("n", "n", "nzz", { noremap = true, silent = true }, { desc = "Cen
 vim.keymap.set("n", "N", "Nzz", { noremap = true, silent = true })
 
 -- When jumping by half-pages, always keep the cursor in the middle
--- vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Jump half page down and center curson" })
--- vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Jump half page up and center curson" })
+vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Jump half page down and center curson" })
+vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Jump half page up and center curson" })
+
+-- Reset diagnostics
+vim.keymap.set("n", "<leader>dr", vim.diagnostic.reset, { desc = "Reset diagnostics" })
 
 -- Telescope
 vim.keymap.set("n", "<leader>rf", require("telescope.builtin").oldfiles, { desc = "Search [R]ecently opened [F]iles" })
