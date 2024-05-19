@@ -119,7 +119,7 @@ return {
 		"nvim-telescope/telescope.nvim",
 		config = function()
 			local actions = require("telescope.actions")
-			local trouble = require("trouble.providers.telescope")
+			local trouble = require("trouble.sources.telescope")
 
 			require("telescope").setup({
 				defaults = {
@@ -181,6 +181,7 @@ return {
 	},
 	{
 		"folke/trouble.nvim",
+		branch = "dev",
 		config = function()
 			require("trouble").setup({
 				use_diagnostic_signs = true,
