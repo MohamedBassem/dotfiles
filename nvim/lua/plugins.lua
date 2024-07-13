@@ -685,9 +685,16 @@ return {
 		"nvim-pack/nvim-spectre",
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
+	-- {
+	-- 	"github/copilot.vim",
+	-- 	enabled = not require("utils").meta_mode(),
+	-- },
 	{
-		"github/copilot.vim",
+		"supermaven-inc/supermaven-nvim",
 		enabled = not require("utils").meta_mode(),
+		config = function()
+			require("supermaven-nvim").setup({})
+		end,
 	},
 	{
 		"pmizio/typescript-tools.nvim",
