@@ -140,9 +140,21 @@ vim.keymap.set("n", "<leader>io", '<CMD>TSToolsOrganizeImports<CR>', { desc = "T
 
 -- Copilot
 
-vim.keymap.set('i', '<C-J>', 'copilot#Accept("\\<CR>")', {
-  expr = true,
-  replace_keycodes = false,
-  desc = "Copilot: Accept completion"
-})
+-- vim.keymap.set('i', '<C-J>', 'copilot#Accept("\\<CR>")', {
+--   expr = true,
+--   replace_keycodes = false,
+--   desc = "Copilot: Accept completion"
+-- })
 vim.g.copilot_no_tab_map = true
+
+-- Supermaven
+
+vim.keymap.set('i', '<C-J>', function()
+  local suggestion = require('supermaven-nvim.completion_preview');
+  if suggestion.has_suggestion() then
+    suggestion.on_accept_suggestion()
+  end
+end, {
+  desc = "Supermaven: Accept completion"
+})
+

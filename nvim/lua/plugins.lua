@@ -693,7 +693,9 @@ return {
 		"supermaven-inc/supermaven-nvim",
 		enabled = not require("utils").meta_mode(),
 		config = function()
-			require("supermaven-nvim").setup({})
+			require("supermaven-nvim").setup({
+				disable_keymaps = true,
+			})
 		end,
 	},
 	{
