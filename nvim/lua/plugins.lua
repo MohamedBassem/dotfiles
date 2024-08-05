@@ -637,6 +637,12 @@ return {
 		end,
 	},
 	{
+		'MeanderingProgrammer/markdown.nvim',
+		main = "render-markdown",
+		opts = {},
+		dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+	},
+	{
 		"kevinhwang91/nvim-ufo",
 		dependencies = { "kevinhwang91/promise-async" },
 		config = function()
