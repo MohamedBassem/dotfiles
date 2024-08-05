@@ -31,6 +31,10 @@ vim.keymap.set("n", "c", '"_c')
 vim.keymap.set("n", "C", '"_C')
 vim.keymap.set("n", "x", '"_x')
 
+-- Map arrows to scroll
+vim.keymap.set("n", "<Up>", "<C-Y>", {desc = "Scroll up"})
+vim.keymap.set("n", "<Down>", "<C-E>", {desc = "Scroll down"})
+
 -- switch to normal mode with esc in terminal mode
 vim.keymap.set("t", "<ESC>", "<C-\\><C-n>")
 
