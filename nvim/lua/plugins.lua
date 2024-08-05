@@ -161,7 +161,7 @@ return {
 					},
 					["ui-select"] = {},
 					undo = {
-						diff_context_lines = 8,
+						ctxlen = 8,
 						mappings = {
 							-- Those are the defaults, keeping them here just as a reminder
 							i = {
@@ -186,7 +186,6 @@ return {
 	},
 	{
 		"folke/trouble.nvim",
-		branch = "dev",
 		config = function()
 			require("trouble").setup({
 				use_diagnostic_signs = true,
@@ -292,8 +291,8 @@ return {
 				"stylua",
 				"shfmt",
 				"rust-analyzer",
-				"eslint",
 				"tailwindcss-language-server",
+				"eslint-lsp",
 			},
 		},
 	},
@@ -354,8 +353,6 @@ return {
 
 					-- Typescript
 					-- nls.builtins.diagnostics.tsc,
-					nls.builtins.diagnostics.eslint_d,
-					nls.builtins.code_actions.eslint_d,
 					nls.builtins.formatting.prettier,
 				},
 			}

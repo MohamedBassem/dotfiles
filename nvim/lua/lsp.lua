@@ -1,5 +1,5 @@
 -- Setup lsp-zero
-local lsp = require("lsp-zero").preset({})
+local lsp = require("lsp-zero")
 lsp.on_attach(function(client, bufnr)
 	-- see :help lsp-zero-keybindings
 	-- to learn the available actions
