@@ -108,7 +108,7 @@ vim.keymap.set("n", "<leader>bD", function()
 end, { desc = "Delete buffer (Force)" })
 
 -- Harpoon
-vim.keymap.set("n", "<leader>`", function(item) require("harpoon"):list():append() end, { desc = "Harpoon Mark file" })
+vim.keymap.set("n", "<leader>`", function(item) require("harpoon"):list():add() end, { desc = "Harpoon Mark file" })
 vim.keymap.set("n", "|", function() require("harpoon").ui:toggle_quick_menu(require("harpoon"):list()) end,
   { desc = "Harpoon Toggle quick menu" })
 
