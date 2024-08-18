@@ -690,6 +690,28 @@ return {
 		"nvim-pack/nvim-spectre",
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
+	{
+		"dstein64/nvim-scrollview",
+		config = function()
+			require("scrollview").setup({
+				-- Show even if the buffer fits the screen
+				always_show = true,
+				-- Show on all visibile buffers
+				current_only = false,
+				include_end_region = true,
+
+				-- Transparency of the scrollbar
+				winblend_gui = 50,
+
+				-- Customizing the different symbols
+				diagnostics_warn_symbol = '│',
+				diagnostics_hint_symbol = '│',
+				diagnostics_info_symbol = '│',
+				diagnostics_error_symbol = '│',
+				search_symbol = '│',
+			})
+		end,
+	},
 	-- {
 	-- 	"github/copilot.vim",
 	-- 	enabled = not require("utils").meta_mode(),
