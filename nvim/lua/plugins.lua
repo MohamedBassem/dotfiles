@@ -567,6 +567,15 @@ return {
 		end,
 	},
 	{
+		"karb94/neoscroll.nvim",
+		config = function ()
+			require('neoscroll').setup({
+				mappings = {},
+				respect_scrolloff = true,
+			})
+		end
+	},
+	{
 		-- For switching between .h and .cpp files
 		"rgroli/other.nvim",
 		config = function()
