@@ -706,6 +706,14 @@ return {
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
 	{
+    'MagicDuck/grug-far.nvim',
+		config = function()
+			require('grug-far').setup({
+				debounceMs = 100,
+			});
+		end
+	},
+	{
 		"dstein64/nvim-scrollview",
 		config = function()
 			require("scrollview").setup({
