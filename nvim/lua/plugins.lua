@@ -297,19 +297,6 @@ return {
 		},
 	},
 	{
-		"lvimuser/lsp-inlayhints.nvim",
-		config = function()
-			require("lsp-inlayhints").setup({
-				enabled_at_startup = true,
-				inlay_hints = {
-					parameter_hints = {
-						show = false,
-					},
-				},
-			})
-		end,
-	},
-	{
 		"VonHeikemen/lsp-zero.nvim",
 		dependencies = {
 			-- LSP Support

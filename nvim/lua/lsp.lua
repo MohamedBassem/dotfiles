@@ -54,7 +54,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 	client.server_capabilities.semanticTokensProvider = nil
 
-	require("lsp-inlayhints").on_attach(client, bufnr)
+	vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
    end
 })
 
