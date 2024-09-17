@@ -16,7 +16,7 @@ vim.keymap.set("n", "<leader><CR>", "<cmd>noh<CR><esc>")
 vim.keymap.set("n", "Y", "yg$", { remap = true })
 
 -- LSP Format
-vim.keymap.set("n", "<C-f>", ":LspZeroFormat!<CR>")
+vim.keymap.set("n", "<C-f>", function() vim.lsp.buf.format({ async = true }) end)
 
 -- Buffer movements
 vim.keymap.set("n", "tl", ":lua require('harpoon'):list():next()<CR>", { desc = "Go to next buffer" })
