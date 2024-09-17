@@ -142,6 +142,9 @@ vim.keymap.set('t', '<leader>zt', '<C-\\><C-n><CMD>lua require("FTerm").toggle()
 vim.keymap.set("n", "<leader>ip", '<CMD>TSToolsAddMissingImports<CR>', { desc = "Typescript: Add missing imports" })
 vim.keymap.set("n", "<leader>io", '<CMD>TSToolsOrganizeImports<CR>', { desc = "Typescript: Organize imports" })
 
+-- Other
+vim.keymap.set("n", "<leader>o", '<CMD>Other<CR>', { desc = "Switch to the [O]ther file" })
+
 -- Copilot
 
 -- vim.keymap.set('i', '<C-J>', 'copilot#Accept("\\<CR>")', {
