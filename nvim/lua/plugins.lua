@@ -254,7 +254,6 @@ return {
 	-- },
 	{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 	{ "nvim-telescope/telescope-ui-select.nvim" },
-	{ "numToStr/FTerm.nvim" },
 	{
 		"folke/persistence.nvim",
 		event = "BufReadPre", -- this will only start session saving when an actual file was opened
@@ -297,10 +296,9 @@ return {
 		},
 	},
 	{
-		"VonHeikemen/lsp-zero.nvim",
+		"neovim/nvim-lspconfig",
 		dependencies = {
 			-- LSP Support
-			{ "neovim/nvim-lspconfig" },
 			{ "williamboman/mason.nvim" },
 			{ "williamboman/mason-lspconfig.nvim" },
 
@@ -687,10 +685,6 @@ return {
 			skip_confirm_for_simple_edits = true,
 		},
 		dependencies = { "nvim-tree/nvim-web-devicons" },
-	},
-	{
-		"nvim-pack/nvim-spectre",
-		dependencies = { "nvim-lua/plenary.nvim" },
 	},
 	{
     'MagicDuck/grug-far.nvim',

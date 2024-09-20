@@ -134,10 +134,6 @@ vim.api.nvim_create_user_command('CratesPopup', 'lua require("crates").show_popu
 -- Trouble
 vim.keymap.set("n", "<leader>dx", function() require("trouble").toggle("workspace_diagnostics") end)
 
--- Fterm
-vim.keymap.set('n', '<leader>zt', '<CMD>lua require("FTerm").toggle()<CR>', { desc = "Toggle FTerm" })
-vim.keymap.set('t', '<leader>zt', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>', { desc = "Toggle Fterm" })
-
 -- Typescript
 vim.keymap.set("n", "<leader>ip", '<CMD>TSToolsAddMissingImports<CR>', { desc = "Typescript: Add missing imports" })
 vim.keymap.set("n", "<leader>io", '<CMD>TSToolsOrganizeImports<CR>', { desc = "Typescript: Organize imports" })
