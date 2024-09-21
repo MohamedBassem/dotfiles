@@ -32,13 +32,6 @@ vim.api.nvim_create_autocmd("FileType", {
 --	command = [[lua vim.lsp.buf.format()]],
 --})
 
--- Open Nvim-tree on startup
---vim.api.nvim_create_autocmd({ "VimEnter" }, {
---	callback = function()
---		require("nvim-tree.api").tree.toggle({ focus = false })
---	end,
---})
-
 -- [[ Highlight on yank ]]
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {

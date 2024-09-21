@@ -83,14 +83,6 @@ vim.keymap.set("n", "<leader>sa",
 -- Enable zen mode
 vim.keymap.set("n", "<leader>zz", "<cmd>ZenMode<CR>", { desc = "Toggle ZenMode" })
 
--- Persistence
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>ls",
-  [[<cmd>lua require("persistence").load()<cr>]],
-  { desc = "Restore [Last] [S]ession for current dir" }
-)
-
 -- Vim notify
 vim.api.nvim_set_keymap(
   "n",
@@ -126,7 +118,6 @@ end, { desc = "Preview fold under cursor" })
 
 -- Oil
 vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
-
 
 -- Crates
 vim.api.nvim_create_user_command('CratesPopup', 'lua require("crates").show_popup()', {})

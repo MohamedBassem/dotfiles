@@ -4,6 +4,7 @@ vim.g.loaded_netrwPlugin = 1
 
 vim.opt.termguicolors = true -- Enable 24-bit RGB colors
 
+vim.opt.showmode = false -- Don't show mode since we have a statusline
 vim.opt.number = true -- Show line numbers
 vim.opt.showmatch = true -- Highlight matching parenthesis
 vim.opt.splitright = true -- Split windows right to the current windows
@@ -24,7 +25,7 @@ vim.opt.undodir = vim.fn.stdpath("data") .. "undo"
 vim.opt.expandtab = true -- expand tabs into spaces
 vim.opt.shiftwidth = 4 -- number of spaces to use for each step of indent.
 vim.opt.tabstop = 4 -- number of spaces a TAB counts for
-vim.opt.list = true 
+vim.opt.list = true
 vim.opt.listchars = "tab:  ,trail:~" -- Show trailing spaces and hide tab chars
 vim.opt.autoindent = true -- copy indent from current line when starting a new line
 vim.opt.wrap = false -- Don't wrap
@@ -33,15 +34,8 @@ vim.opt.wrap = false -- Don't wrap
 vim.o.updatetime = 250
 vim.o.timeoutlen = 300
 
--- show absolute numbers in insert mode, relative in normal mode
+-- relative in normal mode
 vim.opt.relativenumber = true
--- vim.cmd([[
---   augroup numbertoggle
---     autocmd!
---     autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
---     autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
---   augroup END
--- ]])
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -63,3 +57,6 @@ vim.o.foldenable = true
 
 -- lualine
 vim.o.laststatus = 3 -- Make the status line global instead of per pane
+
+-- Always show signcolumn
+vim.opt.signcolumn = "yes"

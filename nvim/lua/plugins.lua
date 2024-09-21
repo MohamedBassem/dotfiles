@@ -68,41 +68,6 @@ return {
 						node_decremental = "<BS>",
 					},
 				},
-				textobjects = {
-					enable = true,
-					select = {
-						enable = true,
-						lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-						keymaps = {
-							["aa"] = "@parameter.outer",
-							["ia"] = "@parameter.inner",
-							["af"] = "@function.outer",
-							["if"] = "@function.inner",
-							["ac"] = "@class.outer",
-							["ic"] = "@class.inner",
-						},
-					},
-					move = {
-						enable = true,
-						set_jumps = true, -- whether to set jumps in the jumplist
-						goto_next_start = {
-							["]m"] = "@function.outer",
-							["]]"] = "@class.outer",
-						},
-						goto_next_end = {
-							["]M"] = "@function.outer",
-							["]["] = "@class.outer",
-						},
-						goto_previous_start = {
-							["[m"] = "@function.outer",
-							["[["] = "@class.outer",
-						},
-						goto_previous_end = {
-							["[M"] = "@function.outer",
-							["[]"] = "@class.outer",
-						},
-					},
-				},
 			})
 		end,
 	},
@@ -133,7 +98,7 @@ return {
 
 							-- Send results to trouble menu
 							["<c-t>"] = trouble.open_with_trouble,
-							
+
 							["<c-o>"] = function(prompt_bufnr)
 								local entry = require("telescope.actions.state").get_selected_entry();
 								require("telescope.actions").close(prompt_bufnr);
@@ -182,7 +147,12 @@ return {
 			-- Undo tree
 			require("telescope").load_extension("undo")
 		end,
-		dependencies = { "nvim-lua/plenary.nvim", "debugloop/telescope-undo.nvim" },
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"debugloop/telescope-undo.nvim",
+			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+			{ "nvim-telescope/telescope-ui-select.nvim" },
+		},
 	},
 	{
 		"folke/trouble.nvim",
@@ -252,16 +222,6 @@ return {
 	-- 		};
 	-- 	end
 	-- },
-	{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-	{ "nvim-telescope/telescope-ui-select.nvim" },
-	{
-		"folke/persistence.nvim",
-		event = "BufReadPre", -- this will only start session saving when an actual file was opened
-		opts = {
-			options = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp" },
-		},
-	},
-
 	{
 		"onsails/lspkind.nvim",
 		config = function()
@@ -504,12 +464,10 @@ return {
 	},
 	{
 		"nvim-treesitter/nvim-treesitter-textobjects",
-		config = function()
-			require("nvim-ts-autotag").setup()
-		end,
 	},
 	{
 		"windwp/nvim-ts-autotag",
+		opts = {},
 	},
 	{
 		"RRethy/vim-illuminate",
@@ -538,6 +496,7 @@ return {
 			require("mini.bufremove").setup()
 		end,
 	},
+	{ 'echasnovski/mini.ai',   version = false, opts = {} },
 	{
 		"ThePrimeagen/harpoon",
 		branch = "harpoon2",
@@ -553,7 +512,7 @@ return {
 	},
 	{
 		"karb94/neoscroll.nvim",
-		config = function ()
+		config = function()
 			require('neoscroll').setup({
 				mappings = {},
 				respect_scrolloff = true,
@@ -612,17 +571,8 @@ return {
 		end,
 	},
 	{
-		"kylechui/nvim-surround",
-		version = "*", -- Use for stability; omit to use `main` branch for the latest features
-		event = "VeryLazy",
-		config = function()
-			require("nvim-surround").setup({
-				-- Configuration here, or leave empty to use defaults
-			})
-		end,
-	},
-	{
-		"folke/neodev.nvim",
+		"folke/lazydev.nvim",
+		ft = "lua",
 		opts = {},
 	},
 	{
@@ -687,7 +637,7 @@ return {
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
 	{
-    'MagicDuck/grug-far.nvim',
+		'MagicDuck/grug-far.nvim',
 		config = function()
 			require('grug-far').setup({
 				debounceMs = 100,

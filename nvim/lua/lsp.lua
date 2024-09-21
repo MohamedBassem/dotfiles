@@ -52,13 +52,16 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 	vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr, desc = "Rename" })
 
-	client.server_capabilities.semanticTokensProvider = nil
+	if client then
+		client.server_capabilities.semanticTokensProvider = nil
+	end
 
 	vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
    end
 })
 
 vim.diagnostic.config({
+  severity_sort = true,
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = "✘",
@@ -96,7 +99,7 @@ cmp.setup({
 		end,
 	},
 	mapping = {
-		-- Ctrl+Space to trigger completion menu
+		-- Ctrl+l to trigger completion menu
 		["<C-l>"] = cmp.mapping.complete(),
 
 		-- `Enter` key to confirm completion
@@ -144,5 +147,6 @@ cmp.setup({
 		{ name = "luasnip" },
 		{ name = "crates" },
 		{ name = "nvim_lsp_signature_help" },
+		{ name = "lazydev", group_index = 0 },
 	},
 })
