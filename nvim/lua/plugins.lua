@@ -441,6 +441,7 @@ return {
 	{
 		-- Detect tabstop and shiftwidth automatically
 		"tpope/vim-sleuth",
+		enabled = not require("utils").meta_mode(),
 	},
 
 	-- "gc" to comment visual regions/lines
@@ -690,7 +691,7 @@ return {
 	},
 	{
 		"pmizio/typescript-tools.nvim",
-		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig", "VonHeikemen/lsp-zero.nvim" },
 		opts = {
 			on_attach = function(client)
 				-- Formatting is handled by none-ls

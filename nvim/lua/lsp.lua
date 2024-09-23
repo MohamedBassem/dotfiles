@@ -56,7 +56,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		client.server_capabilities.semanticTokensProvider = nil
 	end
 
-	vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+    -- Enable inlay hints if it's supported by the LSP
+    if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+        vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+    end
    end
 })
 
@@ -72,11 +75,18 @@ vim.diagnostic.config({
   },
 })
 
-local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
-lsp_capabilities.textDocument.foldingRange = {
-	dynamicRegistration = false,
-	lineFoldingOnly = true,
-}
+local lsp_capabilities = vim.tbl_deep_extend(
+  'force',
+  require('cmp_nvim_lsp').default_capabilities(),
+    {
+        textDocument = {
+            foldingRange = {
+                dynamicRegistration = false,
+                lineFoldingOnly = true
+            },
+        },
+    }
+)
 
 local default_setup = function(server)
 	require('lspconfig')[server].setup({
