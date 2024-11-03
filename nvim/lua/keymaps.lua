@@ -48,10 +48,6 @@ vim.keymap.set({ "v", "n" }, "<leader>a", require("actions-preview").code_action
 vim.keymap.set("n", "n", "nzz", { noremap = true, silent = true }, { desc = "Center search results" })
 vim.keymap.set("n", "N", "Nzz", { noremap = true, silent = true })
 
--- When jumping by half-pages, use neoscroll
-vim.keymap.set("n", "<C-d>", function() require('neoscroll').ctrl_d({ duration = 150 }) end, { desc = "Jump half page down" })
-vim.keymap.set("n", "<C-u>", function() require('neoscroll').ctrl_u({ duration = 150 }) end, { desc = "Jump half page up" })
-
 -- Reset diagnostics
 vim.keymap.set("n", "<leader>dr", vim.diagnostic.reset, { desc = "Reset diagnostics" })
 
