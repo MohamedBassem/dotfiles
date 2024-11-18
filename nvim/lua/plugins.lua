@@ -658,9 +658,35 @@ return {
 		end,
 	},
 	-- {
-	-- 	"github/copilot.vim",
+	-- 	"zbirenbaum/copilot.lua",
 	-- 	enabled = not require("utils").meta_mode(),
+	-- 	opts = {
+	-- 		suggestion = {
+	-- 			-- Enable or disable suggestions
+	-- 			enabled = true,
+	-- 			-- Automatically accept suggestions
+	-- 			auto_trigger = true,
+	-- 			keymap = {
+	-- 				accept = "<C-J>",
+	-- 			},
+	-- 		}
+	-- 	},
 	-- },
+	{
+		"CopilotC-Nvim/CopilotChat.nvim",
+		enabled = not require("utils").meta_mode(),
+		branch = "canary",
+		dependencies = {
+			{ "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+			{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+		},
+		build = "make tiktoken", -- Only on MacOS or Linux
+		opts = {
+			debug = true,        -- Enable debugging
+			-- See Configuration section for rest
+		},
+		-- See Commands section for default commands if you want to lazy load on them
+	},
 	{
 		"supermaven-inc/supermaven-nvim",
 		enabled = not require("utils").meta_mode(),

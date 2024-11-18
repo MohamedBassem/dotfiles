@@ -128,15 +128,6 @@ vim.keymap.set("n", "<leader>io", '<CMD>TSToolsOrganizeImports<CR>', { desc = "T
 -- Other
 vim.keymap.set("n", "<leader>o", '<CMD>Other<CR>', { desc = "Switch to the [O]ther file" })
 
--- Copilot
-
--- vim.keymap.set('i', '<C-J>', 'copilot#Accept("\\<CR>")', {
---   expr = true,
---   replace_keycodes = false,
---   desc = "Copilot: Accept completion"
--- })
-vim.g.copilot_no_tab_map = true
-
 -- Supermaven
 
 vim.keymap.set('i', '<C-J>', function()
