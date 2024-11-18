@@ -169,7 +169,7 @@ return {
 		config = function()
 			require("fidget").setup({
 				notification = {
-					override_vim_notify = true,
+					-- override_vim_notify = true,
 				},
 			})
 		end,
@@ -567,14 +567,6 @@ return {
 		opts = {},
 	},
 	{
-		"LunarVim/bigfile.nvim",
-		config = function()
-			require("bigfile").setup({
-				filesize = 0.5, -- In MiB
-			})
-		end,
-	},
-	{
 		'MeanderingProgrammer/markdown.nvim',
 		main = "render-markdown",
 		opts = {},
@@ -715,6 +707,32 @@ return {
 					-- includeInlayPropertyDeclarationTypeHints = true,
 					-- includeInlayFunctionLikeReturnTypeHints = true,
 					-- includeInlayEnumMemberValueHints = true,
+				},
+			},
+		},
+	},
+	{
+		"folke/snacks.nvim",
+		priority = 1000,
+		lazy = false,
+		---@type snacks.Config
+		opts = {
+			bigfile = {
+				enabled = true,
+				notify = true,
+				size = 0.5 * 1024 * 1024, -- 500 KB
+			},
+			notifier = {
+				enabled = true,
+				timeout = 3000,
+			},
+			-- When doing nvim somefile.txt, it will render the file as quickly as possible, before loading your plugins.
+			quickfile = { enabled = true },
+			gitbrowse = { enabled = true },
+			statuscolumn = { enabled = true },
+			styles = {
+				notification = {
+					wo = { wrap = true } -- Wrap notifications
 				},
 			},
 		},

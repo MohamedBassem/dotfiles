@@ -83,7 +83,7 @@ vim.keymap.set("n", "<leader>zz", "<cmd>ZenMode<CR>", { desc = "Toggle ZenMode" 
 vim.api.nvim_set_keymap(
   "n",
   "<leader>un",
-  [[<cmd>lua require("notify").dismiss({ silent = true, pending = true })<cr>]],
+  [[<cmd>lua Snacks.notifier.hide() <cr>]],
   { desc = "Dismiss all notifications" }
 )
 
