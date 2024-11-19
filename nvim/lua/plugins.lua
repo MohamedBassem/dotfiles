@@ -318,13 +318,6 @@ return {
 		end,
 	},
 	{
-		"goolord/alpha-nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		config = function()
-			require("alpha").setup(require("alpha.themes.startify").config)
-		end,
-	},
-	{
 		"folke/flash.nvim",
 		lazy = false,
 		keys = {
@@ -727,6 +720,24 @@ return {
 				enabled = true,
 				timeout = 3000,
 			},
+            dashboard = {
+                enabled = true,
+                width = 120,
+                formats = {
+                    key = function(item)
+                        return { { "[", hl = "special" }, { item.key, hl = "key" }, { "]", hl = "special" } }
+                    end,
+                },
+                sections = {
+                    { section = "header" },
+                    { title = "MRU ", file = vim.fn.fnamemodify(".", ":~"), padding = 1 },
+                    { section = "recent_files", cwd = true, limit = 8, padding = 1 },
+                    { title = "MRU", padding = 1 },
+                    { section = "recent_files", limit = 8, padding = 1 },
+                    { title = "Bookmarks", padding = 1 },
+                    { section = "keys" },
+                },
+            },
 			-- When doing nvim somefile.txt, it will render the file as quickly as possible, before loading your plugins.
 			quickfile = { enabled = true },
 			gitbrowse = { enabled = true },
