@@ -722,6 +722,8 @@ return {
 			},
             dashboard = {
                 enabled = true,
+				row = 3,
+				col = 3,
                 width = 120,
                 formats = {
                     key = function(item)
@@ -729,13 +731,13 @@ return {
                     end,
                 },
                 sections = {
-                    { section = "header" },
+                    { section = "header", align = "left" },
                     { title = "MRU ", file = vim.fn.fnamemodify(".", ":~"), padding = 1 },
                     { section = "recent_files", cwd = true, limit = 8, padding = 1 },
                     { title = "MRU", padding = 1 },
                     { section = "recent_files", limit = 8, padding = 1 },
-                    { title = "Bookmarks", padding = 1 },
-                    { section = "keys" },
+                    -- { title = "Bookmarks", padding = 1 },
+                    -- { section = "keys" },
                 },
             },
 			-- When doing nvim somefile.txt, it will render the file as quickly as possible, before loading your plugins.
