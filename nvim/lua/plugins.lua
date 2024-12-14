@@ -355,34 +355,6 @@ return {
 			vim.g.signify_sign_change_delete = "_"
 		end,
 	},
-	{
-		"lukas-reineke/indent-blankline.nvim",
-		main = "ibl",
-		event = { "BufReadPost", "BufNewFile" },
-		opts = {
-			indent = {
-				char = "▏",
-				tab_char = "▏",
-				smart_indent_cap = false,
-			},
-			scope = { enabled = false },
-			exclude = {
-				filetypes = {
-					"help",
-					"alpha",
-					"dashboard",
-					"neo-tree",
-					"Trouble",
-					"lazy",
-					"mason",
-					"notify",
-					"toggleterm",
-					"lazyterm",
-				},
-			},
-		},
-	},
-
 	-- Navic provide the breadcrumbs in lualine
 	{
 		"SmiteshP/nvim-navic",
@@ -424,21 +396,10 @@ return {
 		end,
 	},
 	{
-		"folke/zen-mode.nvim",
-		opts = {
-			window = {
-				width = 0.75, -- 75% width
-			},
-		},
-	},
-	{
 		-- Detect tabstop and shiftwidth automatically
 		"tpope/vim-sleuth",
 		enabled = not require("utils").meta_mode(),
 	},
-
-	-- "gc" to comment visual regions/lines
-	{ "numToStr/Comment.nvim", opts = {} },
 	{
 		-- Show the diff of the code action before applying it
 		"aznhe21/actions-preview.nvim",
@@ -481,13 +442,6 @@ return {
 			require("goto-preview").setup({
 				default_mappings = true,
 			})
-		end,
-	},
-	{
-		"echasnovski/mini.bufremove",
-		version = false,
-		config = function()
-			require("mini.bufremove").setup()
 		end,
 	},
 	{ 'echasnovski/mini.ai',   version = false, opts = {} },
@@ -715,6 +669,26 @@ return {
 				enabled = true,
 				notify = true,
 				size = 0.5 * 1024 * 1024, -- 500 KB
+			},
+			zen = {
+				enabled = true,
+				toggles = {
+					dim = false,
+					git_signs = true,
+					diagnostics = true,
+					inlay_hints = true,
+				},
+				zoom = {
+					win = {
+						width = 0.8,
+					}
+				}
+			},
+			indent = {
+				enabled = true,
+				animate = {
+					enabled = false,
+				}
 			},
 			notifier = {
 				enabled = true,

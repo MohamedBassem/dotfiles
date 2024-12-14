@@ -32,8 +32,8 @@ vim.keymap.set("n", "C", '"_C')
 vim.keymap.set("n", "x", '"_x')
 
 -- Map arrows to scroll
-vim.keymap.set("n", "<Up>", "<C-Y>", {desc = "Scroll up"})
-vim.keymap.set("n", "<Down>", "<C-E>", {desc = "Scroll down"})
+vim.keymap.set("n", "<Up>", "<C-Y>", { desc = "Scroll up" })
+vim.keymap.set("n", "<Down>", "<C-E>", { desc = "Scroll down" })
 
 -- switch to normal mode with esc in terminal mode
 vim.keymap.set("t", "<ESC>", "<C-\\><C-n>")
@@ -77,7 +77,7 @@ vim.keymap.set("n", "<leader>sa",
   { desc = "[S]earch for file under cusror" })
 
 -- Enable zen mode
-vim.keymap.set("n", "<leader>zz", "<cmd>ZenMode<CR>", { desc = "Toggle ZenMode" })
+vim.keymap.set("n", "<leader>zz", function() Snacks.zen.zoom() end, { desc = "Toggle ZenMode" })
 
 -- Vim notify
 vim.api.nvim_set_keymap(
@@ -87,13 +87,10 @@ vim.api.nvim_set_keymap(
   { desc = "Dismiss all notifications" }
 )
 
--- Bufremove
+-- Bufdelete
 vim.keymap.set("n", "<leader>bd", function()
-  require("mini.bufremove").delete(0, false)
+  Snacks.bufdelete()
 end, { desc = "Delete buffer" })
-vim.keymap.set("n", "<leader>bD", function()
-  require("mini.bufremove").delete(0, true)
-end, { desc = "Delete buffer (Force)" })
 
 -- Harpoon
 vim.keymap.set("n", "<leader>`", function(item) require("harpoon"):list():add() end, { desc = "Harpoon Mark file" })
@@ -138,4 +135,3 @@ vim.keymap.set('i', '<C-J>', function()
 end, {
   desc = "Supermaven: Accept completion"
 })
-
