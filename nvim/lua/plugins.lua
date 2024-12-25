@@ -12,6 +12,7 @@ return {
 					navic = true,
 					lsp_trouble = true,
 					which_key = true,
+					blink_cmp = true,
 				},
 			})
 			-- Make namespaces white (specially in cpp) to easily distinguish
@@ -261,16 +262,70 @@ return {
 			-- LSP Support
 			{ "williamboman/mason.nvim" },
 			{ "williamboman/mason-lspconfig.nvim" },
-
-			-- Autocompletion
-			{ "hrsh7th/nvim-cmp" },
-			{ "hrsh7th/cmp-buffer" },
-			{ "hrsh7th/cmp-path" },
-			{ "hrsh7th/cmp-nvim-lsp-signature-help" },
-			{ "saadparwaiz1/cmp_luasnip" },
-			{ "hrsh7th/cmp-nvim-lsp" },
-			{ "hrsh7th/cmp-nvim-lua" },
 		},
+	},
+	{
+		'saghen/blink.cmp',
+		version = '*',
+		event = "InsertEnter",
+
+		---@module 'blink.cmp'
+		---@type blink.cmp.Config
+		opts = {
+			keymap = {
+				preset = "default",
+				['<S-Tab>'] = { 'select_prev', 'fallback' },
+				['<Tab>'] = { 'select_next', 'fallback' },
+				["<C-l>"] = { 'show', 'fallback' },
+				["<CR>"] = { 'accept', 'fallback' },
+			},
+
+			appearance = {
+				-- Sets the fallback highlight groups to nvim-cmp's highlight groups
+				-- Useful for when your theme doesn't support blink.cmp
+				-- Will be removed in a future release
+				use_nvim_cmp_as_default = false,
+				-- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+				-- Adjusts spacing to ensure icons are aligned
+				nerd_font_variant = 'mono'
+			},
+
+			-- Default list of enabled providers defined so that you can extend it
+			-- elsewhere in your config, without redefining it, due to `opts_extend`
+			sources = {
+				default = { 'lsp', 'path', 'snippets', 'buffer' },
+				cmdline = {},
+			},
+			signature = {
+				enabled = true,
+			},
+			completion = {
+				accept = {
+					-- experimental auto-brackets support
+					auto_brackets = {
+						enabled = true,
+					},
+				},
+				menu = {
+					draw = {
+						treesitter = { "lsp" },
+						columns = {
+							{ "kind_icon", "label", "label_description", gap = 1 },
+							{ "kind" }
+						},
+					},
+				},
+				list = { selection = 'auto_insert' },
+				documentation = {
+					auto_show = true,
+					auto_show_delay_ms = 200,
+				},
+				ghost_text = {
+					enabled = vim.g.ai_cmp,
+				},
+			},
+		},
+		opts_extend = { "sources.default" },
 	},
 	{
 		"L3MON4D3/LuaSnip",
@@ -444,7 +499,7 @@ return {
 			})
 		end,
 	},
-	{ 'echasnovski/mini.ai',   version = false, opts = {} },
+	{ 'echasnovski/mini.ai', version = false, opts = {} },
 	{
 		"ThePrimeagen/harpoon",
 		branch = "harpoon2",
@@ -515,9 +570,9 @@ return {
 		opts = {
 			library = {
 				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
-				{ path = "LazyVim", words = { "LazyVim" } },
-				{ path = "snacks.nvim", words = { "Snacks" } },
-				{ path = "lazy.nvim", words = { "LazyVim" } },
+				{ path = "LazyVim",            words = { "LazyVim" } },
+				{ path = "snacks.nvim",        words = { "Snacks" } },
+				{ path = "lazy.nvim",          words = { "LazyVim" } },
 			},
 		},
 	},
@@ -701,26 +756,26 @@ return {
 				enabled = true,
 				timeout = 3000,
 			},
-            dashboard = {
-                enabled = true,
+			dashboard = {
+				enabled = true,
 				row = 3,
 				col = 3,
-                width = 120,
-                formats = {
-                    key = function(item)
-                        return { { "[", hl = "special" }, { item.key, hl = "key" }, { "]", hl = "special" } }
-                    end,
-                },
-                sections = {
-                    { section = "header", align = "left" },
-                    { title = "MRU ", file = vim.fn.fnamemodify(".", ":~"), padding = 1 },
-                    { section = "recent_files", cwd = true, limit = 8, padding = 1 },
-                    { title = "MRU", padding = 1 },
-                    { section = "recent_files", limit = 8, padding = 1 },
-                    -- { title = "Bookmarks", padding = 1 },
-                    -- { section = "keys" },
-                },
-            },
+				width = 120,
+				formats = {
+					key = function(item)
+						return { { "[", hl = "special" }, { item.key, hl = "key" }, { "]", hl = "special" } }
+					end,
+				},
+				sections = {
+					{ section = "header",       align = "left" },
+					{ title = "MRU ",           file = vim.fn.fnamemodify(".", ":~"), padding = 1 },
+					{ section = "recent_files", cwd = true,                           limit = 8,  padding = 1 },
+					{ title = "MRU",            padding = 1 },
+					{ section = "recent_files", limit = 8,                            padding = 1 },
+					-- { title = "Bookmarks", padding = 1 },
+					-- { section = "keys" },
+				},
+			},
 			-- When doing nvim somefile.txt, it will render the file as quickly as possible, before loading your plugins.
 			quickfile = { enabled = true },
 			-- scroll = { enabled = true },
