@@ -1,0 +1,4 @@
+theme = catppuccin-frappe
+cursor-style = block
+font-family = MesloLGL Nerd Font
+scrollback-limit = 1000000
