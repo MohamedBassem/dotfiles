@@ -328,11 +328,6 @@ return {
 		opts_extend = { "sources.default" },
 	},
 	{
-		"L3MON4D3/LuaSnip",
-		-- follow latest release.
-		version = "2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
-	},
-	{
 		"nvimtools/none-ls.nvim",
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = { "mason.nvim" },
