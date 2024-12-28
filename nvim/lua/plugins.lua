@@ -669,21 +669,21 @@ return {
 	-- 		}
 	-- 	},
 	-- },
-	{
-		"CopilotC-Nvim/CopilotChat.nvim",
-		enabled = not require("utils").meta_mode(),
-		branch = "canary",
-		dependencies = {
-			{ "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-			{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
-		},
-		build = "make tiktoken", -- Only on MacOS or Linux
-		opts = {
-			debug = true,        -- Enable debugging
-			-- See Configuration section for rest
-		},
-		-- See Commands section for default commands if you want to lazy load on them
-	},
+	-- {
+	-- 	"CopilotC-Nvim/CopilotChat.nvim",
+	-- 	enabled = not require("utils").meta_mode(),
+	-- 	branch = "canary",
+	-- 	dependencies = {
+	-- 		{ "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+	-- 		{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+	-- 	},
+	-- 	build = "make tiktoken", -- Only on MacOS or Linux
+	-- 	opts = {
+	-- 		debug = true,        -- Enable debugging
+	-- 		-- See Configuration section for rest
+	-- 	},
+	-- 	-- See Commands section for default commands if you want to lazy load on them
+	-- },
 	{
 		"supermaven-inc/supermaven-nvim",
 		enabled = not require("utils").meta_mode(),
@@ -715,6 +715,16 @@ return {
 				},
 			},
 		},
+	},
+	{
+		"luckasRanarison/tailwind-tools.nvim",
+		name = "tailwind-tools",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+			"nvim-telescope/telescope.nvim",
+			"neovim/nvim-lspconfig",
+		},
+		opts = {}
 	},
 	{
 		"folke/snacks.nvim",
@@ -778,6 +788,7 @@ return {
 			statuscolumn = { enabled = true },
 			scope = { enabled = true },
 			words = { enabled = true },
+			lazygit = { enabled = true },
 			styles = {
 				notification = {
 					wo = { wrap = true } -- Wrap notifications
