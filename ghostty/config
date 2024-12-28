@@ -1,4 +1,9 @@
 theme = catppuccin-frappe
+font-size = 14
 cursor-style = block
 font-family = MesloLGL Nerd Font
 scrollback-limit = 1000000
+
+macos-titlebar-proxy-icon = hidden
+macos-titlebar-style = tabs
+shell-integration-features = no-cursor,sudo,title
