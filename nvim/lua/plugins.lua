@@ -242,7 +242,6 @@ return {
 						},
 					},
 				},
-				list = { selection = 'auto_insert' },
 				documentation = {
 					auto_show = true,
 					auto_show_delay_ms = 200,
@@ -251,6 +250,12 @@ return {
 					enabled = vim.g.ai_cmp,
 				},
 			},
+            fuzzy = {
+                prebuilt_binaries = {
+                    -- only set a proxy in meta mode
+                    extra_curl_args = require("utils").meta_mode() and { "--proxy", "http://fwdproxy:8080" } or {},
+                },
+            },
 		},
 		opts_extend = { "sources.default" },
 	},
@@ -294,6 +299,18 @@ return {
 			require("tmux").setup()
 		end,
 	},
+	--    {
+	-- 	'EvWilson/spelunk.nvim',
+	-- 	dependencies = {
+	-- 		'nvim-lua/plenary.nvim',         -- For window drawing utilities
+	-- 		'nvim-telescope/telescope.nvim', -- Optional: for fuzzy search capabilities
+	-- 	},
+	-- 	config = function()
+	-- 		require('spelunk').setup({
+	-- 			enable_persist = true
+	-- 		})
+	-- 	end
+	-- },
 	{
 		"folke/flash.nvim",
 		lazy = false,
