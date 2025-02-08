@@ -42,7 +42,7 @@ vim.keymap.set("t", "<ESC>", "<C-\\><C-n>")
 vim.keymap.set("n", "<leader>q", ":qa<CR>", { desc = "Quick exit (close all buffers and exit)" })
 
 -- Execute code action
-vim.keymap.set({ "v", "n" }, "<leader>a", require("actions-preview").code_actions, { desc = "[C]ode [Actions]" })
+vim.keymap.set({ "v", "n" }, "<leader>a", vim.lsp.buf.code_action, { desc = "[C]ode [Actions]" })
 
 -- Center search results
 vim.keymap.set("n", "n", "nzz", { noremap = true, silent = true, desc = "Center search results" })

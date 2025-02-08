@@ -378,10 +378,6 @@ return {
 		enabled = not require("utils").meta_mode(),
 	},
 	{
-		-- Show the diff of the code action before applying it
-		"aznhe21/actions-preview.nvim",
-	},
-	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
 		init = function()
