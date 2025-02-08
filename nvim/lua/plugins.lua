@@ -82,80 +82,6 @@ return {
 		"nvim-tree/nvim-web-devicons",
 	},
 	{
-		"nvim-telescope/telescope.nvim",
-		config = function()
-			local actions = require("telescope.actions")
-			local trouble = require("trouble.sources.telescope")
-
-			require("telescope").setup({
-				defaults = {
-					-- layout_strategy = "vertical",
-					mappings = {
-						i = {
-							-- ["<esc>"] = actions.close,
-							["<c-d>"] = require("telescope.actions").delete_buffer,
-							-- After using live grep, use that to filter the search results
-							["<c-f>"] = actions.to_fuzzy_refine,
-
-							-- Send results to trouble menu
-							["<c-t>"] = trouble.open_with_trouble,
-
-							["<c-o>"] = function(prompt_bufnr)
-								local entry = require("telescope.actions.state").get_selected_entry();
-								require("telescope.actions").close(prompt_bufnr);
-								vim.cmd("Oil --float " .. vim.fn.fnamemodify(entry.path, ':h'));
-							end,
-						},
-						n = {
-							-- Send results to trouble menu
-							["<c-t>"] = trouble.open_with_trouble,
-						},
-					},
-				},
-				pickers = {
-					find_files = {
-						find_command = { "rg", "--files", "--no-require-git" },
-					},
-				},
-				extensions = {
-					fzf = {
-						fuzzy = true, -- false will only do exact matching
-						override_generic_sorter = true, -- override the generic sorter
-						override_file_sorter = true, -- override the file sorter
-						case_mode = "smart_case", -- or "ignore_case" or "respect_case"
-						-- the default case_mode is "smart_case"
-					},
-					["ui-select"] = {},
-					undo = {
-						ctxlen = 8,
-						mappings = {
-							-- Those are the defaults, keeping them here just as a reminder
-							i = {
-								["<cr>"] = require("telescope-undo.actions").restore,
-							},
-						},
-					},
-				},
-			})
-			-- To get fzf loaded and working with telescope, you need to call
-			-- load_extension, somewhere after setup function:
-			require("telescope").load_extension("fzf")
-
-			-- To get ui-select loaded and working with telescope, you need to call
-			-- load_extension, somewhere after setup function:
-			require("telescope").load_extension("ui-select")
-
-			-- Undo tree
-			require("telescope").load_extension("undo")
-		end,
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"debugloop/telescope-undo.nvim",
-			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-			{ "nvim-telescope/telescope-ui-select.nvim" },
-		},
-	},
-	{
 		"folke/trouble.nvim",
 		config = function()
 			require("trouble").setup({
@@ -304,7 +230,7 @@ return {
 				accept = {
 					-- experimental auto-brackets support
 					auto_brackets = {
-						enabled = true,
+						enabled = false,
 					},
 				},
 				menu = {
@@ -476,18 +402,6 @@ return {
 		opts = {},
 	},
 	{
-		"RRethy/vim-illuminate",
-		config = function()
-			require("illuminate").configure({
-				delay = 200,
-				large_file_cutoff = 2000,
-				large_file_overrides = {
-					providers = { "lsp" },
-				},
-			})
-		end,
-	},
-	{
 		"rmagatti/goto-preview",
 		config = function()
 			require("goto-preview").setup({
@@ -501,7 +415,6 @@ return {
 		branch = "harpoon2",
 		config = function()
 			require("harpoon").setup({})
-			-- require("telescope").load_extension("harpoon")
 			vim.cmd("highlight! HarpoonInactive guibg=NONE guifg=#63698c")
 			vim.cmd("highlight! HarpoonActive guibg=NONE guifg=white")
 			vim.cmd("highlight! HarpoonNumberActive guibg=NONE guifg=#7aa2f7")
@@ -600,14 +513,6 @@ return {
 			})
 		end,
 	},
-
-	-- Only needed when customizing the theme colors.
-	-- {
-	-- 	'nvim-treesitter/playground',
-	-- 	config = function()
-	-- 		require "nvim-treesitter.configs".setup{};
-	-- 	end,
-	-- },
 	{
 		"stevearc/oil.nvim",
 		opts = {
@@ -722,7 +627,6 @@ return {
 		name = "tailwind-tools",
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter",
-			"nvim-telescope/telescope.nvim",
 			"neovim/nvim-lspconfig",
 		},
 		opts = {}
@@ -788,8 +692,12 @@ return {
 			gitbrowse = { enabled = true },
 			statuscolumn = { enabled = true },
 			scope = { enabled = true },
-			words = { enabled = true },
+			words = {
+				enabled = true,
+				debounce = 100,
+			},
 			lazygit = { enabled = true },
+			picker = { enabled = true },
 			styles = {
 				notification = {
 					wo = { wrap = true } -- Wrap notifications
