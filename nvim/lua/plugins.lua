@@ -692,6 +692,9 @@ return {
 				enabled = true,
 				debounce = 100,
 			},
+			input = {
+				enabled = true,
+			},
 			lazygit = { enabled = true },
 			picker = { enabled = true },
 			styles = {
