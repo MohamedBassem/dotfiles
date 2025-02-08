@@ -253,6 +253,7 @@ return {
 				"rust-analyzer",
 				"tailwindcss-language-server",
 				"eslint-lsp",
+				"biome",
 			},
 		},
 	},
