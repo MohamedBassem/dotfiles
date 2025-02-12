@@ -61,7 +61,8 @@ vim.keymap.set("n", "<leader>sw", function() Snacks.picker.grep_word() end, { de
 vim.keymap.set("n", "<leader>sg", function() Snacks.picker.grep() end, { desc = "[S]earch by [G]rep" })
 vim.keymap.set("n", "<leader>sd", function() Snacks.picker.diagnostics() end, { desc = "[S]earch [D]iagnostics" })
 vim.keymap.set("n", "<leader>sr", function() Snacks.picker.resume() end, { desc = "[S]earch [R]resume" })
-vim.keymap.set("n", "<leader>su", function() Snacks.picker.undo() end, { desc = "[S]earch [Undo]" })
+vim.keymap.set("n", "<leader>su", function() Snacks.picker.undo() end, { desc = "[S]earch [U]ndo" })
+vim.keymap.set("n", "<leader>sp", function() Snacks.picker() end, { desc = "[S]earch [P]icker" })
 
 -- Enable zen mode
 vim.keymap.set("n", "<leader>zz", function() Snacks.zen.zoom() end, { desc = "Toggle ZenMode" })
