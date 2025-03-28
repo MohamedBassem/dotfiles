@@ -526,7 +526,7 @@ return {
 				["q"] = "actions.close",
 				["<ESC>"] = "actions.close",
 				["?"] = "actions.show_help",
-				["yp"] = "actions.copy_entry_path",
+				["cp"] = "actions.copy_entry_path",
 				["g?"] = false, -- The default help
 				["<C-c>"] = false, -- The default close
 			},
