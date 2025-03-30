@@ -42,8 +42,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
 		-- Jump to diagnostic
-		map("[d", vim.diagnostic.goto_prev, "Go to previous diagnostic")
-		map("]d", vim.diagnostic.goto_next, "Go to next diagnostic")
 		map("gl", vim.diagnostic.open_float, "Open diagnostic float")
 
 		-- Signature Help
@@ -78,6 +76,7 @@ vim.diagnostic.config({
 			[vim.diagnostic.severity.HINT] = '󰌵',
 		},
 	},
+	virtual_text = true,
 })
 
 local lsp_capabilities = vim.tbl_deep_extend(

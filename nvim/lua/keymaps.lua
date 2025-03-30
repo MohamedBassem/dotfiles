@@ -119,3 +119,8 @@ end, {
 
 vim.keymap.set({ "v", "n" }, "]]", function() Snacks.words.jump(vim.v.count1) end, { desc = "Jump to next word" })
 vim.keymap.set({ "v", "n" }, "[[", function() Snacks.words.jump(-vim.v.count1) end, { desc = "Jump to previous word" })
+
+vim.keymap.set('n', 'gL', function()
+  local new_config = not vim.diagnostic.config().virtual_lines
+  vim.diagnostic.config({ virtual_lines = new_config })
+end, { desc = 'Toggle diagnostic virtual_lines' })
