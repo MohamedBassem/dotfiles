@@ -60,3 +60,8 @@ vim.o.laststatus = 3 -- Make the status line global instead of per pane
 
 -- Always show signcolumn
 vim.opt.signcolumn = "yes"
+
+-- Folding (requires nvim 0.11)
+vim.o.foldmethod = 'expr'
+-- Default to treesitter folding
+vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'

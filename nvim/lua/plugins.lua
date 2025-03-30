@@ -73,12 +73,6 @@ return {
 		end,
 	},
 	{
-		"simrat39/symbols-outline.nvim",
-		config = function()
-			require("symbols-outline").setup()
-		end,
-	},
-	{
 		"nvim-tree/nvim-web-devicons",
 	},
 	{
@@ -503,13 +497,6 @@ return {
 		main = "render-markdown",
 		opts = {},
 		dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
-	},
-	{
-		"kevinhwang91/nvim-ufo",
-		dependencies = { "kevinhwang91/promise-async" },
-		config = function()
-			require("ufo").setup()
-		end,
 	},
 	{
 		"saecki/crates.nvim",
