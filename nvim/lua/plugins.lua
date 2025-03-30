@@ -133,16 +133,16 @@ return {
 			})
 		end,
 	},
-	-- {
-	-- 	'nvim-treesitter/nvim-treesitter-context',
-	-- 	config = function()
-	-- 		require'treesitter-context'.setup{
-	-- 			-- max_lines = 1,
-	-- 			multiline_threshold = 1,
-	-- 			trim_scope = 'inner'
-	-- 		};
-	-- 	end
-	-- },
+	{
+		'nvim-treesitter/nvim-treesitter-context',
+		config = function()
+			require'treesitter-context'.setup{
+				-- max_lines = 1,
+				multiline_threshold = 1,
+				trim_scope = 'inner'
+			};
+		end
+	},
 	{
 		"onsails/lspkind.nvim",
 		config = function()
