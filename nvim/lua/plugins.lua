@@ -332,20 +332,6 @@ return {
 			})
 		end,
 	},
-	{
-		"mhinz/vim-signify",
-		enabled = require("utils").meta_mode(),
-		config = function()
-			vim.cmd("highlight link SignifySignAdd GitSignsAdd")
-			vim.cmd("highlight link SignifySignChange GitSignsChange")
-			vim.cmd("highlight link SignifySignChangeDelete GitSignsChange")
-			vim.cmd("highlight link SignifySignDelete GitSignsDelete")
-			vim.cmd("highlight link SignifySignDeleteFirstLine GitSignsDelete")
-			vim.g.signify_sign_change = "│"
-			vim.g.signify_sign_add = "│"
-			vim.g.signify_sign_change_delete = "_"
-		end,
-	},
 	-- Navic provide the breadcrumbs in lualine
 	{
 		"SmiteshP/nvim-navic",
