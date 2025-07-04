@@ -136,10 +136,11 @@ return {
 	{
 		'nvim-treesitter/nvim-treesitter-context',
 		config = function()
-			require'treesitter-context'.setup{
+			require 'treesitter-context'.setup {
 				-- max_lines = 1,
 				multiline_threshold = 1,
-				trim_scope = 'inner'
+				trim_scope = 'inner',
+				max_lines = 3,
 			};
 		end
 	},
@@ -174,6 +175,7 @@ return {
 				"tailwindcss-language-server",
 				"eslint-lsp",
 				"biome",
+				"oxlint",
 			},
 		},
 	},
@@ -247,12 +249,12 @@ return {
 					enabled = vim.g.ai_cmp,
 				},
 			},
-            fuzzy = {
-                prebuilt_binaries = {
-                    -- only set a proxy in meta mode
-                    extra_curl_args = require("utils").meta_mode() and { "--proxy", "http://fwdproxy:8080" } or {},
-                },
-            },
+			fuzzy = {
+				prebuilt_binaries = {
+					-- only set a proxy in meta mode
+					extra_curl_args = require("utils").meta_mode() and { "--proxy", "http://fwdproxy:8080" } or {},
+				},
+			},
 		},
 		opts_extend = { "sources.default" },
 	},
@@ -697,6 +699,12 @@ return {
 				},
 			},
 		},
+	},
+	{
+		'almo7aya/openingh.nvim',
+		init = function()
+			vim.g.openingh_copy_to_register = true
+		end
 	},
 	{
 		dir = "/usr/share/fb-editor-support/nvim",
