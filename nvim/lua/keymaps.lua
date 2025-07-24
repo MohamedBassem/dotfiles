@@ -3,7 +3,7 @@ vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 
 -- Search and replace for the word under cursor
--- vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Search and replace word under cursor" })
+vim.keymap.set("n", "<leader>rs", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Search and replace word under cursor" })
 
 -- Better indentation in visual mode (keep selection)
 vim.keymap.set("v", "<", "<gv", { noremap = true })
@@ -92,9 +92,6 @@ end
 
 -- Oil
 vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
-
--- Crates
-vim.api.nvim_create_user_command('CratesPopup', 'lua require("crates").show_popup()', {})
 
 -- Trouble
 vim.keymap.set("n", "<leader>dx", function() require("trouble").toggle("workspace_diagnostics") end)

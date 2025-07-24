@@ -119,15 +119,6 @@ return {
 							file_status = true, -- displays file status (readonly status, modified status)
 							path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
 						},
-						{
-							"navic",
-							color_correction = "static",
-							padding = { left = 1, right = 0 },
-							navic_opts = {
-								depth_limit = 4,
-								click = true,
-							},
-						},
 					},
 				},
 			})
@@ -143,12 +134,6 @@ return {
 				max_lines = 3,
 			};
 		end
-	},
-	{
-		"onsails/lspkind.nvim",
-		config = function()
-			require("lspkind").init({})
-		end,
 	},
 
 	-- save my last cursor position
@@ -216,7 +201,10 @@ return {
 			-- Default list of enabled providers defined so that you can extend it
 			-- elsewhere in your config, without redefining it, due to `opts_extend`
 			sources = {
-				default = { 'lsp', 'path', 'snippets', 'buffer' },
+				default = { 'lsp', 'path', 'snippets', 'lazydev' },
+				providers = {
+					lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
+				},
 			},
 			cmdline = {
 				enabled = false,
@@ -290,26 +278,11 @@ return {
 		opts = {}, -- this is equalent to setup({}) function
 	},
 	{
-		"simrat39/rust-tools.nvim",
-	},
-	{
 		"aserowy/tmux.nvim",
 		config = function()
 			require("tmux").setup()
 		end,
 	},
-	--    {
-	-- 	'EvWilson/spelunk.nvim',
-	-- 	dependencies = {
-	-- 		'nvim-lua/plenary.nvim',         -- For window drawing utilities
-	-- 		'nvim-telescope/telescope.nvim', -- Optional: for fuzzy search capabilities
-	-- 	},
-	-- 	config = function()
-	-- 		require('spelunk').setup({
-	-- 			enable_persist = true
-	-- 		})
-	-- 	end
-	-- },
 	{
 		"folke/flash.nvim",
 		lazy = false,
@@ -334,46 +307,6 @@ return {
 			})
 		end,
 	},
-	-- Navic provide the breadcrumbs in lualine
-	{
-		"SmiteshP/nvim-navic",
-		config = function()
-			require("nvim-navic").setup({
-				highlight = true,
-				icons = {
-					File = " ",
-					Module = " ",
-					Namespace = " ",
-					Package = " ",
-					Class = " ",
-					Method = " ",
-					Property = " ",
-					Field = " ",
-					Constructor = " ",
-					Enum = " ",
-					Interface = " ",
-					Function = " ",
-					Variable = " ",
-					Constant = " ",
-					String = " ",
-					Number = " ",
-					Boolean = " ",
-					Array = " ",
-					Object = " ",
-					Key = " ",
-					Null = " ",
-					EnumMember = " ",
-					Struct = " ",
-					Event = " ",
-					Operator = " ",
-					TypeParameter = " ",
-				},
-				lsp = {
-					auto_attach = true,
-				},
-			})
-		end,
-	},
 	{
 		-- Detect tabstop and shiftwidth automatically
 		"tpope/vim-sleuth",
@@ -386,11 +319,7 @@ return {
 			vim.o.timeout = true
 			vim.o.timeoutlen = 300
 		end,
-		opts = {
-			-- your configuration comes here
-			-- or leave it empty to use the default settings
-			-- refer to the configuration section below
-		},
+		opts = {},
 	},
 	{
 		"nvim-treesitter/nvim-treesitter-textobjects",
@@ -490,21 +419,6 @@ return {
 		dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
 	},
 	{
-		"saecki/crates.nvim",
-		tag = "stable",
-		config = function()
-			require("crates").setup({
-				popup = {
-					autofocus = true,
-				},
-				null_ls = {
-					enabled = true,
-					name = "crates.nvim",
-				},
-			})
-		end,
-	},
-	{
 		"stevearc/oil.nvim",
 		opts = {
 			view_options = {
@@ -552,36 +466,6 @@ return {
 			})
 		end,
 	},
-	-- {
-	-- 	"zbirenbaum/copilot.lua",
-	-- 	enabled = not require("utils").meta_mode(),
-	-- 	opts = {
-	-- 		suggestion = {
-	-- 			-- Enable or disable suggestions
-	-- 			enabled = true,
-	-- 			-- Automatically accept suggestions
-	-- 			auto_trigger = true,
-	-- 			keymap = {
-	-- 				accept = "<C-J>",
-	-- 			},
-	-- 		}
-	-- 	},
-	-- },
-	-- {
-	-- 	"CopilotC-Nvim/CopilotChat.nvim",
-	-- 	enabled = not require("utils").meta_mode(),
-	-- 	branch = "canary",
-	-- 	dependencies = {
-	-- 		{ "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-	-- 		{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
-	-- 	},
-	-- 	build = "make tiktoken", -- Only on MacOS or Linux
-	-- 	opts = {
-	-- 		debug = true,        -- Enable debugging
-	-- 		-- See Configuration section for rest
-	-- 	},
-	-- 	-- See Commands section for default commands if you want to lazy load on them
-	-- },
 	{
 		"supermaven-inc/supermaven-nvim",
 		enabled = not require("utils").meta_mode(),
@@ -705,6 +589,9 @@ return {
 		init = function()
 			vim.g.openingh_copy_to_register = true
 		end
+	},
+	{
+		"sindrets/diffview.nvim",
 	},
 	{
 		dir = "/usr/share/fb-editor-support/nvim",

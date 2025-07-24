@@ -25,14 +25,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		--  the definition of its *type*, not where it was *defined*.
 		map("<leader>D", function() Snacks.picker.lsp_type_definitions() end, "Type [D]efinition")
 
-		-- Fuzzy find all the symbols in your current document.
-		--  Symbols are things like variables, functions, types, etc.
-		map("<leader>ds", function() Snacks.picker.lsp_symbols() end, "[D]ocument [S]ymbols")
-
-		-- Fuzzy find all the symbols in your current workspace.
-		--  Similar to document symbols, except searches over your entire project.
-		map("<leader>ws", function() Snacks.picker.lsp_workspace_symbols() end, "[W]orkspace [S]ymbols")
-
 		-- Opens a popup that displays documentation about the word under your cursor
 		--  See `:help K` for why this keymap.
 		map("K", vim.lsp.buf.hover, "Hover Documentation")
@@ -79,28 +71,12 @@ vim.diagnostic.config({
 	virtual_text = true,
 })
 
-local lsp_capabilities = vim.tbl_deep_extend(
-	'force',
-	require('blink.cmp').get_lsp_capabilities(),
-	{
-		textDocument = {
-			foldingRange = {
-				dynamicRegistration = false,
-				lineFoldingOnly = true
-			},
-		},
-	}
-)
-
-local default_setup = function(server)
-	require('lspconfig')[server].setup({
-		capabilities = lsp_capabilities,
-	})
-end
-
 require('mason-lspconfig').setup({
 	ensure_installed = {},
-	handlers = {
-		default_setup,
-	},
+	automatic_enable = {
+        exclude = {
+            "eslint",
+            "biome"
+        }
+    }
 })
