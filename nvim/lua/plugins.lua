@@ -236,6 +236,13 @@ return {
 				ghost_text = {
 					enabled = vim.g.ai_cmp,
 				},
+				list = {
+					selection = {
+						-- When using Enter as the accept key, enabling preselect makes it hard to sometimes
+						-- enter a new line. So for now, we're disabling it.
+						preselect = false,
+					}
+				}
 			},
 			fuzzy = {
 				prebuilt_binaries = {
