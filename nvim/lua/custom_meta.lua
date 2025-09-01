@@ -39,7 +39,7 @@ local lsp_capabilities = vim.tbl_deep_extend(
 -- Setup metalsp
 require("meta.lsp")
 require('meta.metamate').init({
-  filetypes = {"python", "rust", "cpp"}
+  filetypes = {"python", "rust", "cpp", "configerator"}
 })
 local servers = {
     "linttool@meta",
@@ -50,6 +50,7 @@ local servers = {
     "rust-analyzer@meta",
     "cppls@meta",
     "thriftlsp@meta",
+    "hhvm",
 }
 for _, lsp in ipairs(servers) do
   require("lspconfig")[lsp].setup {
