@@ -53,9 +53,10 @@ vim.keymap.set("n", "<leader>dr", vim.diagnostic.reset, { desc = "Reset diagnost
 
 -- Snacks Picker
 vim.keymap.set("n", "<leader>rf", function() Snacks.picker.recent() end, { desc = "Search [R]ecently opened [F]iles" })
-vim.keymap.set("n", "<leader><space>", function() Snacks.picker.smart() end,
+vim.keymap.set("n", "<leader><space>", function() Snacks.picker.buffers() end,
   { desc = "Find existing buffers" })
 vim.keymap.set("n", "<C-p>", function() Snacks.picker.files() end, {})
+vim.keymap.set("n", "<C-S-p>", function() Snacks.picker.commands() end, {})
 vim.keymap.set("n", "<leader>sf", function() Snacks.picker.files() end, { desc = "[S]earch [F]iles" })
 vim.keymap.set("n", "<leader>sw", function() Snacks.picker.grep_word() end, { desc = "[S]earch current [W]ord" })
 vim.keymap.set("n", "<leader>sg", function() Snacks.picker.grep() end, { desc = "[S]earch by [G]rep" })

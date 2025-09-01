@@ -9,10 +9,14 @@ return {
 				integrations = {
 					fidget = true,
 					mason = true,
-					navic = true,
 					lsp_trouble = true,
 					which_key = true,
 					blink_cmp = true,
+					grug_far = true,
+					harpoon = true,
+					snacks = {
+						enabled = true,
+					},
 				},
 			})
 			-- Make namespaces white (specially in cpp) to easily distinguish
@@ -51,6 +55,7 @@ return {
 					"lua",
 					"thrift",
 					"starlark",
+					"hack",
 				},
 				indent = {
 					enable = true,
@@ -125,15 +130,15 @@ return {
 		end,
 	},
 	{
-		'nvim-treesitter/nvim-treesitter-context',
+		"nvim-treesitter/nvim-treesitter-context",
 		config = function()
-			require 'treesitter-context'.setup {
-				-- max_lines = 1,
-				multiline_threshold = 1,
-				trim_scope = 'inner',
+			require("treesitter-context").setup({
 				max_lines = 3,
-			};
-		end
+				multiline_threshold = 2,
+				trim_scope = "inner",
+				mode = "topline",
+			})
+		end,
 	},
 
 	-- save my last cursor position
@@ -173,8 +178,8 @@ return {
 		},
 	},
 	{
-		'saghen/blink.cmp',
-		version = '*',
+		"saghen/blink.cmp",
+		version = "*",
 		event = "InsertEnter",
 
 		---@module 'blink.cmp'
@@ -182,10 +187,10 @@ return {
 		opts = {
 			keymap = {
 				preset = "default",
-				['<S-Tab>'] = { 'select_prev', 'fallback' },
-				['<Tab>'] = { 'select_next', 'fallback' },
-				["<C-l>"] = { 'show', 'fallback' },
-				["<CR>"] = { 'accept', 'fallback' },
+				["<S-Tab>"] = { "select_prev", "fallback" },
+				["<Tab>"] = { "select_next", "fallback" },
+				["<C-l>"] = { "show", "fallback" },
+				["<CR>"] = { "accept", "fallback" },
 			},
 
 			appearance = {
@@ -195,15 +200,15 @@ return {
 				use_nvim_cmp_as_default = false,
 				-- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
 				-- Adjusts spacing to ensure icons are aligned
-				nerd_font_variant = 'mono'
+				nerd_font_variant = "mono",
 			},
 
 			-- Default list of enabled providers defined so that you can extend it
 			-- elsewhere in your config, without redefining it, due to `opts_extend`
 			sources = {
-				default = { 'lsp', 'path', 'snippets', 'lazydev' },
+				default = { "lsp", "path", "snippets", "lazydev" },
 				providers = {
-					lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
+					lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
 				},
 			},
 			cmdline = {
@@ -225,7 +230,7 @@ return {
 						treesitter = { "lsp" },
 						columns = {
 							{ "kind_icon", "label", "label_description", gap = 1 },
-							{ "kind" }
+							{ "kind" },
 						},
 					},
 				},
@@ -241,8 +246,8 @@ return {
 						-- When using Enter as the accept key, enabling preselect makes it hard to sometimes
 						-- enter a new line. So for now, we're disabling it.
 						preselect = false,
-					}
-				}
+					},
+				},
 			},
 			fuzzy = {
 				prebuilt_binaries = {
@@ -343,7 +348,7 @@ return {
 			})
 		end,
 	},
-	{ 'echasnovski/mini.ai', version = false, opts = {} },
+	{ "echasnovski/mini.ai", version = false, opts = {} },
 	{
 		"ThePrimeagen/harpoon",
 		branch = "harpoon2",
@@ -413,17 +418,17 @@ return {
 		opts = {
 			library = {
 				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
-				{ path = "LazyVim",            words = { "LazyVim" } },
-				{ path = "snacks.nvim",        words = { "Snacks" } },
-				{ path = "lazy.nvim",          words = { "LazyVim" } },
+				{ path = "LazyVim", words = { "LazyVim" } },
+				{ path = "snacks.nvim", words = { "Snacks" } },
+				{ path = "lazy.nvim", words = { "LazyVim" } },
 			},
 		},
 	},
 	{
-		'MeanderingProgrammer/markdown.nvim',
+		"MeanderingProgrammer/markdown.nvim",
 		main = "render-markdown",
 		opts = {},
-		dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
 	},
 	{
 		"stevearc/oil.nvim",
@@ -444,12 +449,12 @@ return {
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
 	{
-		'MagicDuck/grug-far.nvim',
+		"MagicDuck/grug-far.nvim",
 		config = function()
-			require('grug-far').setup({
+			require("grug-far").setup({
 				debounceMs = 100,
-			});
-		end
+			})
+		end,
 	},
 	{
 		"dstein64/nvim-scrollview",
@@ -465,11 +470,11 @@ return {
 				winblend_gui = 50,
 
 				-- Customizing the different symbols
-				diagnostics_warn_symbol = '│',
-				diagnostics_hint_symbol = '│',
-				diagnostics_info_symbol = '│',
-				diagnostics_error_symbol = '│',
-				search_symbol = '│',
+				diagnostics_warn_symbol = "│",
+				diagnostics_hint_symbol = "│",
+				diagnostics_info_symbol = "│",
+				diagnostics_error_symbol = "│",
+				search_symbol = "│",
 			})
 		end,
 	},
@@ -512,7 +517,7 @@ return {
 			"nvim-treesitter/nvim-treesitter",
 			"neovim/nvim-lspconfig",
 		},
-		opts = {}
+		opts = {},
 	},
 	{
 		"folke/snacks.nvim",
@@ -536,14 +541,14 @@ return {
 				zoom = {
 					win = {
 						width = 0.8,
-					}
-				}
+					},
+				},
 			},
 			indent = {
 				enabled = true,
 				animate = {
 					enabled = false,
-				}
+				},
 			},
 			notifier = {
 				enabled = true,
@@ -560,11 +565,11 @@ return {
 					end,
 				},
 				sections = {
-					{ section = "header",       align = "left" },
-					{ title = "MRU ",           file = vim.fn.fnamemodify(".", ":~"), padding = 1 },
-					{ section = "recent_files", cwd = true,                           limit = 8,  padding = 1 },
-					{ title = "MRU",            padding = 1 },
-					{ section = "recent_files", limit = 8,                            padding = 1 },
+					{ section = "header", align = "left" },
+					{ title = "MRU ", file = vim.fn.fnamemodify(".", ":~"), padding = 1 },
+					{ section = "recent_files", cwd = true, limit = 8, padding = 1 },
+					{ title = "MRU", padding = 1 },
+					{ section = "recent_files", limit = 8, padding = 1 },
 					-- { title = "Bookmarks", padding = 1 },
 					-- { section = "keys" },
 				},
@@ -586,16 +591,16 @@ return {
 			picker = { enabled = true },
 			styles = {
 				notification = {
-					wo = { wrap = true } -- Wrap notifications
+					wo = { wrap = true }, -- Wrap notifications
 				},
 			},
 		},
 	},
 	{
-		'almo7aya/openingh.nvim',
+		"almo7aya/openingh.nvim",
 		init = function()
 			vim.g.openingh_copy_to_register = true
-		end
+		end,
 	},
 	{
 		"sindrets/diffview.nvim",
