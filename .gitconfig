@@ -54,7 +54,7 @@
 [user]
   email = me@mbassem.com
   name = MohamedBassem
-  signingkey = /Users/mohamedbassem/.ssh/id_rsa.pub
+  signingkey = ~/.ssh/id_rsa.pub
 
 [alias]
   ls = log --pretty=format:"%C(green)%h\\ %C(yellow)[%ad]%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
