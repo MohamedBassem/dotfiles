@@ -4,8 +4,8 @@
 brew install git htop tmux curl
 
 #Cloning dotfiles
-ls -sf "`pwd`/fish" ~/.config/fish
-ls -sf "`pwd`/nvim" ~/.config/nvim
-ls -sf "`pwd`/.gitignore" ~/.gitignore
-ls -sf "`pwd`/.gitconfig" ~/.gitconfig
-ls -sf "`pwd`/.tmux.conf" ~/.tmux.conf
+ln -sf "`pwd`/fish" ~/.config/fish
+ln -sf "`pwd`/nvim" ~/.config/nvim
+ln -sf "`pwd`/.gitignore" ~/.gitignore
+ln -sf "`pwd`/.gitconfig" ~/.gitconfig
+ln -sf "`pwd`/.tmux.conf" ~/.tmux.conf
