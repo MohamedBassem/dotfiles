@@ -12,4 +12,12 @@ else
   context_str="n/a"
 fi
 
-printf '🖥  %s | 🤖 %s | 📊 %s | 📁 %s' "$host" "$model" "$context_str" "$cwd"
+# ANSI colors
+cyan='\033[36m'
+green='\033[32m'
+yellow='\033[33m'
+blue='\033[34m'
+dim='\033[2m'
+reset='\033[0m'
+
+printf "${cyan}🖥  %s ${dim}|${reset} ${green}🤖 %s ${dim}|${reset} ${yellow}📊 %s ${dim}|${reset} ${blue}📁 %s${reset}" "$host" "$model" "$context_str" "$cwd"
