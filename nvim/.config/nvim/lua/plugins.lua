@@ -155,6 +155,7 @@ return {
 				"eslint-lsp",
 				"biome",
 				"oxlint",
+				"oxfmt",
 			},
 		},
 	},
@@ -250,7 +251,7 @@ return {
 	{
 		"nvimtools/none-ls.nvim",
 		event = { "BufReadPre", "BufNewFile" },
-		dependencies = { "mason.nvim" },
+		dependencies = { "mason.nvim", "nvimtools/none-ls-extras.nvim" },
 		opts = function()
 			local nls = require("null-ls")
 			return {
@@ -266,9 +267,39 @@ return {
 					nls.builtins.formatting.stylua,
 					nls.builtins.formatting.shfmt,
 
-					-- Typescript
-					-- nls.builtins.diagnostics.tsc,
-					nls.builtins.formatting.prettier,
+					-- Typescript / web
+					nls.builtins.formatting.biome.with({
+						condition = function(utils)
+							return utils.root_has_file({ "biome.json", "biome.jsonc" })
+						end,
+					}),
+					require("none-ls.diagnostics.oxlint").with({
+						condition = function(utils)
+							return utils.root_has_file({ ".oxlintrc.json" })
+						end,
+					}),
+					require("none-ls.formatting.oxfmt").with({
+						condition = function(utils)
+							return utils.root_has_file({ ".oxlintrc.json", "oxfmt.toml" })
+						end,
+					}),
+					nls.builtins.formatting.prettier.with({
+						condition = function(utils)
+							return utils.root_has_file({
+								".prettierrc",
+								".prettierrc.json",
+								".prettierrc.yaml",
+								".prettierrc.yml",
+								".prettierrc.js",
+								".prettierrc.cjs",
+								".prettierrc.mjs",
+								".prettierrc.toml",
+								"prettier.config.js",
+								"prettier.config.cjs",
+								"prettier.config.mjs",
+							})
+						end,
+					}),
 				},
 			}
 		end,
@@ -579,6 +610,7 @@ return {
 			},
 			lazygit = { enabled = true },
 			picker = { enabled = true },
+			terminal = { enabled = true },
 			styles = {
 				notification = {
 					wo = { wrap = true }, -- Wrap notifications
