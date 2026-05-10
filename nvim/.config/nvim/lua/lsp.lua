@@ -74,9 +74,6 @@ vim.diagnostic.config({
 require('mason-lspconfig').setup({
 	ensure_installed = {},
 	automatic_enable = {
-        exclude = {
-            "eslint",
-            "biome"
-        }
+        exclude = {}
     }
 })
