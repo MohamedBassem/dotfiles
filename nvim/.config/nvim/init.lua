@@ -48,6 +48,7 @@ require("lazy").setup(
 require("options")
 require("keymaps")
 require("autocmds")
+require("commands")
 require("lsp")
 if require("utils").meta_mode() then
 	require("custom_meta")
