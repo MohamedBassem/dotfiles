@@ -628,6 +628,29 @@ return {
 		"sindrets/diffview.nvim",
 	},
 	{
+		'saecki/crates.nvim',
+		tag = 'stable',
+		config = function()
+			require('crates').setup({
+				lsp = {
+					enabled = true,
+					actions = true,
+					completion = true,
+					hover = true,
+				},
+			})
+		end,
+	},
+	{
+		'mrcjkb/rustaceanvim',
+		-- To avoid being surprised by breaking changes,
+		-- I recommend you set a version range
+		version = '^9',
+		-- This plugin implements proper lazy-loading (see :h lua-plugin-lazy).
+		-- No need for lazy.nvim to lazy-load it.
+		lazy = false,
+	},
+	{
 		dir = "/usr/share/fb-editor-support/nvim",
 		-- dir = "~/fbsource/fbcode/editor_support/nvim",
 		enabled = require("utils").meta_mode(),
