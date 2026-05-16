@@ -331,8 +331,6 @@ return {
 	},
 	{
 		"lewis6991/gitsigns.nvim",
-		-- We'll use vim-signify in meta as gitsigns doesn't support mercurial
-		enabled = not require("utils").meta_mode(),
 		config = function()
 			require("gitsigns").setup({
 				current_line_blame = true,
@@ -342,7 +340,6 @@ return {
 	{
 		-- Detect tabstop and shiftwidth automatically
 		"tpope/vim-sleuth",
-		enabled = not require("utils").meta_mode(),
 	},
 	{
 		"folke/which-key.nvim",
@@ -501,7 +498,6 @@ return {
 	},
 	{
 		"supermaven-inc/supermaven-nvim",
-		enabled = not require("utils").meta_mode(),
 		config = function()
 			require("supermaven-nvim").setup({
 				disable_keymaps = true,
@@ -675,18 +671,5 @@ return {
 		-- This plugin implements proper lazy-loading (see :h lua-plugin-lazy).
 		-- No need for lazy.nvim to lazy-load it.
 		lazy = false,
-	},
-	{
-		dir = "/usr/share/fb-editor-support/nvim",
-		-- dir = "~/fbsource/fbcode/editor_support/nvim",
-		enabled = require("utils").meta_mode(),
-		name = "meta.nvim",
-		opts = {
-			lsp = {
-				vscode_extensions = {
-					shim_show_status_to_progress_handler = true,
-				},
-			},
-		},
-	},
+	}
 }

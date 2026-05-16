@@ -1,9 +1,5 @@
 local M = {}
 
-function M.meta_mode()
-	return vim.fn.isdirectory("/usr/share/fb-editor-support/nvim") == 1
-end
-
 -- A function that returns the list of harpoon files to use in lualine
 -- Copied from: https://github.com/ThePrimeagen/harpoon/issues/352#issuecomment-1873053256
 -- TODO: Remove when harpoon lands official support
