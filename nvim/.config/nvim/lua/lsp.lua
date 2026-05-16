@@ -1,5 +1,5 @@
-vim.api.nvim_create_autocmd('LspAttach', {
-	desc = 'LSP actions',
+vim.api.nvim_create_autocmd("LspAttach", {
+	desc = "LSP actions",
 	callback = function(event)
 		local client = vim.lsp.get_client_by_id(event.data.client_id)
 		local bufnr = event.buf
@@ -11,19 +11,27 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		-- Jump to the definition of the word under your cursor.
 		--  This is where a variable was first declared, or where a function is defined, etc.
 		--  To jump back, press <C-t>.
-		map("gd", function() Snacks.picker.lsp_definitions() end, "[G]oto [D]efinition")
+		map("gd", function()
+			Snacks.picker.lsp_definitions()
+		end, "[G]oto [D]efinition")
 
 		-- Find references for the word under your cursor.
-		map("gr", function() Snacks.picker.lsp_references() end, "[G]oto [R]eferences")
+		map("gr", function()
+			Snacks.picker.lsp_references()
+		end, "[G]oto [R]eferences")
 
 		-- Jump to the implementation of the word under your cursor.
 		--  Useful when your language has ways of declaring types without an actual implementation.
-		map("gI", function() Snacks.picker.lsp_implementations() end, "[G]oto [I]mplementation")
+		map("gI", function()
+			Snacks.picker.lsp_implementations()
+		end, "[G]oto [I]mplementation")
 
 		-- Jump to the type of the word under your cursor.
 		--  Useful when you're not sure what type a variable is and you want to see
 		--  the definition of its *type*, not where it was *defined*.
-		map("<leader>D", function() Snacks.picker.lsp_type_definitions() end, "Type [D]efinition")
+		map("<leader>D", function()
+			Snacks.picker.lsp_type_definitions()
+		end, "Type [D]efinition")
 
 		-- Opens a popup that displays documentation about the word under your cursor
 		--  See `:help K` for why this keymap.
@@ -51,11 +59,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		end
 
 		-- Prefer LSP folding if client supports it
-		if client and client:supports_method('textDocument/foldingRange') then
+		if client and client:supports_method("textDocument/foldingRange") then
 			local win = vim.api.nvim_get_current_win()
-			vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
+			vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
 		end
-	end
+	end,
 })
 
 vim.diagnostic.config({
@@ -64,19 +72,20 @@ vim.diagnostic.config({
 		text = {
 			[vim.diagnostic.severity.ERROR] = "✘",
 			[vim.diagnostic.severity.WARN] = "▲",
-			[vim.diagnostic.severity.INFO] = '',
-			[vim.diagnostic.severity.HINT] = '󰌵',
+			[vim.diagnostic.severity.INFO] = "",
+			[vim.diagnostic.severity.HINT] = "󰌵",
 		},
 	},
 	virtual_text = true,
 })
 
-require('mason-lspconfig').setup({
+require("mason-lspconfig").setup({
 	ensure_installed = {},
 	automatic_enable = {
-        exclude = {
-            "eslint",
-            "biome"
-        }
-    }
+		exclude = {
+			"eslint",
+			"biome",
+			"rust_analyzer",
+		},
+	},
 })

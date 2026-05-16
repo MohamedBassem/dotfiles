@@ -609,7 +609,33 @@ return {
 				enabled = true,
 			},
 			lazygit = { enabled = true },
-			picker = { enabled = true },
+			picker = {
+				enabled = true,
+				sources = {
+					commands = {
+						confirm = function(picker, item)
+							picker:close()
+							if not (item and item.cmd) then
+								return
+							end
+
+							local nargs = item.command and item.command.nargs
+							if nargs == "0" then
+								vim.schedule(function()
+									vim.cmd(item.cmd)
+								end)
+							else
+								vim.schedule(function()
+									vim.api.nvim_input(":")
+									vim.schedule(function()
+										vim.fn.setcmdline(item.cmd .. " ")
+									end)
+								end)
+							end
+						end,
+					},
+				},
+			},
 			terminal = { enabled = true },
 			styles = {
 				notification = {
@@ -628,10 +654,10 @@ return {
 		"sindrets/diffview.nvim",
 	},
 	{
-		'saecki/crates.nvim',
-		tag = 'stable',
+		"saecki/crates.nvim",
+		tag = "stable",
 		config = function()
-			require('crates').setup({
+			require("crates").setup({
 				lsp = {
 					enabled = true,
 					actions = true,
@@ -642,10 +668,10 @@ return {
 		end,
 	},
 	{
-		'mrcjkb/rustaceanvim',
+		"mrcjkb/rustaceanvim",
 		-- To avoid being surprised by breaking changes,
 		-- I recommend you set a version range
-		version = '^9',
+		version = "^9",
 		-- This plugin implements proper lazy-loading (see :h lua-plugin-lazy).
 		-- No need for lazy.nvim to lazy-load it.
 		lazy = false,

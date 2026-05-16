@@ -27,17 +27,12 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
--- Auto format on save
---vim.api.nvim_create_autocmd("BufWritePre", {
---	command = [[lua vim.lsp.buf.format()]],
---})
-
 -- [[ Highlight on yank ]]
-local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
-vim.api.nvim_create_autocmd('TextYankPost', {
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-  group = highlight_group,
-  pattern = '*',
+local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
+	callback = function()
+		vim.highlight.on_yank()
+	end,
+	group = highlight_group,
+	pattern = "*",
 })
