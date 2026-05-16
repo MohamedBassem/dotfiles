@@ -28,33 +28,47 @@ return {
 		branch = "main",
 		build = ":TSUpdate",
 		config = function()
+			local parsers = {
+				"bash",
+				"c",
+				"cpp",
+				"rust",
+				"python",
+				"javascript",
+				"typescript",
+				"tsx",
+				"dockerfile",
+				"go",
+				"java",
+				"json",
+				"markdown",
+				"markdown_inline",
+				"toml",
+				"yaml",
+				"html",
+				"css",
+				"lua",
+				"thrift",
+				"starlark",
+				"hack",
+			}
+			require("nvim-treesitter").install(parsers)
+
 			vim.api.nvim_create_autocmd("FileType", {
-				pattern = { "*" },
 				callback = function(args)
-					local ft = vim.bo[args.buf].filetype
-					local lang = vim.treesitter.language.get_lang(ft)
-					if not vim.treesitter.language.add(lang) then
-						local available = vim.g.ts_available or require("nvim-treesitter").get_available()
-						if not vim.g.ts_available then
-							vim.g.ts_available = available
-						end
-						if vim.tbl_contains(available, lang) then
-							require("nvim-treesitter").install(lang)
-						end
+					local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
+					if not lang or not pcall(vim.treesitter.start, args.buf, lang) then
+						return
 					end
-					if vim.treesitter.language.add(lang) then
-						vim.treesitter.start(args.buf, lang)
-						if vim.treesitter.query.get(lang, "indents") then
-							vim.bo.indentexpr = "v:lua.require('nvim-treesitter').indentexpr()"
-						end
-						if vim.treesitter.query.get(lang, "folds") then
-							vim.wo.foldmethod = "expr"
-							vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-						end
+					if vim.treesitter.query.get(lang, "indents") then
+						vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+					end
+					if vim.treesitter.query.get(lang, "folds") then
+						vim.wo.foldmethod = "expr"
+						vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 					end
 				end,
 			})
-			require("nvim-treesitter").install()
 		end,
 	},
 	{
@@ -193,8 +207,7 @@ return {
 				},
 			},
 			cmdline = {
-				enabled = false,
-				sources = {},
+				enabled = true,
 			},
 			signature = {
 				enabled = true,
@@ -329,6 +342,19 @@ return {
 					require("flash").jump()
 				end,
 				desc = "Flash",
+			},
+			{
+				"<CR>",
+				mode = { "n", "o", "x" },
+				function()
+					require("flash").treesitter({
+						actions = {
+							["<CR>"] = "next",
+							["<BS>"] = "prev",
+						},
+					})
+				end,
+				desc = "Treesitter Incremental Selection",
 			},
 		},
 	},
