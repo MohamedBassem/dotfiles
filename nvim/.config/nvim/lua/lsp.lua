@@ -79,13 +79,5 @@ vim.diagnostic.config({
 	virtual_text = true,
 })
 
-require("mason-lspconfig").setup({
-	ensure_installed = {},
-	automatic_enable = {
-		exclude = {
-			"eslint",
-			"biome",
-			"rust_analyzer",
-		},
-	},
-})
+-- Enable the LSPs here
+vim.lsp.enable('lua_ls')

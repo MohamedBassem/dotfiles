@@ -156,7 +156,6 @@ return {
 		dependencies = {
 			-- LSP Support
 			{ "williamboman/mason.nvim" },
-			{ "williamboman/mason-lspconfig.nvim" },
 		},
 	},
 	{
