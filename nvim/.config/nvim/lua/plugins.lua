@@ -19,14 +19,6 @@ return {
 					},
 				},
 			})
-			-- Make namespaces white (specially in cpp) to easily distinguish
-			-- the actual type from its namespace.
-			--  vim.api.nvim_set_hl(0, "@namespace", { link = "@variable" })
-			--  vim.api.nvim_set_hl(0, "@type.qualifier", { link = "@keyword" })
-			--  vim.api.nvim_set_hl(0, "@type.builtin", { link = "@keyword" })
-			--  vim.api.nvim_set_hl(0, "@constructor", { link = "@function.call" })
-			--  vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
-
 			vim.cmd.colorscheme("catppuccin")
 		end,
 	},
@@ -240,52 +232,51 @@ return {
 				},
 			},
 			fuzzy = {
-				prebuilt_binaries = {
-					-- only set a proxy in meta mode
-					extra_curl_args = require("utils").meta_mode() and { "--proxy", "http://fwdproxy:8080" } or {},
-				},
+				prebuilt_binaries = {},
 			},
 		},
 		opts_extend = { "sources.default" },
 	},
 	{
-		"nvimtools/none-ls.nvim",
+		"stevearc/conform.nvim",
 		event = { "BufReadPre", "BufNewFile" },
-		dependencies = { "mason.nvim", "nvimtools/none-ls-extras.nvim" },
 		opts = function()
-			local nls = require("null-ls")
-			return {
-				root_dir = require("null-ls.utils").root_pattern(
-					".null-ls-root",
-					".neoconf.json",
-					"Makefile",
-					".git",
-					".hg"
-				),
-				sources = {
-					-- Lua
-					nls.builtins.formatting.stylua,
-					nls.builtins.formatting.shfmt,
+			local function has_root_file(ctx, names)
+				return vim.fs.find(names, { path = ctx.filename, upward = true })[1] ~= nil
+			end
 
-					-- Typescript / web
-					nls.builtins.formatting.biome.with({
+			local web_formatters = { "oxfmt", "prettier", stop_after_first = true }
+
+			return {
+				formatters_by_ft = {
+					lua = { "stylua" },
+					sh = { "shfmt" },
+					bash = { "shfmt" },
+					zsh = { "shfmt" },
+					rust = { "rustfmt", lsp_format = "fallback" },
+					javascript = web_formatters,
+					javascriptreact = web_formatters,
+					typescript = web_formatters,
+					typescriptreact = web_formatters,
+					json = web_formatters,
+					jsonc = web_formatters,
+					css = web_formatters,
+					html = web_formatters,
+					yaml = web_formatters,
+					markdown = web_formatters,
+				},
+				default_format_opts = {
+					lsp_format = "fallback",
+				},
+				formatters = {
+					oxfmt = {
 						condition = function(utils)
-							return utils.root_has_file({ "biome.json", "biome.jsonc" })
+							return has_root_file(utils, { ".oxlintrc.json", "oxfmt.toml" })
 						end,
-					}),
-					require("none-ls.diagnostics.oxlint").with({
+					},
+					prettier = {
 						condition = function(utils)
-							return utils.root_has_file({ ".oxlintrc.json" })
-						end,
-					}),
-					require("none-ls.formatting.oxfmt").with({
-						condition = function(utils)
-							return utils.root_has_file({ ".oxlintrc.json", "oxfmt.toml" })
-						end,
-					}),
-					nls.builtins.formatting.prettier.with({
-						condition = function(utils)
-							return utils.root_has_file({
+							return has_root_file(utils, {
 								".prettierrc",
 								".prettierrc.json",
 								".prettierrc.yaml",
@@ -299,9 +290,22 @@ return {
 								"prettier.config.mjs",
 							})
 						end,
-					}),
+					},
 				},
 			}
+		end,
+	},
+	{
+		"mfussenegger/nvim-lint",
+		event = { "BufReadPost", "BufWritePost", "InsertLeave" },
+		config = function()
+			vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost", "InsertLeave" }, {
+				callback = function(args)
+					if vim.bo.modifiable then
+						require("lint").try_lint()
+					end
+				end,
+			})
 		end,
 	},
 	{
@@ -671,5 +675,5 @@ return {
 		-- This plugin implements proper lazy-loading (see :h lua-plugin-lazy).
 		-- No need for lazy.nvim to lazy-load it.
 		lazy = false,
-	}
+	},
 }

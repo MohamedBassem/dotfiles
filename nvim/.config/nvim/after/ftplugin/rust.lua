@@ -4,7 +4,7 @@ local bufnr = vim.api.nvim_get_current_buf()
 vim.api.nvim_create_autocmd("BufWritePre", {
   buffer = bufnr,
   callback = function()
-    vim.lsp.buf.format({ async = false, timeout_ms = 3000 })
+    require("conform").format({ bufnr = bufnr, async = false, timeout_ms = 3000 })
   end,
 })
 

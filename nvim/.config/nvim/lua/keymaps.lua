@@ -22,7 +22,7 @@ vim.keymap.set("n", "Y", "yg$", { remap = true })
 
 -- LSP Format
 vim.keymap.set("n", "<C-f>", function()
-	vim.lsp.buf.format({ async = true })
+	require("conform").format({ async = true })
 end)
 
 -- Buffer movements
