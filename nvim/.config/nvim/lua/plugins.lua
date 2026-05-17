@@ -637,6 +637,9 @@ return {
 			picker = {
 				enabled = true,
 				sources = {
+					files = {
+						hidden = true,
+					},
 					commands = {
 						confirm = function(picker, item)
 							picker:close()

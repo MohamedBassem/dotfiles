@@ -51,6 +51,17 @@ vim.keymap.set("n", "<leader>q", ":qa<CR>", { desc = "Quick exit (close all buff
 -- Execute code action
 vim.keymap.set({ "v", "n" }, "<leader>a", vim.lsp.buf.code_action, { desc = "[C]ode [Actions]" })
 
+-- Import symbol under cursor
+vim.keymap.set({ "n", "i" }, "<M-i>", function()
+	vim.lsp.buf.code_action({
+		apply = true,
+		context = { only = { "quickfix" }, diagnostics = {} },
+		filter = function(a)
+			return a.title:match("^Import")
+		end,
+	})
+end, { desc = "Import symbol under cursor" })
+
 -- Center search results
 vim.keymap.set("n", "n", "nzz", { noremap = true, silent = true, desc = "Center search results" })
 vim.keymap.set("n", "N", "Nzz", { noremap = true, silent = true })
