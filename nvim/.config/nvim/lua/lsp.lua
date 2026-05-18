@@ -53,9 +53,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			client.server_capabilities.semanticTokensProvider = nil
 		end
 
-		-- Enable inlay hints if it's supported by the LSP
+		-- Keep inlay hints opt-in per buffer.
 		if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-			vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+			map("<leader>uh", function()
+				local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
+				vim.lsp.inlay_hint.enable(not enabled, { bufnr = bufnr })
+			end, "Toggle Inlay [H]ints")
 		end
 
 		-- Prefer LSP folding if client supports it

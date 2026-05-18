@@ -46,6 +46,7 @@ return {
 				"toml",
 				"yaml",
 				"html",
+				"tmux",
 				"css",
 				"lua",
 				"thrift",
