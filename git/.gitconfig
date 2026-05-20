@@ -1,7 +1,7 @@
 [core]
   excludesfile = ~/.gitignore
   editor = nvim
-  pager = delta
+  pager = "hunk pager"
 
 
 [delta]
