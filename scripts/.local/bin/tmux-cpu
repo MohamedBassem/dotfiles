@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+case "$(uname -s)" in
+	Darwin)
+		cpu_line=$(top -l 1 -n 0 | awk '/CPU usage/ { print }')
+		idle=$(printf '%s\n' "$cpu_line" | awk -F'[, ]+' '{ for (i = 1; i <= NF; i++) if ($i == "idle") { gsub("%", "", $(i - 1)); print $(i - 1) } }')
+		awk -v idle="${idle:-100}" 'BEGIN { printf "CPU %.0f%%", 100 - idle }'
+		;;
+	Linux)
+		state_file="${TMPDIR:-/tmp}/tmux-cpu-${UID}.stat"
+		read -r _ user nice system idle iowait irq softirq steal _ </proc/stat
+		idle_all=$((idle + iowait))
+		non_idle=$((user + nice + system + irq + softirq + steal))
+		total=$((idle_all + non_idle))
+
+		if [[ -r "$state_file" ]]; then
+			read -r previous_total previous_idle <"$state_file"
+		else
+			previous_total=$total
+			previous_idle=$idle_all
+		fi
+
+		printf '%s %s\n' "$total" "$idle_all" >"$state_file"
+
+		total_delta=$((total - previous_total))
+		idle_delta=$((idle_all - previous_idle))
+		if ((total_delta <= 0)); then
+			printf 'CPU --%%'
+		else
+			awk -v total="$total_delta" -v idle="$idle_delta" 'BEGIN { printf "CPU %.0f%%", (100 * (total - idle)) / total }'
+		fi
+		;;
+	*)
+		printf 'CPU --%%'
+		;;
+esac
