@@ -46,4 +46,7 @@ if [ -d "$DOTFILES/.fonts" ]; then
   cp "$DOTFILES/.fonts/"* ~/Library/Fonts/
 fi
 
+# Install TPM
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
 echo "Done!"
