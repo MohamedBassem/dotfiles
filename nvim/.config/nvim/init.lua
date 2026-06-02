@@ -45,6 +45,7 @@ require("lazy").setup(
 	}
 )
 
+require("commands")
 require("options")
 require("keymaps")
 require("autocmds")
