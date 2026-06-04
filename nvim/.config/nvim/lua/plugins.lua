@@ -637,6 +637,20 @@ return {
 			lazygit = { enabled = true },
 			picker = {
 				enabled = true,
+				layout = {
+					-- Use a wide layout on big screens, and a wider vertical
+					-- (stacked) one once the window gets narrow.
+					preset = function()
+						return vim.o.columns >= 200 and "default" or "wide_vertical"
+					end,
+				},
+				layouts = {
+					-- Same as the built-in "vertical" preset, just wider.
+					wide_vertical = {
+						preset = "vertical",
+						layout = { width = 0.9, height = 0.9 },
+					},
+				},
 				sources = {
 					files = {
 						hidden = true,
@@ -704,5 +718,18 @@ return {
 		-- This plugin implements proper lazy-loading (see :h lua-plugin-lazy).
 		-- No need for lazy.nvim to lazy-load it.
 		lazy = false,
+	},
+	{
+		"hedyhli/outline.nvim",
+		config = function()
+			require("outline").setup {
+				-- Your setup opts here (leave empty to use defaults)
+			}
+		end,
+	},
+	{
+		"chrisgrieser/nvim-lsp-endhints",
+		event = "LspAttach",
+		opts = {}, -- required, even if empty
 	},
 }
