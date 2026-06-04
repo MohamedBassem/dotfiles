@@ -3,6 +3,9 @@
   editor = nvim
   pager = "hunk pager"
 
+[pager]
+  ls = less -R
+
 
 [delta]
     features = side-by-side line-numbers arctic-fox
