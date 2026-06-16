@@ -25,7 +25,7 @@ for target in \
   ~/.gitconfig ~/.gitignore \
   ~/.tmux.conf ~/.vimrc ~/.bashrc ~/.bash_aliases \
   ~/.wezterm.lua ~/.aerospace.toml \
-  ~/.config/nvim ~/.config/fish ~/.config/ghostty \
+  ~/.config/nvim ~/.config/fish ~/.config/ghostty ~/.config/hunk/config.toml \
   ~/.local/bin/tmux-sessionizer \
   ~/.zprezto ~/.zshrc ~/.zpreztorc ~/.zshenv ~/.zprofile ~/.zlogin ~/.zlogout; do
   [ -L "$target" ] && rm "$target"
@@ -33,7 +33,7 @@ for target in \
 done
 
 # Stow each package
-PACKAGES=(git tmux vim bash wezterm aerospace nvim fish ghostty scripts zsh)
+PACKAGES=(git tmux vim bash wezterm aerospace nvim fish ghostty scripts zsh hunk)
 echo "Stowing packages: ${PACKAGES[*]}"
 for pkg in "${PACKAGES[@]}"; do
   stow -d "$DOTFILES" -t "$HOME" "$pkg"
