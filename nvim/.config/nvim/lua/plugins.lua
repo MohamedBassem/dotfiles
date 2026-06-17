@@ -718,6 +718,30 @@ return {
 		-- This plugin implements proper lazy-loading (see :h lua-plugin-lazy).
 		-- No need for lazy.nvim to lazy-load it.
 		lazy = false,
+
+		init = function()
+			vim.g.rustaceanvim = {
+				-- LSP configuration
+				server = {
+					settings = {
+						-- rust-analyzer language server configuration
+						["rust-analyzer"] = {
+							assist = {
+								importGranularity = "module",
+								importPrefix = "by_self",
+							},
+							cargo = {
+								loadOutDirsFromCheck = true,
+								targetDir = true,
+							},
+							procMacro = {
+								enable = true,
+							},
+						},
+					},
+				},
+			}
+		end,
 	},
 	{
 		"hedyhli/outline.nvim",
