@@ -33,18 +33,30 @@ for target in \
 done
 
 # Stow each package
-PACKAGES=(git tmux vim bash wezterm aerospace nvim fish ghostty scripts zsh hunk)
+PACKAGES=(git tmux vim wezterm aerospace nvim fish ghostty scripts zsh hunk)
 echo "Stowing packages: ${PACKAGES[*]}"
 for pkg in "${PACKAGES[@]}"; do
   stow -d "$DOTFILES" -t "$HOME" "$pkg"
 done
 
-# Copy fonts
-if [ -d "$DOTFILES/.fonts" ]; then
+# Copy fonts (macOS only)
+if [ "$(uname)" = "Darwin" ] && [ -d "$DOTFILES/.fonts" ]; then
   echo "Installing fonts..."
   mkdir -p ~/Library/Fonts
   cp "$DOTFILES/.fonts/"* ~/Library/Fonts/
 fi
+
+# Generate OS-specific git config (not tracked; included by ~/.gitconfig)
+echo "Writing ~/.gitconfig.local..."
+if [ "$(uname)" = "Darwin" ]; then
+  git_ssl_backend="secure-transport"
+else
+  git_ssl_backend="gnutls"
+fi
+cat > ~/.gitconfig.local <<EOF
+[http]
+	sslBackend = $git_ssl_backend
+EOF
 
 # Install TPM
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
