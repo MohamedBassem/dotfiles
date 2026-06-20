@@ -688,12 +688,6 @@ return {
 		},
 	},
 	{
-		"almo7aya/openingh.nvim",
-		init = function()
-			vim.g.openingh_copy_to_register = true
-		end,
-	},
-	{
 		"sindrets/diffview.nvim",
 	},
 	{
