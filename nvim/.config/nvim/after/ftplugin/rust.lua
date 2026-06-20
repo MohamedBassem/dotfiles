@@ -24,27 +24,42 @@ vim.api.nvim_buf_create_user_command(bufnr, "OpenCargo", function()
 end, {})
 
 vim.keymap.set("n", "<leader>io", function()
-  local diags = vim.tbl_filter(function(d)
-    return d.code == "unused_imports"
-  end, vim.diagnostic.get(bufnr))
+  local saved = vim.api.nvim_win_get_cursor(0)
+  local max_iterations = 20
 
-  if #diags == 0 then
-    vim.notify("No unused imports", vim.log.levels.INFO)
-    return
+  local function remove_unused(iteration)
+    local diags = vim.tbl_filter(function(d)
+      return d.code == "unused_imports"
+    end, vim.diagnostic.get(bufnr))
+
+    if #diags == 0 then
+      if iteration == 1 then
+        vim.notify("No unused imports", vim.log.levels.INFO)
+      end
+      pcall(vim.api.nvim_win_set_cursor, 0, saved)
+      return
+    end
+
+    if iteration > max_iterations then
+      vim.notify("Stopped removing unused imports after " .. max_iterations .. " iterations", vim.log.levels.WARN)
+      pcall(vim.api.nvim_win_set_cursor, 0, saved)
+      return
+    end
+
+    local d = diags[1]
+    vim.api.nvim_win_set_cursor(0, { d.lnum + 1, d.col })
+
+    vim.lsp.buf.code_action({
+      apply = true,
+      filter = function(a)
+        return a.title == "Remove all unused imports"
+      end,
+    })
+
+    vim.defer_fn(function()
+      remove_unused(iteration + 1)
+    end, 200)
   end
 
-  local saved = vim.api.nvim_win_get_cursor(0)
-  local d = diags[1]
-  vim.api.nvim_win_set_cursor(0, { d.lnum + 1, d.col })
-
-  vim.lsp.buf.code_action({
-    apply = true,
-    filter = function(a)
-      return a.title == "Remove all unused imports"
-    end,
-  })
-
-  vim.defer_fn(function()
-    pcall(vim.api.nvim_win_set_cursor, 0, saved)
-  end, 200)
+  remove_unused(1)
 end, { buffer = bufnr, desc = "Rust: Remove all unused imports" })

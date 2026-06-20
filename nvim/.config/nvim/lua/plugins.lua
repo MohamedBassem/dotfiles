@@ -750,4 +750,20 @@ return {
 		event = "LspAttach",
 		opts = {}, -- required, even if empty
 	},
+	{
+		"nvim-neotest/neotest",
+		dependencies = {
+			"nvim-neotest/nvim-nio",
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/nvim-treesitter",
+			"mrcjkb/rustaceanvim",
+		},
+		opts = function()
+			return {
+				adapters = {
+					require("rustaceanvim.neotest"),
+				},
+			}
+		end,
+	}
 }
