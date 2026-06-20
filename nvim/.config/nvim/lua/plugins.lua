@@ -153,18 +153,6 @@ return {
 		config = function()
 			require("mason").setup()
 		end,
-		opts = {
-			ensure_installed = {
-				"stylua",
-				"shfmt",
-				"rust-analyzer",
-				"tailwindcss-language-server",
-				"eslint-lsp",
-				"biome",
-				"oxlint",
-				"oxfmt",
-			},
-		},
 	},
 	{
 		"neovim/nvim-lspconfig",
@@ -376,7 +364,6 @@ return {
 		event = "VeryLazy",
 		init = function()
 			vim.o.timeout = true
-			vim.o.timeoutlen = 300
 		end,
 		opts = {},
 	},
@@ -466,9 +453,8 @@ return {
 		opts = {
 			library = {
 				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
-				{ path = "LazyVim", words = { "LazyVim" } },
 				{ path = "snacks.nvim", words = { "Snacks" } },
-				{ path = "lazy.nvim", words = { "LazyVim" } },
+				{ path = "lazy.nvim", words = { "Lazy" } },
 			},
 		},
 	},
@@ -498,6 +484,7 @@ return {
 	},
 	{
 		"MagicDuck/grug-far.nvim",
+		cmd = "GrugFar",
 		config = function()
 			require("grug-far").setup({
 				debounceMs = 100,
@@ -689,10 +676,18 @@ return {
 	},
 	{
 		"sindrets/diffview.nvim",
+		cmd = {
+			"DiffviewOpen",
+			"DiffviewClose",
+			"DiffviewToggleFiles",
+			"DiffviewFocusFiles",
+			"DiffviewFileHistory",
+		},
 	},
 	{
 		"saecki/crates.nvim",
 		tag = "stable",
+		event = { "BufRead Cargo.toml" },
 		config = function()
 			require("crates").setup({
 				lsp = {

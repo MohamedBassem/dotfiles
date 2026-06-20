@@ -20,7 +20,7 @@ vim.opt.smartcase = true -- ... but not it begins with upper case
 vim.opt.completeopt = "menu,menuone,noselect" -- Autocomplete options
 
 vim.opt.undofile = true
-vim.opt.undodir = vim.fn.stdpath("data") .. "undo"
+vim.opt.undodir = vim.fn.stdpath("data") .. "/undo"
 
 vim.opt.expandtab = true -- expand tabs into spaces
 vim.opt.shiftwidth = 4 -- number of spaces to use for each step of indent.
@@ -45,6 +45,9 @@ vim.opt.scrolloff = 10
 
 -- Tab complete for cmd mode should autocomplete the first result immediately.
 vim.opt.wildmode = "full"
+
+-- Live preview of :substitute in a split
+vim.opt.inccommand = "split"
 
 -- Refresh files edited on disk automatically
 vim.opt.autoread = true
