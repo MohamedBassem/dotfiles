@@ -27,13 +27,14 @@ for target in \
   ~/.wezterm.lua ~/.aerospace.toml \
   ~/.config/nvim ~/.config/fish ~/.config/ghostty ~/.config/hunk/config.toml \
   ~/.local/bin/tmux-sessionizer \
+  ~/.claude/settings.json ~/.claude/statusline-command.sh \
   ~/.zprezto ~/.zshrc ~/.zpreztorc ~/.zshenv ~/.zprofile ~/.zlogin ~/.zlogout; do
   [ -L "$target" ] && rm "$target"
   [ -e "$target" ] && echo "Warning: $target exists and is not a symlink, skipping removal"
 done
 
 # Stow each package
-PACKAGES=(git tmux vim wezterm aerospace nvim fish ghostty scripts zsh hunk)
+PACKAGES=(git tmux vim wezterm aerospace nvim fish ghostty scripts zsh hunk claude)
 echo "Stowing packages: ${PACKAGES[*]}"
 for pkg in "${PACKAGES[@]}"; do
   stow -d "$DOTFILES" -t "$HOME" "$pkg"
