@@ -352,7 +352,34 @@ return {
 		config = function()
 			require("gitsigns").setup({
 				current_line_blame = true,
+				on_attach = function(bufnr)
+					-- In Sapling repos (including dotgit mode where both .git and
+					-- .sl exist) let mini.diff own the buffer instead of gitsigns.
+					local dir = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr))
+					if vim.fs.find(".sl", { path = dir, upward = true, type = "directory" })[1] then
+						return false
+					end
+				end,
 			})
+		end,
+	},
+	{
+		"echasnovski/mini.diff",
+		version = false,
+		config = function()
+			local sapling = require("sapling")
+			require("mini.diff").setup({
+				-- Sapling-only source; its `attach` returns false outside .sl
+				-- repos, so mini.diff renders nothing there (gitsigns handles git).
+				source = sapling.source,
+				-- Match gitsigns: show hunks in the sign column, not the number column.
+				-- Slim vertical bar instead of the default full-cell block (▒).
+				view = {
+					style = "sign",
+					signs = { add = "▎", change = "▎", delete = "▎" },
+				},
+			})
+			sapling.setup_blame()
 		end,
 	},
 	{
@@ -572,9 +599,19 @@ return {
 					diagnostics = true,
 					inlay_hints = true,
 				},
+				-- Show the full file path in the zen window winbar (top). %F is
+				-- evaluated live, so it updates automatically as you switch files.
+				win = {
+					wo = {
+						winbar = " %F %m",
+					},
+				},
 				zoom = {
 					win = {
 						width = 0.8,
+						wo = {
+							winbar = " %F %m",
+						},
 					},
 				},
 			},
