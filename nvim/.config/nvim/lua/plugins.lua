@@ -77,11 +77,7 @@ return {
 	},
 	{
 		"folke/trouble.nvim",
-		config = function()
-			require("trouble").setup({
-				use_diagnostic_signs = true,
-			})
-		end,
+		opts = {},
 	},
 	{
 		"j-hui/fidget.nvim",
@@ -400,6 +396,31 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter-textobjects",
 		branch = "main",
+		config = function()
+			require("nvim-treesitter-textobjects").setup({
+				move = {
+					-- Add moves to the jumplist, so <C-o> goes back
+					set_jumps = true,
+				},
+			})
+
+			local move = require("nvim-treesitter-textobjects.move")
+			vim.keymap.set({ "n", "x", "o" }, "]c", function()
+				-- Keep the built-in "next change" motion in diff mode (diffview etc.)
+				if vim.wo.diff then
+					vim.cmd("normal! ]c")
+					return
+				end
+				move.goto_next_start("@class.outer", "textobjects")
+			end, { desc = "Next class" })
+			vim.keymap.set({ "n", "x", "o" }, "[c", function()
+				if vim.wo.diff then
+					vim.cmd("normal! [c")
+					return
+				end
+				move.goto_previous_start("@class.outer", "textobjects")
+			end, { desc = "Previous class" })
+		end,
 	},
 	{
 		"windwp/nvim-ts-autotag",
@@ -413,7 +434,26 @@ return {
 			})
 		end,
 	},
-	{ "echasnovski/mini.ai", version = false, opts = {} },
+	{
+		"echasnovski/mini.ai",
+		version = false,
+		dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
+		opts = function()
+			local ai = require("mini.ai")
+			return {
+				n_lines = 500,
+				custom_textobjects = {
+					-- Function *definitions* (default `f` is only function calls)
+					f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
+					c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),
+					o = ai.gen_spec.treesitter({
+						a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+						i = { "@block.inner", "@conditional.inner", "@loop.inner" },
+					}),
+				},
+			}
+		end,
+	},
 	{
 		"ThePrimeagen/harpoon",
 		branch = "harpoon2",

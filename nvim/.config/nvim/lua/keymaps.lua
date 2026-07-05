@@ -141,8 +141,8 @@ vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory
 
 -- Trouble
 vim.keymap.set("n", "<leader>dx", function()
-	require("trouble").toggle("workspace_diagnostics")
-end)
+	require("trouble").toggle("diagnostics")
+end, { desc = "Toggle diagnostics (Trouble)" })
 
 -- Typescript
 vim.keymap.set("n", "<leader>ip", "<CMD>TSToolsAddMissingImports<CR>", { desc = "Typescript: Add missing imports" })
@@ -162,8 +162,12 @@ end, {
 	desc = "Supermaven: Accept completion",
 })
 
-vim.keymap.set({ "v", "n" }, "]]", "]m", { desc = "Next function" })
-vim.keymap.set({ "v", "n" }, "[[", "[m", { desc = "Function top" })
+vim.keymap.set({ "n", "x", "o" }, "]]", function()
+	require("nvim-treesitter-textobjects.move").goto_next_start("@function.outer", "textobjects")
+end, { desc = "Next function" })
+vim.keymap.set({ "n", "x", "o" }, "[[", function()
+	require("nvim-treesitter-textobjects.move").goto_previous_start("@function.outer", "textobjects")
+end, { desc = "Previous function" })
 
 vim.keymap.set("n", "gL", function()
 	local new_config = not vim.diagnostic.config().virtual_lines

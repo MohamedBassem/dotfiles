@@ -68,3 +68,12 @@ vim.opt.signcolumn = "yes"
 vim.o.foldmethod = 'expr'
 -- Default to treesitter folding
 vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+
+-- Default border for all floating windows (hover, diagnostics, etc.)
+vim.o.winborder = "rounded"
+
+-- Keep text on the same screen line when opening/closing splits
+vim.opt.splitkeep = "screen"
+
+-- Make <C-o>/<C-i> behave like a browser history stack
+vim.opt.jumpoptions = "stack"
