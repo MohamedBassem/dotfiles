@@ -29,9 +29,27 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		-- Jump to the type of the word under your cursor.
 		--  Useful when you're not sure what type a variable is and you want to see
 		--  the definition of its *type*, not where it was *defined*.
-		map("<leader>D", function()
+		map("gY", function()
 			Snacks.picker.lsp_type_definitions()
 		end, "Type [D]efinition")
+		
+		-- Incoming/outgoing calls
+		map("gai", function()
+			Snacks.picker.lsp_incoming_calls()
+		end, "LSP Incoming Calls")
+		
+		map("gao", function()
+			Snacks.picker.lsp_outgoing_calls()
+		end, "LSP Outgoing Calls")
+
+		-- LSP symbols
+		map("<leader>ss", function()
+			Snacks.picker.lsp_symbols()
+		end, "LSP Symbols")
+		
+		map("<leader>sS", function()
+			Snacks.picker.lsp_workspace_symbols()
+		end, "LSP Workspace Symbols")
 
 		-- Opens a popup that displays documentation about the word under your cursor
 		--  See `:help K` for why this keymap.

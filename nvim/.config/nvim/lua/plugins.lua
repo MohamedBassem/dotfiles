@@ -596,19 +596,22 @@ return {
 				toggles = {
 					dim = false,
 					git_signs = true,
+					mini_diff_signs = true,
 					diagnostics = true,
 					inlay_hints = true,
 				},
 				-- Show the full file path in the zen window winbar (top). %F is
 				-- evaluated live, so it updates automatically as you switch files.
 				win = {
+					width = 0.7,
 					wo = {
 						winbar = " %F %m",
 					},
 				},
 				zoom = {
 					win = {
-						width = 0.8,
+						backdrop = true,
+						width = 0.7,
 						wo = {
 							winbar = " %F %m",
 						},

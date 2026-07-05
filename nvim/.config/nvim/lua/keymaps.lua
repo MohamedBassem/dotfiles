@@ -100,16 +100,13 @@ end, { desc = "[S]earch [R]resume" })
 vim.keymap.set("n", "<leader>su", function()
 	Snacks.picker.undo()
 end, { desc = "[S]earch [U]ndo" })
-vim.keymap.set("n", "<leader>ss", function()
-	Snacks.picker.lsp_workspace_symbols()
-end, { desc = "[S]earch [S]ymbols" })
 vim.keymap.set("n", "<leader>sp", function()
 	Snacks.picker()
 end, { desc = "[S]earch [P]icker" })
 
 -- Enable zen mode
 vim.keymap.set("n", "<leader>zz", function()
-	Snacks.zen()
+	Snacks.zen.zoom()
 end, { desc = "Toggle ZenMode" })
 
 -- Vim notify
