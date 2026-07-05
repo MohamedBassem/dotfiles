@@ -149,7 +149,7 @@ return {
 		end,
 	},
 	{
-		"williamboman/mason.nvim",
+		"mason-org/mason.nvim",
 		config = function()
 			require("mason").setup()
 		end,
@@ -158,7 +158,7 @@ return {
 		"neovim/nvim-lspconfig",
 		dependencies = {
 			-- LSP Support
-			{ "williamboman/mason.nvim" },
+			{ "mason-org/mason.nvim" },
 		},
 	},
 	{
@@ -253,7 +253,6 @@ return {
 					lua = { "stylua" },
 					sh = { "shfmt" },
 					bash = { "shfmt" },
-					zsh = { "shfmt" },
 					rust = { "rustfmt", lsp_format = "fallback" },
 					javascript = web_formatters,
 					javascriptreact = web_formatters,
@@ -300,6 +299,10 @@ return {
 		"mfussenegger/nvim-lint",
 		event = { "BufReadPost", "BufWritePost", "InsertLeave" },
 		config = function()
+			require("lint").linters_by_ft = {
+				sh = { "shellcheck" },
+				bash = { "shellcheck" },
+			}
 			vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost", "InsertLeave" }, {
 				callback = function(args)
 					if vim.bo.modifiable then
@@ -553,7 +556,7 @@ return {
 		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
 		opts = {
 			on_attach = function(client)
-				-- Formatting is handled by none-ls
+				-- Formatting is handled by conform
 				client.server_capabilities.documentFormattingProvider = false
 				client.server_capabilities.documentRangeFormattingProvider = false
 			end,
