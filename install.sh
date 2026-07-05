@@ -17,10 +17,13 @@ brew bundle --file="$DOTFILES/Brewfile"
 echo "Initializing submodules..."
 git -C "$DOTFILES" submodule update --init --recursive
 
-# Create shared parent dirs to prevent stow from tree-folding them
-mkdir -p ~/.config ~/.local/bin
+# Create shared parent dirs to prevent stow from tree-folding them.
+# ~/.claude and ~/.config/hunk matter especially: if stow folds them, the apps
+# write runtime state (including credentials) inside this repo.
+mkdir -p ~/.config ~/.local/bin ~/.config/hunk ~/.claude
 
-# Remove old symlinks/directories that would conflict with stow
+# Remove old symlinks that would conflict with stow; abort on real files
+conflicts=()
 for target in \
   ~/.gitconfig ~/.gitignore \
   ~/.tmux.conf ~/.vimrc ~/.bashrc ~/.bash_aliases \
@@ -29,12 +32,21 @@ for target in \
   ~/.local/bin/tmux-sessionizer \
   ~/.claude/settings.json ~/.claude/statusline-command.sh \
   ~/.zprezto ~/.zshrc ~/.zpreztorc ~/.zshenv ~/.zprofile ~/.zlogin ~/.zlogout; do
-  [ -L "$target" ] && rm "$target"
-  [ -e "$target" ] && echo "Warning: $target exists and is not a symlink, skipping removal"
+  if [ -L "$target" ]; then
+    rm "$target"
+  elif [ -e "$target" ]; then
+    conflicts+=("$target")
+  fi
 done
+if [ "${#conflicts[@]}" -gt 0 ]; then
+  echo "Error: the following exist and are not symlinks (stow would fail on them)." >&2
+  echo "Move them aside, or run 'stow --adopt' manually (see README):" >&2
+  printf '  %s\n' "${conflicts[@]}" >&2
+  exit 1
+fi
 
 # Stow each package
-PACKAGES=(git tmux vim wezterm aerospace nvim fish ghostty scripts zsh hunk claude)
+PACKAGES=(git tmux vim bash wezterm aerospace nvim fish ghostty scripts zsh hunk claude)
 echo "Stowing packages: ${PACKAGES[*]}"
 for pkg in "${PACKAGES[@]}"; do
   stow -d "$DOTFILES" -t "$HOME" "$pkg"
@@ -51,15 +63,19 @@ fi
 echo "Writing ~/.gitconfig.local..."
 if [ "$(uname)" = "Darwin" ]; then
   git_ssl_backend="secure-transport"
+  git_credential_helper="osxkeychain"
 else
   git_ssl_backend="gnutls"
+  git_credential_helper="cache"
 fi
 cat > ~/.gitconfig.local <<EOF
 [http]
 	sslBackend = $git_ssl_backend
+[credential]
+	helper = $git_credential_helper
 EOF
 
 # Install TPM
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+[ -d ~/.tmux/plugins/tpm ] || git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 echo "Done!"

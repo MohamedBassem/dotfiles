@@ -6,7 +6,9 @@ if test -f "/home/linuxbrew/.linuxbrew/bin/brew"
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 end
 
-direnv hook fish | source
+if command -q direnv
+    direnv hook fish | source
+end
 
 if status is-interactive
     atuin init fish --disable-up-arrow | source
@@ -28,6 +30,10 @@ set -gx PATH "$VOLTA_HOME/bin" $PATH
 source ~/.orbstack/shell/init2.fish 2>/dev/null || :
 
 # Added by LM Studio CLI (lms)
-set -gx PATH $PATH /Users/mohamedbassem/.lmstudio/bin
+if test -d "$HOME/.lmstudio/bin"
+    set -gx PATH $PATH "$HOME/.lmstudio/bin"
+end
 
-alias claude="/Users/mohamedbassem/.claude/local/claude"
+if test -f "$HOME/.claude/local/claude"
+    alias claude="$HOME/.claude/local/claude"
+end

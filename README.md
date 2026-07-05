@@ -10,15 +10,19 @@ Each top-level directory is a stow package. Running `stow -t $HOME <pkg>` mirror
 |---|---|
 | `aerospace` | `.aerospace.toml` |
 | `bash` | `.bashrc`, `.bash_aliases` |
+| `claude` | `.claude/` (settings, statusline command) |
 | `fish` | `.config/fish/` (config, functions) |
 | `ghostty` | `.config/ghostty/config` |
 | `git` | `.gitconfig`, `.gitignore` |
+| `hunk` | `.config/hunk/config.toml` |
 | `nvim` | `.config/nvim/` (init.lua, plugins, lua modules) |
 | `scripts` | `.local/bin/tmux-sessionizer` |
 | `tmux` | `.tmux.conf` |
 | `vim` | `.vimrc` |
 | `wezterm` | `.wezterm.lua` |
 | `zsh` | `.zprezto/` (submodule), zsh runcoms |
+
+The canonical package list is the `PACKAGES` array in `install.sh`.
 
 ## Install
 
@@ -35,15 +39,27 @@ The install script will:
 4. Stow all packages
 5. Copy fonts to `~/Library/Fonts`
 
-## Usage on an existing machine
-
-If you already have config files in place, use `--adopt` to let stow take ownership:
+## Day-to-day usage (justfile)
 
 ```bash
-mkdir -p ~/.config ~/.local/bin
+just               # list recipes
+just stow nvim     # symlink specific package(s)
+just restow tmux   # relink after adding/removing files in a package
+just unstow vim    # remove a package's symlinks
+just stow-all      # stow every package
+just check         # dry-run all packages to surface conflicts
+```
+
+The package list is read from the `PACKAGES` array in `install.sh`, so there is a single source of truth.
+
+## Usage on an existing machine
+
+If you already have config files in place, adopt them to let stow take ownership:
+
+```bash
 rm -rf ~/.zprezto  # remove old submodule clone if present
 cd ~/repos/dotfiles
-stow --adopt -t $HOME git tmux vim bash wezterm aerospace nvim fish ghostty scripts zsh
+just adopt git tmux vim bash wezterm aerospace nvim fish ghostty scripts zsh hunk claude
 git diff       # check for local differences
 git checkout . # restore repo versions if needed
 ```
@@ -53,4 +69,4 @@ git checkout . # restore repo versions if needed
 1. Create a package directory: `mkdir -p <pkg>`
 2. Place files mirroring the home directory structure (e.g., `<pkg>/.config/app/config`)
 3. Add the package name to the `PACKAGES` array in `install.sh`
-4. Run `stow -t $HOME <pkg>`
+4. Run `just stow <pkg>`
