@@ -36,6 +36,6 @@ check:
     stow -n -v -t "$HOME" {{ packages }}
 
 # Pre-create shared dirs so stow never tree-folds them into the repo
-# (~/.claude especially: folding it would write credentials into the repo)
+# (app runtime state and credentials must stay outside the repo)
 _guard-dirs:
-    @mkdir -p ~/.config ~/.local/bin ~/.config/hunk ~/.claude
+    @mkdir -p ~/.config ~/.local/bin ~/.config/hunk ~/.config/herdr ~/.claude

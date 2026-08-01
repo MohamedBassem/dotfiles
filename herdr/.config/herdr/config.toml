@@ -1,0 +1,26 @@
+onboarding = false
+
+[ui]
+pane_gaps = false
+pane_borders = false
+prompt_new_tab_name = false
+sidebar_start_collapsed = true
+sidebar_collapsed_mode = "hidden"
+
+
+[ui.toast]
+delivery = "terminal"
+
+[keys]
+split_vertical = "prefix+\""
+navigate_workspace_up = "k"
+navigate_workspace_down = "j"
+
+
+[[keys.command]]
+key = "prefix+\\"
+type = "popup"
+command = "exec \"${SHELL:-sh}\""
+description = "open scratch terminal"
+width = "80%"
+height = "80%"

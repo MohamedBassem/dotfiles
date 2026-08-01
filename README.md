@@ -14,6 +14,7 @@ Each top-level directory is a stow package. Running `stow -t $HOME <pkg>` mirror
 | `fish` | `.config/fish/` (config, functions) |
 | `ghostty` | `.config/ghostty/config` |
 | `git` | `.gitconfig`, `.gitignore` |
+| `herdr` | `.config/herdr/config.toml` |
 | `hunk` | `.config/hunk/config.toml` |
 | `nvim` | `.config/nvim/` (init.lua, plugins, lua modules) |
 | `scripts` | `.local/bin/tmux-sessionizer` |
@@ -59,7 +60,7 @@ If you already have config files in place, adopt them to let stow take ownership
 ```bash
 rm -rf ~/.zprezto  # remove old submodule clone if present
 cd ~/repos/dotfiles
-just adopt git tmux vim bash wezterm aerospace nvim fish ghostty scripts zsh hunk claude
+just adopt git tmux vim bash wezterm aerospace nvim fish ghostty scripts zsh hunk herdr claude
 git diff       # check for local differences
 git checkout . # restore repo versions if needed
 ```

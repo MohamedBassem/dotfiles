@@ -18,9 +18,9 @@ echo "Initializing submodules..."
 git -C "$DOTFILES" submodule update --init --recursive
 
 # Create shared parent dirs to prevent stow from tree-folding them.
-# ~/.claude and ~/.config/hunk matter especially: if stow folds them, the apps
+# App config dirs matter especially: if stow folds them, the apps
 # write runtime state (including credentials) inside this repo.
-mkdir -p ~/.config ~/.local/bin ~/.config/hunk ~/.claude
+mkdir -p ~/.config ~/.local/bin ~/.config/hunk ~/.config/herdr ~/.claude
 
 # Remove old symlinks that would conflict with stow; abort on real files
 conflicts=()
@@ -29,6 +29,7 @@ for target in \
   ~/.tmux.conf ~/.vimrc ~/.bashrc ~/.bash_aliases \
   ~/.wezterm.lua ~/.aerospace.toml \
   ~/.config/nvim ~/.config/fish ~/.config/ghostty ~/.config/hunk/config.toml \
+  ~/.config/herdr/config.toml \
   ~/.local/bin/tmux-sessionizer \
   ~/.claude/settings.json ~/.claude/statusline-command.sh \
   ~/.zprezto ~/.zshrc ~/.zpreztorc ~/.zshenv ~/.zprofile ~/.zlogin ~/.zlogout; do
@@ -46,7 +47,7 @@ if [ "${#conflicts[@]}" -gt 0 ]; then
 fi
 
 # Stow each package
-PACKAGES=(git tmux vim bash wezterm aerospace nvim fish ghostty scripts zsh hunk claude)
+PACKAGES=(git tmux vim bash wezterm aerospace nvim fish ghostty scripts zsh hunk herdr claude)
 echo "Stowing packages: ${PACKAGES[*]}"
 for pkg in "${PACKAGES[@]}"; do
   stow -d "$DOTFILES" -t "$HOME" "$pkg"
