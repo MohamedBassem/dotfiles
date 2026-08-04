@@ -17,6 +17,7 @@ Each top-level directory is a stow package. Running `stow -t $HOME <pkg>` mirror
 | `herdr` | `.config/herdr/config.toml` |
 | `hunk` | `.config/hunk/config.toml` |
 | `nvim` | `.config/nvim/` (init.lua, plugins, lua modules) |
+| `sapling` | `sapling.conf` (GitHub stacked PR workflow) |
 | `scripts` | `.local/bin/tmux-sessionizer` |
 | `tmux` | `.tmux.conf` |
 | `vim` | `.vimrc` |
@@ -71,3 +72,17 @@ git checkout . # restore repo versions if needed
 2. Place files mirroring the home directory structure (e.g., `<pkg>/.config/app/config`)
 3. Add the package name to the `PACKAGES` array in `install.sh`
 4. Run `just stow <pkg>`
+
+## Sapling + GitHub stacked PRs
+
+The `sapling` package configures Sapling's single-commit PR topology and adds a
+`sl submit-stack` command. From the top commit of a stack, run:
+
+```bash
+sl submit-stack --draft
+```
+
+This first runs `sl pr submit --stack`, then registers the resulting PRs as a
+native GitHub stack through the installed `github/gh-stack` extension. Re-run
+the same command after amending or restacking commits; both submission and
+stack linking are idempotent.

@@ -38,4 +38,4 @@ check:
 # Pre-create shared dirs so stow never tree-folds them into the repo
 # (app runtime state and credentials must stay outside the repo)
 _guard-dirs:
-    @mkdir -p ~/.config ~/.local/bin ~/.config/hunk ~/.config/herdr ~/.claude
+    @mkdir -p ~/.config ~/.local/bin ~/.config/hunk ~/.config/herdr ~/.config/sapling ~/.claude ~/Library/Preferences/sapling

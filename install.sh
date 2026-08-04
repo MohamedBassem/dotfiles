@@ -20,12 +20,16 @@ git -C "$DOTFILES" submodule update --init --recursive
 # Create shared parent dirs to prevent stow from tree-folding them.
 # App config dirs matter especially: if stow folds them, the apps
 # write runtime state (including credentials) inside this repo.
-mkdir -p ~/.config ~/.local/bin ~/.config/hunk ~/.config/herdr ~/.claude
+mkdir -p \
+  ~/.config ~/.local/bin ~/.config/hunk ~/.config/herdr ~/.config/sapling ~/.claude \
+  ~/Library/Preferences/sapling
 
 # Remove old symlinks that would conflict with stow; abort on real files
 conflicts=()
 for target in \
   ~/.gitconfig ~/.gitignore \
+  ~/.config/sapling/sapling.conf \
+  ~/Library/Preferences/sapling/sapling.conf \
   ~/.tmux.conf ~/.vimrc ~/.bashrc ~/.bash_aliases \
   ~/.wezterm.lua ~/.aerospace.toml \
   ~/.config/nvim ~/.config/fish ~/.config/ghostty ~/.config/hunk/config.toml \
@@ -47,7 +51,7 @@ if [ "${#conflicts[@]}" -gt 0 ]; then
 fi
 
 # Stow each package
-PACKAGES=(git tmux vim bash wezterm aerospace nvim fish ghostty scripts zsh hunk herdr claude)
+PACKAGES=(git sapling tmux vim bash wezterm aerospace nvim fish ghostty scripts zsh hunk herdr claude)
 echo "Stowing packages: ${PACKAGES[*]}"
 for pkg in "${PACKAGES[@]}"; do
   stow -d "$DOTFILES" -t "$HOME" "$pkg"
