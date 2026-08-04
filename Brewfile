@@ -1,4 +1,4 @@
-tap "mistertea/et"
+tap "et"
 tap "modem-dev/tap"
 tap "restatedev/tap"
 tap "sst/tap"
