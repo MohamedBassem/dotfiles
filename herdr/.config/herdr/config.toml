@@ -2,10 +2,11 @@ onboarding = false
 
 [ui]
 pane_gaps = false
-pane_borders = false
+pane_borders = true
 prompt_new_tab_name = false
 sidebar_start_collapsed = true
 sidebar_collapsed_mode = "hidden"
+tab_bar_position = "bottom"
 
 
 [ui.toast]
