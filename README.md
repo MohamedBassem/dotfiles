@@ -4,7 +4,9 @@ Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
 ## Structure
 
-Each top-level directory is a stow package. Running `stow -t $HOME <pkg>` mirrors the package's contents as symlinks under `$HOME`.
+Most top-level directories are Stow packages. Running `stow -t $HOME <pkg>`
+mirrors a package's contents as symlinks under `$HOME`; `herdr-plugins` is the
+exception and is registered through Herdr's local plugin linker.
 
 | Package | Contents |
 |---|---|
@@ -15,6 +17,7 @@ Each top-level directory is a stow package. Running `stow -t $HOME <pkg>` mirror
 | `ghostty` | `.config/ghostty/config` |
 | `git` | `.gitconfig`, `.gitignore` |
 | `herdr` | `.config/herdr/config.toml` |
+| `herdr-plugins` | Locally owned Herdr plugins (linked by `install.sh`) |
 | `hunk` | `.config/hunk/config.toml` |
 | `nvim` | `.config/nvim/` (init.lua, plugins, lua modules) |
 | `sapling` | `sapling.conf` (GitHub stacked PR workflow) |
@@ -39,7 +42,8 @@ The install script will:
 2. Install all packages from the `Brewfile`
 3. Initialize git submodules
 4. Stow all packages
-5. Copy fonts to `~/Library/Fonts`
+5. Link the locally owned Herdr plugins (when Herdr is installed)
+6. Copy fonts to `~/Library/Fonts`
 
 ## Day-to-day usage (justfile)
 

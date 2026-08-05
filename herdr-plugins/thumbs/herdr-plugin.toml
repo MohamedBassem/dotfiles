@@ -1,0 +1,18 @@
+id = "mbassem.thumbs"
+name = "Thumbs"
+version = "0.1.0"
+min_herdr_version = "0.7.0"
+description = "Vimium-style hints for copying text from the visible Herdr pane"
+platforms = ["linux", "macos"]
+
+[[actions]]
+id = "pick"
+title = "Pick visible text"
+contexts = ["global"]
+command = ["bash", "pick.sh"]
+
+[[panes]]
+id = "picker"
+title = "Thumbs"
+placement = "split"
+command = ["bash", "picker.sh"]

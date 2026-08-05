@@ -45,6 +45,9 @@ vim.keymap.set("n", "<Down>", "<C-E>", { desc = "Scroll down" })
 -- switch to normal mode with esc in terminal mode
 vim.keymap.set("t", "<ESC>", "<C-\\><C-n>")
 
+-- Let Herdr's prefix+h/j/k/l cross the outermost Neovim window boundary.
+require("herdr_navigation").setup()
+
 -- Quick exit
 vim.keymap.set("n", "<leader>q", ":qa<CR>", { desc = "Quick exit (close all buffers and exit)" })
 

@@ -1,0 +1,30 @@
+id = "mbassem.nvim-navigation"
+name = "Neovim Navigation"
+version = "0.1.0"
+min_herdr_version = "0.7.0"
+description = "Prefix navigation across Neovim windows and Herdr panes"
+platforms = ["linux", "macos"]
+
+[[actions]]
+id = "left"
+title = "Navigate left (Neovim/Herdr)"
+contexts = ["global"]
+command = ["bash", "navigate.sh", "left"]
+
+[[actions]]
+id = "down"
+title = "Navigate down (Neovim/Herdr)"
+contexts = ["global"]
+command = ["bash", "navigate.sh", "down"]
+
+[[actions]]
+id = "up"
+title = "Navigate up (Neovim/Herdr)"
+contexts = ["global"]
+command = ["bash", "navigate.sh", "up"]
+
+[[actions]]
+id = "right"
+title = "Navigate right (Neovim/Herdr)"
+contexts = ["global"]
+command = ["bash", "navigate.sh", "right"]

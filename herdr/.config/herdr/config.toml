@@ -16,6 +16,10 @@ delivery = "terminal"
 split_vertical = "prefix+\""
 navigate_workspace_up = "k"
 navigate_workspace_down = "j"
+focus_pane_left = ""
+focus_pane_down = ""
+focus_pane_up = ""
+focus_pane_right = ""
 
 
 [[keys.command]]
@@ -25,3 +29,33 @@ command = "exec \"${SHELL:-sh}\""
 description = "open scratch terminal"
 width = "80%"
 height = "80%"
+
+[[keys.command]]
+key = "prefix+h"
+type = "plugin_action"
+command = "mbassem.nvim-navigation.left"
+description = "navigate left (Neovim/Herdr)"
+
+[[keys.command]]
+key = "prefix+j"
+type = "plugin_action"
+command = "mbassem.nvim-navigation.down"
+description = "navigate down (Neovim/Herdr)"
+
+[[keys.command]]
+key = "prefix+k"
+type = "plugin_action"
+command = "mbassem.nvim-navigation.up"
+description = "navigate up (Neovim/Herdr)"
+
+[[keys.command]]
+key = "prefix+l"
+type = "plugin_action"
+command = "mbassem.nvim-navigation.right"
+description = "navigate right (Neovim/Herdr)"
+
+[[keys.command]]
+key = "prefix+space"
+type = "plugin_action"
+command = "mbassem.thumbs.pick"
+description = "copy visible text with hints"

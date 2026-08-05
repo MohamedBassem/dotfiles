@@ -57,6 +57,14 @@ for pkg in "${PACKAGES[@]}"; do
   stow -d "$DOTFILES" -t "$HOME" "$pkg"
 done
 
+# Register locally owned Herdr plugins from this checkout. Linking is
+# idempotent, so rerunning the installer also refreshes their manifests.
+if command -v herdr &>/dev/null; then
+  for plugin in nvim-navigation thumbs; do
+    herdr plugin link "$DOTFILES/herdr-plugins/$plugin" --enabled
+  done
+fi
+
 # Copy fonts (macOS only)
 if [ "$(uname)" = "Darwin" ] && [ -d "$DOTFILES/.fonts" ]; then
   echo "Installing fonts..."
