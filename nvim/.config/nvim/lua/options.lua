@@ -14,6 +14,13 @@ vim.opt.cursorline = true -- Enable highlighting of the current line
 
 vim.opt.mouse = "a" -- Enable mouse support
 vim.opt.clipboard = "unnamedplus" -- Copy/paste to system clipboard
+
+local osc52 = require('vim.ui.clipboard.osc52')
+vim.g.clipboard = {
+  name = 'OSC 52',
+  copy = { ['+'] = osc52.copy('+'), ['*'] = osc52.copy('*') },
+}
+
 vim.opt.swapfile = false -- Don't use swapfile
 vim.opt.ignorecase = true -- Search case insensitive...
 vim.opt.smartcase = true -- ... but not it begins with upper case

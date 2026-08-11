@@ -51,7 +51,7 @@ end
 
 function M.setup()
 	for key, direction in pairs(directions) do
-		vim.keymap.set({ "n", "i", "t", "x" }, "<C-w>" .. key, function()
+		vim.keymap.set("n", "<C-w>" .. key, function()
 			M.navigate(key)
 		end, {
 			desc = "Navigate " .. direction .. " across Neovim/Herdr",
