@@ -57,6 +57,15 @@ function M.setup()
 			desc = "Navigate " .. direction .. " across Neovim/Herdr",
 			silent = true,
 		})
+		vim.keymap.set(
+			"t",
+			"<C-w>" .. key,
+			string.format([[<C-\><C-n><Cmd>lua require("herdr_navigation").navigate("%s")<CR>]], key),
+			{
+				desc = "Navigate " .. direction .. " across Neovim/Herdr",
+				silent = true,
+			}
+		)
 	end
 end
 
