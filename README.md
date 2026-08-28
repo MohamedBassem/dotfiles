@@ -21,7 +21,7 @@ exception and is registered through Herdr's local plugin linker.
 | `hunk` | `.config/hunk/config.toml` |
 | `nvim` | `.config/nvim/` (init.lua, plugins, lua modules) |
 | `sapling` | `sapling.conf` (GitHub stacked PR workflow) |
-| `scripts` | `.local/bin/tmux-sessionizer` |
+| `scripts` | Helper commands including `tmux-sessionizer` and `sl-share-worktree` |
 | `tmux` | `.tmux.conf` |
 | `vim` | `.vimrc` |
 | `wezterm` | `.wezterm.lua` |
@@ -90,3 +90,24 @@ This first runs `sl pr submit --stack`, then registers the resulting PRs as a
 native GitHub stack through the installed `github/gh-stack` extension. Re-run
 the same command after amending or restacking commits; both submission and
 stack linking are idempotent.
+
+### Shared Sapling working copies
+
+For native `.sl` repositories, `sl worktrees` wraps Sapling's hidden `share`
+extension with safer defaults. It creates named copies under a managed sibling
+directory and explicitly checks out the requested revision:
+
+```bash
+cd "$(sl worktrees add issue-123)"             # current commit
+cd "$(sl worktrees add issue-456 remote/main)" # another revision
+sl worktrees list
+sl worktrees remove issue-123                   # prompts before removal
+sl worktrees rm issue-456 --yes                 # non-interactive removal
+```
+
+Set `SL_SHARE_WORKTREE_ROOT` to choose a different parent directory. The list
+command reports each copy's clean/dirty status, current commit, and commit
+description. Removal only accepts managed, clean working copies belonging to
+the current shared repository. It deletes the working-copy directory directly;
+it does not use `sl unshare`, which is broken with the Git-compatible storage
+used by current public `.sl` repositories.

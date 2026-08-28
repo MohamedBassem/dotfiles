@@ -1,0 +1,237 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+program_name=${0##*/}
+
+usage() {
+  cat <<'EOF'
+Usage:
+  sl worktrees add NAME [REV]
+  sl worktrees list
+  sl worktrees remove NAME [-y | --yes]
+
+Create and discover lightweight working copies backed by Sapling's hidden
+`share` extension. REV defaults to the current commit.
+
+New copies are placed under:
+
+  <shared-repo-parent>/.worktrees/<repo-name>/NAME
+
+Set SL_SHARE_WORKTREE_ROOT to override that directory. Creation uses `share
+--relative -U` followed by an explicit `goto`, avoiding the extension's
+surprising default checkout. Only native `.sl` repositories are supported.
+
+The created path is the only output on stdout, so this works:
+
+  cd "$(sl worktrees add my-task)"
+
+`list` and `remove` only operate on copies inside the managed worktree
+directory. Removal requires a clean working copy and prompts for confirmation
+unless `-y` or `--yes` is supplied. It deletes the working directory directly;
+it does not call `sl unshare`, which is broken with current public `.sl`
+Git-compatible storage.
+EOF
+}
+
+die() {
+  printf '%s: %s\n' "$program_name" "$*" >&2
+  exit 1
+}
+
+canonical_dir() {
+  (cd "$1" && pwd -P)
+}
+
+if ! command -v sl >/dev/null 2>&1; then
+  die "required command not found: sl"
+fi
+
+case ${1:-} in
+  -h | --help)
+    usage
+    exit 0
+    ;;
+esac
+
+repo_root=$(sl root 2>/dev/null) || die "not inside a Sapling repository"
+dotdir=$(sl root --dotdir 2>/dev/null) || die "cannot determine repository format"
+
+case $dotdir in
+  */.git/sl)
+    die "Sapling's share extension does not work in .git mode"
+    ;;
+esac
+
+shared_root_raw=$(sl root --shared 2>/dev/null) || die "cannot locate the shared repository"
+shared_root=$(canonical_dir "$shared_root_raw") || die "the shared repository has moved or is missing"
+repo_name=${shared_root##*/}
+shared_parent=${shared_root%/*}
+worktree_root=${SL_SHARE_WORKTREE_ROOT:-"$shared_parent/.worktrees/$repo_name"}
+
+list_worktrees() {
+  local candidate candidate_shared candidate_shared_raw parent_info status
+
+  printf 'NAME\tSTATUS\tCOMMIT\tDESCRIPTION\tPATH\n'
+
+  status="clean"
+  if [[ -n $(sl --cwd "$shared_root" status 2>/dev/null) ]]; then
+    status="dirty"
+  fi
+  printf 'main\t%s\t%s\t%s\n' \
+    "$status" \
+    "$(sl --cwd "$shared_root" log -r . -T '{node|short}\t{desc|firstline}' 2>/dev/null)" \
+    "$shared_root"
+
+  [[ -d $worktree_root ]] || return 0
+
+  shopt -s nullglob
+  for candidate in "$worktree_root"/*; do
+    [[ -d $candidate/.sl ]] || continue
+
+    candidate_shared_raw=$(sl --cwd "$candidate" root --shared 2>/dev/null) || continue
+    candidate_shared=$(canonical_dir "$candidate_shared_raw" 2>/dev/null) || continue
+    [[ $candidate_shared == "$shared_root" ]] || continue
+
+    parent_info=$(sl --cwd "$candidate" log -r . -T '{node|short}\t{desc|firstline}' 2>/dev/null) || \
+      parent_info=$'unknown\tunknown'
+    status="clean"
+    if [[ -n $(sl --cwd "$candidate" status 2>/dev/null) ]]; then
+      status="dirty"
+    fi
+
+    printf '%s\t%s\t%s\t%s\n' "${candidate##*/}" "$status" "$parent_info" "$candidate"
+  done
+}
+
+validate_name() {
+  local name=$1
+
+  if [[ ! $name =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ ]]; then
+    die "NAME must start with an alphanumeric character and contain only letters, numbers, '.', '_' or '-'"
+  fi
+}
+
+remove_worktree() {
+  local assume_yes=false candidate_root candidate_shared candidate_shared_raw
+  local current_dir destination name="" pending answer
+
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      -y | --yes)
+        assume_yes=true
+        ;;
+      -*)
+        die "unknown remove option: $1"
+        ;;
+      *)
+        [[ -z $name ]] || die "usage: sl worktrees remove NAME [-y | --yes]"
+        name=$1
+        ;;
+    esac
+    shift
+  done
+
+  [[ -n $name ]] || die "usage: sl worktrees remove NAME [-y | --yes]"
+  validate_name "$name"
+
+  destination="$worktree_root/$name"
+  [[ -d $destination/.sl ]] || die "managed worktree not found: $destination"
+
+  candidate_root=$(canonical_dir "$destination") || die "cannot resolve worktree path: $destination"
+  [[ $candidate_root != "$shared_root" ]] || die "refusing to remove the main working copy"
+
+  candidate_shared_raw=$(sl --cwd "$candidate_root" root --shared 2>/dev/null) || \
+    die "not a usable shared Sapling working copy: $candidate_root"
+  candidate_shared=$(canonical_dir "$candidate_shared_raw" 2>/dev/null) || \
+    die "the worktree's shared repository has moved or is missing"
+  [[ $candidate_shared == "$shared_root" ]] || \
+    die "worktree belongs to a different shared repository: $candidate_root"
+
+  current_dir=$(pwd -P)
+  case "$current_dir/" in
+    "$candidate_root/"*)
+      die "leave the worktree before removing it: $candidate_root"
+      ;;
+  esac
+
+  pending=$(sl --cwd "$candidate_root" status 2>/dev/null) || \
+    die "cannot read worktree status: $candidate_root"
+  if [[ -n $pending ]]; then
+    printf '%s: worktree has pending changes:\n%s\n' "$program_name" "$pending" >&2
+    die "refusing to remove dirty worktree: $candidate_root"
+  fi
+
+  if [[ $assume_yes != true ]]; then
+    [[ -t 0 ]] || die "confirmation requires a terminal; pass --yes for non-interactive use"
+    printf 'Remove worktree %s? [y/N] ' "$candidate_root" >&2
+    read -r answer
+    case $answer in
+      y | Y | yes | YES | Yes) ;;
+      *) die "removal cancelled" ;;
+    esac
+  fi
+
+  rm -rf -- "$candidate_root"
+  printf 'removed %s\n' "$candidate_root"
+}
+
+case ${1:-} in
+  list | ls)
+    [[ $# -eq 1 ]] || die "usage: sl worktrees list"
+    list_worktrees
+    exit 0
+    ;;
+  add)
+    shift
+    ;;
+  remove | rm)
+    shift
+    remove_worktree "$@"
+    exit 0
+    ;;
+  "")
+    usage >&2
+    exit 2
+    ;;
+  *)
+    die "unknown subcommand '$1'; expected 'add' or 'list'"
+    ;;
+esac
+
+[[ $# -ge 1 && $# -le 2 ]] || {
+  usage >&2
+  exit 2
+}
+
+name=$1
+revision=${2:-.}
+
+validate_name "$name"
+
+destination="$worktree_root/$name"
+[[ ! -e $destination ]] || die "destination already exists: $destination"
+
+resolved_revision=$(sl --cwd "$repo_root" log -r "$revision" -T '{node}\n' 2>/dev/null) || \
+  die "cannot resolve revision: $revision"
+[[ -n $resolved_revision ]] || die "revision resolved to no commits: $revision"
+if [[ $resolved_revision == *$'\n'* ]]; then
+  die "revision must resolve to exactly one commit: $revision"
+fi
+
+if [[ -n $(sl --cwd "$repo_root" status 2>/dev/null) ]]; then
+  printf '%s: warning: uncommitted changes are not copied; creating from %s\n' \
+    "$program_name" "${resolved_revision:0:12}" >&2
+fi
+
+mkdir -p "$worktree_root"
+
+sl \
+  --config extensions.share= \
+  share --relative -U "$repo_root" "$destination" >&2
+
+if ! sl --cwd "$destination" goto "$resolved_revision" >&2; then
+  die "share was created at $destination, but checking out $revision failed"
+fi
+
+printf '%s\n' "$destination"

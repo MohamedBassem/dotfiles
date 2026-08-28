@@ -34,7 +34,7 @@ for target in \
   ~/.wezterm.lua ~/.aerospace.toml \
   ~/.config/nvim ~/.config/fish ~/.config/ghostty ~/.config/hunk/config.toml \
   ~/.config/herdr/config.toml \
-  ~/.local/bin/tmux-sessionizer \
+  ~/.local/bin/tmux-sessionizer ~/.local/bin/sl-share-worktree \
   ~/.claude/settings.json ~/.claude/statusline-command.sh \
   ~/.zprezto ~/.zshrc ~/.zpreztorc ~/.zshenv ~/.zprofile ~/.zlogin ~/.zlogout; do
   if [ -L "$target" ]; then
