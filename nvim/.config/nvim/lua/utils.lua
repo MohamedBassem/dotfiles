@@ -38,12 +38,12 @@ end
 -- Copied from: https://github.com/ThePrimeagen/harpoon/issues/352#issuecomment-1873053256
 -- TODO: Remove when harpoon lands official support
 function M.harpoon_files()
-	local harpoon = require("harpoon")
+	local list = require("config.harpoon_lists").list()
 	local contents = {}
-	local marks_length = harpoon:list():length()
+	local marks_length = list:length()
 	local current_file_path = vim.fn.fnamemodify(vim.fn.expand("%:p"), ":.")
 	for index = 1, marks_length do
-		local harpoon_file_path = harpoon:list():get(index).value
+		local harpoon_file_path = list:get(index).value
 		local file_name = harpoon_display_name(harpoon_file_path)
 
 		if current_file_path == harpoon_file_path then
