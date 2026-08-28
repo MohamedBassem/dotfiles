@@ -13,9 +13,10 @@
 local M = {}
 
 local uv = vim.uv or vim.loop
+local core = require("sapling.core")
 
 -- Per-buffer state, keyed by buffer id:
---   { root, file, watcher, blame = { lines = {ref_line -> entry}, desc = {node -> summary} } }
+--   { root, metadata, file, watcher, blame = { lines = {ref_line -> entry}, desc = {node -> summary} } }
 local state = {}
 
 local blame_ns = vim.api.nvim_create_namespace("sapling_blame")
@@ -24,18 +25,6 @@ local blame_ns = vim.api.nvim_create_namespace("sapling_blame")
 -- gitsigns' `current_line_blame_opts.delay`. Overridable via `setup_blame`.
 local blame_delay = 1000
 local blame_timer
-
--- Return the root of the Sapling repo containing `path`, or nil if there is none.
-local function sapling_root(path)
-	if not path or path == "" then
-		return nil
-	end
-	local found = vim.fs.find(".sl", { path = path, upward = true, type = "directory" })
-	if not found[1] then
-		return nil
-	end
-	return vim.fs.dirname(found[1])
-end
 
 -- The on-disk path backing a buffer, or nil for unnamed/special buffers.
 local function buf_path(buf_id)
@@ -88,26 +77,31 @@ M.source = {
 		if not path then
 			return false
 		end
-		local root = sapling_root(vim.fs.dirname(path))
-		if not root then
+		local repo = core.repo(vim.fs.dirname(path))
+		if not repo then
 			-- Not a Sapling buffer: mini.diff stays detached here.
 			return false
 		end
 
 		teardown(buf_id)
-		state[buf_id] = { root = root, file = path, blame = { lines = {}, desc = {} } }
+		state[buf_id] = {
+			root = repo.root,
+			metadata = repo.metadata,
+			file = path,
+			blame = { lines = {}, desc = {} },
+		}
 
 		set_ref(buf_id)
 		M.refresh_blame(buf_id)
 
 		-- Reference text only changes on commit/amend/goto, which all rewrite
-		-- `.sl/dirstate`. Watch it (debounced) to refresh signs and blame, the
+		-- Sapling's `dirstate`. Watch it (debounced) to refresh signs and blame, the
 		-- same way mini.diff's git source watches `.git/index`.
 		local watcher = uv.new_fs_event()
 		if watcher then
 			state[buf_id].watcher = watcher
 			local timer
-			watcher:start(root .. "/.sl/dirstate", {}, function()
+			watcher:start(repo.metadata .. "/dirstate", {}, function()
 				if timer then
 					timer:stop()
 					timer:close()

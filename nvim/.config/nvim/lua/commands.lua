@@ -3,6 +3,7 @@
 -- remotes) we transparently auto-select the first preferred remote that
 -- exists; otherwise behave as usual.
 local preferred_remotes = { "upstream", "origin" }
+
 local function gitbrowse(opts)
   local select = vim.ui.select
   vim.ui.select = function(items, select_opts, on_choice)
@@ -16,9 +17,13 @@ local function gitbrowse(opts)
     end
     return select(items, select_opts, on_choice)
   end
-  local ok, err = pcall(Snacks.gitbrowse, opts)
+  local ok, err = pcall(function()
+    if not require("sapling.gitbrowse").open(opts) then
+      Snacks.gitbrowse(opts)
+    end
+  end)
   vim.ui.select = select -- restore in case it was never called (single remote)
-  if not ok then
+  if not ok and err ~= "__ignore__" then
     error(err)
   end
 end

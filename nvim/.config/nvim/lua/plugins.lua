@@ -351,35 +351,14 @@ return {
 		config = function()
 			require("gitsigns").setup({
 				current_line_blame = true,
-				on_attach = function(bufnr)
-					-- In Sapling repos (including dotgit mode where both .git and
-					-- .sl exist) let mini.diff own the buffer instead of gitsigns.
-					local dir = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr))
-					if vim.fs.find(".sl", { path = dir, upward = true, type = "directory" })[1] then
-						return false
-					end
-				end,
+				on_attach = require("sapling.integrations").gitsigns_on_attach,
 			})
 		end,
 	},
 	{
 		"echasnovski/mini.diff",
 		version = false,
-		config = function()
-			local sapling = require("sapling")
-			require("mini.diff").setup({
-				-- Sapling-only source; its `attach` returns false outside .sl
-				-- repos, so mini.diff renders nothing there (gitsigns handles git).
-				source = sapling.source,
-				-- Match gitsigns: show hunks in the sign column, not the number column.
-				-- Slim vertical bar instead of the default full-cell block (▒).
-				view = {
-					style = "sign",
-					signs = { add = "▎", change = "▎", delete = "▎" },
-				},
-			})
-			sapling.setup_blame()
-		end,
+		config = require("sapling.integrations").setup_mini_diff,
 	},
 	{
 		-- Detect tabstop and shiftwidth automatically
@@ -758,7 +737,8 @@ return {
 		},
 	},
 	{
-		"sindrets/diffview.nvim",
+		"MohamedBassem/diffview-plus.nvim",
+		branch = "agent/fix-sapling-support",
 		cmd = {
 			"DiffviewOpen",
 			"DiffviewClose",
@@ -766,6 +746,7 @@ return {
 			"DiffviewFocusFiles",
 			"DiffviewFileHistory",
 		},
+		opts = require("sapling.integrations").diffview_opts,
 	},
 	{
 		"saecki/crates.nvim",
