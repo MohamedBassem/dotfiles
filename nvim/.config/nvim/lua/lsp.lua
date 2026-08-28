@@ -102,3 +102,4 @@ vim.diagnostic.config({
 
 -- Enable the LSPs here
 vim.lsp.enable('lua_ls')
+vim.lsp.enable('tailwindcss')

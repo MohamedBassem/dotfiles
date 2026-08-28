@@ -56,7 +56,7 @@ local function codex_prompt(opts)
   local bufnr = vim.api.nvim_get_current_buf()
   local path = vim.api.nvim_buf_get_name(bufnr)
   local location = string.format("%s:%d-%d", path ~= "" and path or "[No Name]", opts.line1, opts.line2)
-  return string.format("%s Look at %s.", opts.args, location)
+  return string.format("In %s\n %s", location, opts.args)
 end
 
 local function show_codex()

@@ -19,7 +19,7 @@ return {
 					},
 				},
 			})
-			vim.cmd.colorscheme("catppuccin")
+			vim.cmd.colorscheme("catppuccin-nvim")
 		end,
 	},
 	{
@@ -99,7 +99,7 @@ return {
 		config = function()
 			require("lualine").setup({
 				options = {
-					theme = "catppuccin",
+					theme = "catppuccin-nvim",
 				},
 				extensions = { "trouble" },
 				tabline = {
@@ -592,15 +592,6 @@ return {
 				},
 			},
 		},
-	},
-	{
-		"luckasRanarison/tailwind-tools.nvim",
-		name = "tailwind-tools",
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-			"neovim/nvim-lspconfig",
-		},
-		opts = {},
 	},
 	{
 		"folke/snacks.nvim",
