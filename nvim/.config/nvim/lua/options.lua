@@ -15,10 +15,30 @@ vim.opt.cursorline = true -- Enable highlighting of the current line
 vim.opt.mouse = "a" -- Enable mouse support
 vim.opt.clipboard = "unnamedplus" -- Copy/paste to system clipboard
 
-local osc52 = require('vim.ui.clipboard.osc52')
+local osc52 = require("vim.ui.clipboard.osc52")
+local clipboard_cache = {
+  ["+"] = { {}, "v" },
+  ["*"] = { {}, "v" },
+}
+
+local function osc52_copy(reg)
+  local copy = osc52.copy(reg)
+  return function(lines, regtype)
+    clipboard_cache[reg] = { vim.deepcopy(lines), regtype }
+    copy(lines)
+  end
+end
+
 vim.g.clipboard = {
-  name = 'OSC 52',
-  copy = { ['+'] = osc52.copy('+'), ['*'] = osc52.copy('*') },
+  name = "OSC 52 copy only",
+  copy = {
+    ["+"] = osc52_copy("+"),
+    ["*"] = osc52_copy("*"),
+  },
+  paste = {
+    ["+"] = function() return clipboard_cache["+"] end,
+    ["*"] = function() return clipboard_cache["*"] end,
+  },
 }
 
 vim.opt.swapfile = false -- Don't use swapfile
