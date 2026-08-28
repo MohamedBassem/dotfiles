@@ -776,7 +776,7 @@ return {
 			vim.g.rustaceanvim = {
 				-- LSP configuration
 				server = {
-					settings = {
+					default_settings = {
 						-- rust-analyzer language server configuration
 						["rust-analyzer"] = {
 							assist = {
