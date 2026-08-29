@@ -100,8 +100,8 @@ Personal Zsh code lives under `zsh/` as regular tracked files. Run
 ## Packages
 
 Shared command-line tools come from Nix on every host. macOS keeps Homebrew
-for Hunk, Nixpacks, Sapling, Serpl, Restate, and OpenCode. nix-darwin does not
-run Homebrew cleanup, upgrades, or automatic updates during activation. See
+for Restate, Sapling, and host-specific casks. nix-darwin does not run Homebrew
+cleanup, upgrades, or automatic updates during activation. See
 [`nix/README.md`](nix/README.md) for the module layout and package ownership.
 
 Update all pinned inputs explicitly:

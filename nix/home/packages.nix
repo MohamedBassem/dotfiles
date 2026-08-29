@@ -10,41 +10,60 @@
       act
       age
       atuin
+      awscli2
       btop
       cloudflared
       cmake
       curl
       delta
       direnv
+      dust
       eza
       fd
       fzf
       gh
       git
       git-filter-repo
+      gnuplot
       go
+      graphviz
       grpcurl
+      herdr
+      htop
+      hunk
       httpie
       iperf3
       jq
+      jujutsu
       just
       lazygit
+      libargon2
       monolith
       mosh
       neovim
+      nixpacks
+      opencode
       pipx
       rclone
       ripgrep
       rsync
+      rtk
+      serpl
       shellcheck
       sops
+      stow
+      stripe-cli
+      stylua
       tmux
       tree
       tree-sitter
+      viu
       watch
       wget
       wrk
       yq
+      yt-dlp
+      zizmor
       zoxide
     ]
     # Apple's ssh supports UseKeychain and the keychain-backed agent; the
