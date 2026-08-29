@@ -1,4 +1,16 @@
-{ ... }:
+{ pkgs, ... }:
 {
-  # Debian 13 workstation. Add packages here only when this host needs them.
+  home.packages = with pkgs; [
+    awscli2
+    btop
+    dust
+    hunk
+    kubectl
+    lnav
+    lsof
+    nixpacks
+    serpl
+    sysbench
+    watchman
+  ];
 }
