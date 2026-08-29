@@ -7,7 +7,10 @@
   modules ? [ ],
 }:
 inputs.home-manager.lib.homeManagerConfiguration {
-  pkgs = import inputs.nixpkgs { inherit system; };
+  pkgs = import inputs.nixpkgs {
+    inherit system;
+    config.allowUnfreePredicate = pkg: inputs.nixpkgs.lib.getName pkg == "obsidian-headless";
+  };
 
   extraSpecialArgs = {
     inherit inputs dotfilesRoot;
