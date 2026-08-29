@@ -1,5 +1,5 @@
 " Minimal no-plugin fallback for machines without nvim.
-" The real editor config lives in nvim/.config/nvim/.
+" The real editor config lives in nvim/.
 
 syntax on
 filetype plugin indent on

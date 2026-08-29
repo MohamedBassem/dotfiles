@@ -7,9 +7,8 @@
 }:
 {
   home.file = {
-    ".aerospace.toml".source = ../../aerospace/.aerospace.toml;
-    "Library/Preferences/sapling/sapling.conf".source =
-      ../../sapling/Library/Preferences/sapling/sapling.conf;
+    ".aerospace.toml".source = ../../aerospace/config.toml;
+    "Library/Preferences/sapling/sapling.conf".source = ../../sapling/macos.conf;
   };
 
   home.activation.linkHerdrPlugins = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
