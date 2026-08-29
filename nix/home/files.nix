@@ -14,15 +14,11 @@ in
     ".gitconfig.local".text =
       if pkgs.stdenv.hostPlatform.isDarwin then
         ''
-          [http]
-            sslBackend = secure-transport
           [credential]
             helper = osxkeychain
         ''
       else
         ''
-          [http]
-            sslBackend = gnutls
           [credential]
             helper = cache
         '';
