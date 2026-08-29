@@ -2,8 +2,7 @@
 {
   nix = {
     enable = true;
-    # Match the installer major/minor instead of downgrading to pkgs.nix.
-    package = pkgs.nixVersions.nix_2_35;
+    package = pkgs.nixVersions.latest;
     settings.experimental-features = [
       "nix-command"
       "flakes"

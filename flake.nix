@@ -31,9 +31,63 @@
         "x86_64-linux"
       ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+      repoChecks =
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        {
+          formatting = pkgs.runCommand "dotfiles-formatting" { nativeBuildInputs = [ pkgs.nixfmt-tree ]; } ''
+            cp -R ${self} source
+            chmod -R u+w source
+            cd source
+            ${nixpkgs.lib.getExe pkgs.nixfmt-tree} . --ci --tree-root "$PWD" --walk filesystem
+            touch "$out"
+          '';
+
+          shellcheck = pkgs.runCommand "dotfiles-shellcheck" { nativeBuildInputs = [ pkgs.shellcheck ]; } ''
+            shellcheck \
+              ${./claude/statusline-command.sh} \
+              ${./herdr-plugins/nvim-navigation/navigate.sh} \
+              ${./herdr-plugins/thumbs/pick.sh} \
+              ${./herdr-plugins/thumbs/picker.sh} \
+              ${./scripts/sl-share-worktree} \
+              ${./scripts/sl-submit-stack} \
+              ${./scripts/tmux-cpu} \
+              ${./scripts/tmux-paste} \
+              ${./scripts/tmux-sessionizer}
+            touch "$out"
+          '';
+
+          zsh-syntax = pkgs.runCommand "dotfiles-zsh-syntax" { nativeBuildInputs = [ pkgs.zsh ]; } ''
+            for file in ${./zsh}/*.zsh; do
+              zsh -n "$file"
+            done
+            touch "$out"
+          '';
+        };
     in
     {
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
+
+      devShells = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        {
+          default = pkgs.mkShellNoCC {
+            packages = with pkgs; [
+              deadnix
+              just
+              nixfmt-tree
+              shellcheck
+              statix
+              zsh
+            ];
+          };
+        }
+      );
 
       # darwin.nix and files.nix expect a `dotfilesRoot` special arg.
       homeModules = {
@@ -77,8 +131,25 @@
       packages.x86_64-linux.workstation =
         self.homeConfigurations."mbassem@mbassem-workstation".activationPackage;
 
-      checks.aarch64-darwin.darwin = self.darwinConfigurations.Mohameds-Mac-mini.system;
-      checks.aarch64-darwin.darwin-macbook-pro = self.darwinConfigurations.Mohameds-MacBook-Pro.system;
-      checks.x86_64-linux.home = self.homeConfigurations."mbassem@mbassem-workstation".activationPackage;
+      checks = {
+        aarch64-darwin = repoChecks "aarch64-darwin" // {
+          darwin = self.darwinConfigurations.Mohameds-Mac-mini.system;
+          darwin-macbook-pro = self.darwinConfigurations.Mohameds-MacBook-Pro.system;
+        };
+
+        aarch64-linux = repoChecks "aarch64-linux" // {
+          home =
+            (self.lib.mkHome {
+              system = "aarch64-linux";
+              username = "ci";
+              dotfilesRoot = "/home/ci/repos/dotfiles";
+              modules = [ ./nix/home/linux.nix ];
+            }).activationPackage;
+        };
+
+        x86_64-linux = repoChecks "x86_64-linux" // {
+          home = self.homeConfigurations."mbassem@mbassem-workstation".activationPackage;
+        };
+      };
     };
 }

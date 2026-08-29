@@ -20,7 +20,8 @@ mutable out-of-store links and locally developed extensions.
 
 - `home/common.nix` imports configuration shared by every host.
 - `home/packages.nix` owns cross-platform command-line packages.
-- `home/files.nix` maps common configuration and scripts.
+- `home/files.nix` maps static configuration.
+- `home/scripts.nix` packages personal commands with their runtime tools.
 - `home/shells.nix` configures interactive shells and their pinned framework.
 - `home/darwin.nix` and `home/linux.nix` contain platform-specific behavior.
 - `darwin/` owns macOS system settings, fonts, and the declarative Homebrew set.
@@ -38,9 +39,15 @@ system defaults. This integration is additive: cleanup, upgrades, and automatic
 updates stay disabled during activation, and undeclared installations are left
 alone.
 
-Versioned language runtimes, project-specific toolchains, privileged system
-extensions, and software requiring interactive installation remain outside the
-system configuration.
+Project-specific toolchains belong in each project's flake development shell.
+Broadly used developer commands remain in the Home Manager package set.
+Privileged system extensions and software requiring interactive installation
+remain outside the system configuration.
+
+The repository's default development shell includes `just`, `nixfmt-tree`,
+ShellCheck, Zsh, Deadnix, and Statix. The flake checks formatting, shell scripts,
+Zsh syntax, every real host, and a synthetic aarch64 Linux Home Manager
+configuration.
 
 ## Mutable and unmanaged paths
 

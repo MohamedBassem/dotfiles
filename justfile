@@ -28,9 +28,16 @@ default:
 show:
     {{ nix }} flake show --all-systems
 
-# Evaluate every declared host without building or activating it
+# Evaluate every declared host, then run repository checks for this system
 check:
+    #!/usr/bin/env bash
+    set -euo pipefail
     {{ nix }} flake check --all-systems --no-build
+    system="$({{ nix }} eval --impure --raw --expr builtins.currentSystem)"
+    {{ nix }} build --no-link \
+        ".#checks.$system.formatting" \
+        ".#checks.$system.shellcheck" \
+        ".#checks.$system.zsh-syntax"
 
 # Format Nix files with the formatter pinned by the flake
 fmt:

@@ -3,6 +3,7 @@
 # Idea stolen from:
 # https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
 
+set -euo pipefail
 
 SESSIONS_FILE=~/.tmux-sessions-cache
 
@@ -20,7 +21,7 @@ if [[ $# -gt 0 ]]; then
 		echo "Added $current_dir to the sessions file"
 		;;
 	-r | --rm)
-		selected=$(fzf <"$SESSIONS_FILE")
+		selected=$(fzf <"$SESSIONS_FILE") || exit 0
 		if [[ -z $selected ]]; then
 			exit 0
 		fi
@@ -29,7 +30,7 @@ if [[ $# -gt 0 ]]; then
 			exit 1
 		fi
 		tmp=$(mktemp)
-		grep -Fxv -- "$selected" "$SESSIONS_FILE" >"$tmp"
+		grep -Fxv -- "$selected" "$SESSIONS_FILE" >"$tmp" || true
 		mv "$tmp" "$SESSIONS_FILE"
 		echo "Deleted $selected from the sessions file"
 		;;
@@ -47,12 +48,12 @@ if [[ $# -gt 0 ]]; then
 	exit 0
 fi
 
-selected=$(fzf <"$SESSIONS_FILE")
+selected=$(fzf <"$SESSIONS_FILE") || exit 0
 if [[ -z $selected ]]; then
 	exit 0
 fi
 selected_name=$(basename "$selected" | tr . _)
-tmux_running=$(pgrep tmux)
+tmux_running=$(pgrep tmux || true)
 
 if [[ -z ${TMUX-} ]] && [[ -z $tmux_running ]]; then
 	tmux new-session -s "$selected_name" -c "$selected"

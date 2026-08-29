@@ -4,20 +4,6 @@ case $- in
       *) return;;
 esac
 
-# don't put duplicate lines or lines starting with space in the history.
-HISTCONTROL=ignoreboth
-
-# append to the history file, don't overwrite it
-shopt -s histappend
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=100000
-HISTFILESIZE=2000
-
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-shopt -s checkwinsize
-
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
 #shopt -s globstar
@@ -79,11 +65,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# some more ls aliases
-alias ll='ls -alhF'
-alias la='ls -A'
-alias l='ls -CF'
-
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -142,26 +123,13 @@ color_my_prompt
 
 complete -W "$(echo $(grep '^ssh ' ~/.bash_history | sort -u | sed 's/^ssh //'))" ssh
 
-#Custom Vars
-export EDITOR=vim
 #source /home/mohamedbassem/.rbenv/versions/1.9.3-p392-railsexpress/lib/ruby/gems/1.9.1/gems/tmuxinator-0.6.11/completion/tmuxinator.bash
 
 # rbenv Installation
 #export PATH="$HOME/.rbenv/bin:$PATH"
 #eval "$(rbenv init -)"
-PATH=$PATH:$HOME/bin
-PATH=$PATH:$HOME/usr/bin
-
-# Go Installation
-export GOPATH=~/repos/go
-export PATH="$PATH:/usr/local/go/bin"
-export PATH="$PATH:$GOPATH/bin"
-
 MB="/media/MohamedBassem"
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 alias resetaudio='sudo killall coreaudiod'
 
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
-
-export PATH="$HOME/.cargo/bin:$PATH"

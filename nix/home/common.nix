@@ -3,6 +3,7 @@
   imports = [
     ./files.nix
     ./packages.nix
+    ./scripts.nix
     ./shells.nix
   ];
 

@@ -1,5 +1,4 @@
 {
-  config,
   dotfilesRoot,
   lib,
   pkgs,

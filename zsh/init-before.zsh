@@ -1,10 +1,3 @@
-# Homebrew defaults.
-export HOMEBREW_NO_ANALYTICS=1
-export HOMEBREW_NO_ENV_HINTS=1
-export HOMEBREW_NO_INSECURE_REDIRECT=1
-export HOMEBREW_NO_AUTO_UPDATE=1
-export HOMEBREW_CASK_OPTS="--require-sha"
-
 # Prezto modules may call Homebrew commands, so initialize it first.
 if [[ "$OSTYPE" == darwin* && -x /opt/homebrew/bin/brew ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"

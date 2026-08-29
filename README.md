@@ -34,10 +34,16 @@ cd ~/repos/dotfiles
 
 ## Check and build
 
-The `just` recipes enable flakes explicitly, which also makes them work before
-the first activation. `just build` detects the hostname and operating system,
-then builds the matching device alias. `just show` lists those aliases under
-the flake's `packages` output.
+The default development shell provides `just`, the pinned formatter, and the
+repository lint tools. Use it before the first activation:
+
+```bash
+nix develop -c just check
+```
+
+After activation, the shorter commands work directly. `just build` detects the
+hostname and operating system, then builds the matching device alias. `just
+show` lists those aliases under the flake's `packages` output.
 
 ```bash
 just show
@@ -46,9 +52,10 @@ just fmt
 just build
 ```
 
-Builds write to the Nix store and create an ignored `result-BUILD_ALIAS` link;
-they do not activate anything. An unknown hostname fails instead of selecting
-another machine's configuration.
+`just check` evaluates every host and runs the formatter, ShellCheck, and Zsh
+syntax checks for the current system. Builds write to the Nix store and create
+an ignored `result-BUILD_ALIAS` link; they do not activate anything. An unknown
+hostname fails instead of selecting another machine's configuration.
 
 ## Activate
 
@@ -65,9 +72,11 @@ recipes remain available for troubleshooting.
 
 ## Ownership
 
-Static files link into `/nix/store`. Configuration that applications update at
-runtime links into the writable checkout. Home Manager does not own private or
-stateful data such as credentials, histories, caches, or application data.
+Static files link into `/nix/store`. Personal commands are Nix packages with
+their runtime tools declared alongside them. Configuration that applications
+update at runtime links into the writable checkout. Home Manager does not own
+private or stateful data such as credentials, histories, caches, or application
+data.
 
 ## Packages
 
@@ -75,6 +84,10 @@ Shared packages come from Nix. macOS also uses Homebrew for packages managed
 outside Nix. Activation does not run Homebrew cleanup, upgrades, or automatic
 updates. See [`nix/README.md`](nix/README.md) for the module layout and package
 ownership.
+
+Home Manager configures Atuin, direnv with nix-direnv, eza, fzf, Neovim, and
+zoxide for Bash and Zsh. Project-specific toolchains should use flake
+development shells and `.envrc` files instead of adding more global runtimes.
 
 Update all pinned inputs explicitly:
 

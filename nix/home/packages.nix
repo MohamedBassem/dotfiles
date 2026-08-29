@@ -9,18 +9,14 @@
     [
       act
       age
-      atuin
       awscli2
       btop
       cloudflared
       cmake
       curl
       delta
-      direnv
       dust
-      eza
       fd
-      fzf
       gh
       git
       git-filter-repo
@@ -40,7 +36,6 @@
       libargon2
       monolith
       mosh
-      neovim
       nixpacks
       opencode
       pipx
@@ -64,7 +59,6 @@
       yq
       yt-dlp
       zizmor
-      zoxide
     ]
     # Apple's ssh supports UseKeychain and the keychain-backed agent; the
     # Nixpkgs build does not, so it must not shadow /usr/bin/ssh on macOS.
