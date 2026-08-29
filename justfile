@@ -16,23 +16,19 @@ check:
 fmt:
     {{ nix }} fmt
 
-# Build the Mac configuration without activating it
-build-mac:
-    {{ nix }} build '.#darwinConfigurations.Mohameds-Mac-mini.system' --out-link result-mac
+# Build a device configuration without activating it
+build device:
+    {{ nix }} build "path:$PWD#{{ replace(device, "device=", "") }}" --out-link 'result-{{ replace(device, "device=", "") }}'
 
-# Build the Debian workstation configuration without activating it
-build-linux:
-    {{ nix }} build '.#homeConfigurations."mbassem@mbassem-workstation".activationPackage' --out-link result-linux
+# Activate a nix-darwin configuration
+switch-darwin configuration:
+    sudo darwin-rebuild switch --flake "path:$PWD#{{ configuration }}"
 
-# Activate the Mac configuration
-switch-mac:
-    sudo darwin-rebuild switch --flake '.#Mohameds-Mac-mini'
+# Activate a standalone Home Manager configuration
+switch-home configuration:
+    home-manager switch --flake "path:$PWD#{{ configuration }}"
 
-# Activate the Debian workstation configuration after its first bootstrap
-switch-linux:
-    home-manager switch --flake '.#mbassem@mbassem-workstation'
-
-# Update every pinned input; review flake.lock and build both hosts afterward
+# Update every pinned input; review flake.lock and build affected devices afterward
 update:
     {{ nix }} flake update
 

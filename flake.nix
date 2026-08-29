@@ -61,7 +61,24 @@
         ];
       };
 
+      darwinConfigurations.Mohameds-MacBook-Pro = nix-darwin.lib.darwinSystem {
+        specialArgs = { inherit inputs; };
+        modules = [
+          home-manager.darwinModules.home-manager
+          ./nix/hosts/Mohameds-MacBook-Pro.nix
+        ];
+      };
+
+      # Stable, platform-local aliases consumed by `just build <device>`.
+      packages.aarch64-darwin = {
+        mac-mini = self.darwinConfigurations.Mohameds-Mac-mini.system;
+        macbook-pro = self.darwinConfigurations.Mohameds-MacBook-Pro.system;
+      };
+      packages.x86_64-linux.workstation =
+        self.homeConfigurations."mbassem@mbassem-workstation".activationPackage;
+
       checks.aarch64-darwin.darwin = self.darwinConfigurations.Mohameds-Mac-mini.system;
+      checks.aarch64-darwin.darwin-macbook-pro = self.darwinConfigurations.Mohameds-MacBook-Pro.system;
       checks.x86_64-linux.home = self.homeConfigurations."mbassem@mbassem-workstation".activationPackage;
     };
 }

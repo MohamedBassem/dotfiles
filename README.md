@@ -1,17 +1,18 @@
 # Dotfiles
 
 Personal dotfiles managed with Nix, Home Manager, and nix-darwin. The same
-Home Manager modules cover macOS and Debian Linux.
+Home Manager modules cover macOS and Linux. Platform modules own shared
+behavior, while `nix/hosts/` binds that behavior to a device, user, home
+directory, and checkout path. The exact configured outputs are documented in
+[`nix/README.md`](nix/README.md).
 
 ## Hosts
 
-| Flake output | Platform | Manager |
-|---|---|---|
-| `Mohameds-Mac-mini` | Apple Silicon macOS | nix-darwin with Home Manager |
-| `mbassem@mbassem-workstation` | x86_64 Debian 13 | Standalone Home Manager |
-
-Each host module declares its user, home directory, and checkout path. Mutable
-links depend on the checkout being at `~/repos/dotfiles`.
+| Host | Build alias | Platform | Manager output |
+|---|---|---|---|
+| Mohamed's Mac mini | `mac-mini` | Apple Silicon macOS | `darwinConfigurations.Mohameds-Mac-mini` |
+| Mohamed's MacBook Pro | `macbook-pro` | Apple Silicon macOS | `darwinConfigurations.Mohameds-MacBook-Pro` |
+| Workstation | `workstation` | x86_64 Linux | `homeConfigurations."mbassem@mbassem-workstation"` |
 
 ## Install Nix
 
@@ -23,7 +24,8 @@ curl -sSfL https://artifacts.nixos.org/nix-installer \
   | sh -s -- install --enable-flakes
 ```
 
-Clone the repository at the declared path:
+Clone the repository at the path expected by the selected host module. The
+default layout is:
 
 ```bash
 git clone git@github.com:MohamedBassem/dotfiles.git ~/repos/dotfiles
@@ -33,47 +35,53 @@ cd ~/repos/dotfiles
 ## Check and build
 
 The `just` recipes enable flakes explicitly, which also makes them work before
-the first Home Manager activation on Debian.
+the first activation. `just show` lists the platform-local device aliases under
+the flake's `packages` output.
 
 ```bash
 just show
 just check
 just fmt
-just build-mac    # run on the Mac
-just build-linux  # run on the Debian workstation
+just build device=DEVICE
 ```
 
-Builds write to the Nix store and create ignored `result-mac` or
-`result-linux` links. They do not activate anything.
+Replace `DEVICE` with an alias available for the current platform. Builds write
+to the Nix store and create an ignored `result-DEVICE` link; they do not
+activate anything.
 
 ## Activate
 
-On a new Mac, build first so the pinned `darwin-rebuild` is available:
+For a new nix-darwin host, build first so the pinned `darwin-rebuild` is
+available:
 
 ```bash
-just build-mac
-sudo ./result-mac/sw/bin/darwin-rebuild switch --flake '.#Mohameds-Mac-mini'
+just build device=DEVICE
+sudo ./result-DEVICE/sw/bin/darwin-rebuild switch \
+  --flake "path:$PWD#DARWIN_CONFIGURATION"
 ```
 
 Later switches use:
 
 ```bash
-just switch-mac
+just switch-darwin DARWIN_CONFIGURATION
 ```
 
-Bootstrap the Debian workstation with:
+Bootstrap a standalone Home Manager host with:
 
 ```bash
-just build-linux
-./result-linux/activate
+just build device=DEVICE
+./result-DEVICE/activate
 ```
 
 Later switches use the Home Manager command installed by that first
 activation:
 
 ```bash
-just switch-linux
+just switch-home HOME_CONFIGURATION
 ```
+
+`DARWIN_CONFIGURATION` and `HOME_CONFIGURATION` are the corresponding output
+names shown by `just show`.
 
 ## Ownership
 
@@ -91,7 +99,7 @@ Personal Zsh code lives under `zsh/` as regular tracked files. Run
 
 ## Packages
 
-Shared command-line tools come from Nix on both machines. macOS keeps Homebrew
+Shared command-line tools come from Nix on every host. macOS keeps Homebrew
 for Hunk, Nixpacks, Sapling, Serpl, Restate, and OpenCode. nix-darwin does not
 run Homebrew cleanup, upgrades, or automatic updates during activation. See
 [`nix/README.md`](nix/README.md) for the module layout and package ownership.
@@ -101,16 +109,15 @@ Update all pinned inputs explicitly:
 ```bash
 just update
 just check
-just build-mac    # run on the Mac
-just build-linux  # run on the Debian workstation
+just build device=DEVICE
 ```
 
 ## Add a host
 
-Add a host module under `nix/hosts/`, then add its output in `flake.nix`.
-Non-NixOS Linux machines use `lib.mkHome`; macOS machines use
-`nix-darwin.lib.darwinSystem`. Test Linux configurations on their native host
-before activation.
+Add a host module under `nix/hosts/`, add its manager output in `flake.nix`, and
+expose the resulting derivation as `packages.<system>.<device>`. Non-NixOS
+Linux hosts use `lib.mkHome`; macOS hosts use `nix-darwin.lib.darwinSystem`.
+Test configurations on their native platform before activation.
 
 ## Roll back
 
