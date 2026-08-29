@@ -1,81 +1,128 @@
 # Dotfiles
 
-Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
+Personal dotfiles managed with Nix, Home Manager, and nix-darwin. The same
+Home Manager modules cover macOS and Debian Linux.
 
-## Structure
+## Hosts
 
-Most top-level directories are Stow packages. Running `stow -t $HOME <pkg>`
-mirrors a package's contents as symlinks under `$HOME`; `herdr-plugins` is the
-exception and is registered through Herdr's local plugin linker.
+| Flake output | Platform | Manager |
+|---|---|---|
+| `Mohameds-Mac-mini` | Apple Silicon macOS | nix-darwin with Home Manager |
+| `mbassem@mbassem-workstation` | x86_64 Debian 13 | Standalone Home Manager |
 
-| Package | Contents |
-|---|---|
-| `aerospace` | `.aerospace.toml` |
-| `bash` | `.bashrc`, `.bash_aliases` |
-| `claude` | `.claude/` (settings, statusline command) |
-| `fish` | `.config/fish/` (config, functions) |
-| `ghostty` | `.config/ghostty/config` |
-| `git` | `.gitconfig`, `.gitignore` |
-| `herdr` | `.config/herdr/config.toml` |
-| `herdr-plugins` | Locally owned Herdr plugins (linked by `install.sh`) |
-| `hunk` | `.config/hunk/config.toml` |
-| `nvim` | `.config/nvim/` (init.lua, plugins, lua modules) |
-| `sapling` | `sapling.conf` (GitHub stacked PR workflow) |
-| `scripts` | Helper commands including `tmux-sessionizer` and `sl-share-worktree` |
-| `tmux` | `.tmux.conf` |
-| `vim` | `.vimrc` |
-| `wezterm` | `.wezterm.lua` |
-| `zsh` | `.zprezto/` (submodule), zsh runcoms |
+Each host module declares its user, home directory, and checkout path. Mutable
+links depend on the checkout being at `~/repos/dotfiles`.
 
-The canonical package list is the `PACKAGES` array in `install.sh`.
+## Install Nix
 
-## Install
+Install upstream Nix with the NixOS community installer. Flakes must be
+enabled.
 
 ```bash
-git clone --recursive git@github.com:MohamedBassem/dotfiles.git ~/repos/dotfiles
+curl -sSfL https://artifacts.nixos.org/nix-installer \
+  | sh -s -- install --enable-flakes
+```
+
+Clone the repository at the declared path:
+
+```bash
+git clone git@github.com:MohamedBassem/dotfiles.git ~/repos/dotfiles
 cd ~/repos/dotfiles
-./install.sh
 ```
 
-The install script will:
-1. Install Homebrew if missing
-2. Install all packages from the `Brewfile`
-3. Initialize git submodules
-4. Stow all packages
-5. Link the locally owned Herdr plugins (when Herdr is installed)
-6. Copy fonts to `~/Library/Fonts`
+## Check and build
 
-## Day-to-day usage (justfile)
+The `just` recipes enable flakes explicitly, which also makes them work before
+the first Home Manager activation on Debian.
 
 ```bash
-just               # list recipes
-just stow nvim     # symlink specific package(s)
-just restow tmux   # relink after adding/removing files in a package
-just unstow vim    # remove a package's symlinks
-just stow-all      # stow every package
-just check         # dry-run all packages to surface conflicts
+just show
+just check
+just fmt
+just build-mac    # run on the Mac
+just build-linux  # run on the Debian workstation
 ```
 
-The package list is read from the `PACKAGES` array in `install.sh`, so there is a single source of truth.
+Builds write to the Nix store and create ignored `result-mac` or
+`result-linux` links. They do not activate anything.
 
-## Usage on an existing machine
+## Activate
 
-If you already have config files in place, adopt them to let stow take ownership:
+On a new Mac, build first so the pinned `darwin-rebuild` is available:
 
 ```bash
-rm -rf ~/.zprezto  # remove old submodule clone if present
-cd ~/repos/dotfiles
-just adopt git tmux vim bash wezterm aerospace nvim fish ghostty scripts zsh hunk herdr claude
-git diff       # check for local differences
-git checkout . # restore repo versions if needed
+just build-mac
+sudo ./result-mac/sw/bin/darwin-rebuild switch --flake '.#Mohameds-Mac-mini'
 ```
 
-## Adding a new config
+Later switches use:
 
-1. Create a package directory: `mkdir -p <pkg>`
-2. Place files mirroring the home directory structure (e.g., `<pkg>/.config/app/config`)
-3. Add the package name to the `PACKAGES` array in `install.sh`
-4. Run `just stow <pkg>`
+```bash
+just switch-mac
+```
+
+Bootstrap the Debian workstation with:
+
+```bash
+just build-linux
+./result-linux/activate
+```
+
+Later switches use the Home Manager command installed by that first
+activation:
+
+```bash
+just switch-linux
+```
+
+## Ownership
+
+Static configuration and scripts link into `/nix/store`. Neovim, Claude
+settings, and local Herdr plugins link into the writable checkout. Home Manager
+does not own credentials, histories, caches, SSH material, TPM checkouts, or
+application data.
+
+The Fish configuration stays in `fish/` for occasional use, but Nix does not
+install Fish or link that configuration into the home directory.
+
+Home Manager installs Prezto from the Nixpkgs revision in `flake.lock`.
+Personal Zsh code lives under `zsh/` as regular tracked files. Run
+`nix flake update` to update Prezto along with the other pinned packages.
+
+## Packages
+
+Shared command-line tools come from Nix on both machines. macOS keeps Homebrew
+for Hunk, Nixpacks, Sapling, Serpl, Restate, and OpenCode. nix-darwin does not
+run Homebrew cleanup, upgrades, or automatic updates during activation. See
+[`nix/README.md`](nix/README.md) for the module layout and package ownership.
+
+Update all pinned inputs explicitly:
+
+```bash
+just update
+just check
+just build-mac    # run on the Mac
+just build-linux  # run on the Debian workstation
+```
+
+## Add a host
+
+Add a host module under `nix/hosts/`, then add its output in `flake.nix`.
+Non-NixOS Linux machines use `lib.mkHome`; macOS machines use
+`nix-darwin.lib.darwinSystem`. Test Linux configurations on their native host
+before activation.
+
+## Roll back
+
+On macOS, list or activate the previous nix-darwin generation:
+
+```bash
+just generations-mac
+just rollback-mac
+```
+
+On Linux, `home-manager generations` prints each generation's activation path.
+Run the selected `activate` script to switch back.
 
 ## Sapling + GitHub stacked PRs
 

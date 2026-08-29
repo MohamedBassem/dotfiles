@@ -5,3 +5,8 @@
 Icon
 Icon
 .tmp.driveupload
+**/.claude/.cc-writes/
+
+# Nix build outputs
+result
+result-*

@@ -1,41 +1,48 @@
-# Package list is defined once in install.sh (canonical source)
-packages := `sed -n 's/^PACKAGES=(\(.*\))$/\1/p' install.sh`
+nix := "nix --extra-experimental-features 'nix-command flakes'"
 
 # List available recipes
 default:
     @just --list
 
-# Full machine setup (brew, submodules, stow, fonts, gitconfig.local)
-install:
-    ./install.sh
+# Show every flake output, including Linux outputs when run on macOS
+show:
+    {{ nix }} flake show --all-systems
 
-# Symlink one or more packages into $HOME (e.g. `just stow nvim tmux`)
-stow +pkgs: _guard-dirs
-    stow -v -t "$HOME" {{ pkgs }}
-
-# Relink packages after adding/removing files (prunes stale links)
-restow +pkgs: _guard-dirs
-    stow -v -R -t "$HOME" {{ pkgs }}
-
-# Remove the symlinks for one or more packages
-unstow +pkgs:
-    stow -v -D -t "$HOME" {{ pkgs }}
-
-# Take ownership of existing files in $HOME — review with `git diff` after!
-adopt +pkgs: _guard-dirs
-    stow -v --adopt -t "$HOME" {{ pkgs }}
-
-# Stow every package
-stow-all: (stow packages)
-
-# Restow every package
-restow-all: (restow packages)
-
-# Dry-run stow of every package to surface conflicts
+# Evaluate every declared host without building or activating it
 check:
-    stow -n -v -t "$HOME" {{ packages }}
+    {{ nix }} flake check --all-systems --no-build
 
-# Pre-create shared dirs so stow never tree-folds them into the repo
-# (app runtime state and credentials must stay outside the repo)
-_guard-dirs:
-    @mkdir -p ~/.config ~/.local/bin ~/.config/hunk ~/.config/herdr ~/.config/sapling ~/.claude ~/Library/Preferences/sapling
+# Format Nix files with the formatter pinned by the flake
+fmt:
+    {{ nix }} fmt
+
+# Build the Mac configuration without activating it
+build-mac:
+    {{ nix }} build '.#darwinConfigurations.Mohameds-Mac-mini.system' --out-link result-mac
+
+# Build the Debian workstation configuration without activating it
+build-linux:
+    {{ nix }} build '.#homeConfigurations."mbassem@mbassem-workstation".activationPackage' --out-link result-linux
+
+# Activate the Mac configuration
+switch-mac:
+    sudo darwin-rebuild switch --flake '.#Mohameds-Mac-mini'
+
+# Activate the Debian workstation configuration after its first bootstrap
+switch-linux:
+    home-manager switch --flake '.#mbassem@mbassem-workstation'
+
+# Update every pinned input; review flake.lock and build both hosts afterward
+update:
+    {{ nix }} flake update
+
+# List and roll back nix-darwin generations
+generations-mac:
+    darwin-rebuild --list-generations
+
+rollback-mac:
+    sudo darwin-rebuild switch --rollback
+
+# List standalone Home Manager generations on Linux
+generations-linux:
+    home-manager generations

@@ -1,7 +1,7 @@
 # Herdr plugins
 
-These plugins are kept in the dotfiles checkout and registered with `herdr
-plugin link` by `install.sh`.
+These plugins live in the dotfiles checkout. Home Manager registers them with
+`herdr plugin link` during activation.
 
 ## Neovim navigation
 
@@ -9,8 +9,8 @@ plugin link` by `install.sh`.
 the plugin sends its native `Ctrl-W h/j/k/l` window command. The Neovim mapping
 moves to an editor window when one exists and asks Herdr to move to its
 neighboring pane at the outer editor edge. For other foreground processes, the
-Herdr action moves directly to the neighboring pane. It requires `jq` (already
-in the `Brewfile`) for process detection.
+Herdr action moves directly to the neighboring pane. It uses the `jq` package
+from the shared Home Manager profile for process detection.
 
 ## Thumbs
 
