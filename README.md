@@ -35,81 +35,53 @@ cd ~/repos/dotfiles
 ## Check and build
 
 The `just` recipes enable flakes explicitly, which also makes them work before
-the first activation. `just show` lists the platform-local device aliases under
+the first activation. `just build` detects the hostname and operating system,
+then builds the matching device alias. `just show` lists those aliases under
 the flake's `packages` output.
 
 ```bash
 just show
 just check
 just fmt
-just build device=DEVICE
+just build
 ```
 
-Replace `DEVICE` with an alias available for the current platform. Builds write
-to the Nix store and create an ignored `result-DEVICE` link; they do not
-activate anything.
+Builds write to the Nix store and create an ignored `result-BUILD_ALIAS` link;
+they do not activate anything. An unknown hostname fails instead of selecting
+another machine's configuration.
 
 ## Activate
 
-For a new nix-darwin host, build first so the pinned `darwin-rebuild` is
-available:
+`just switch` detects the host, builds its configuration, and activates it. On
+macOS it runs the `darwin-rebuild` binary from the build result. On Linux it
+runs the Home Manager activation script. It works before the first activation.
 
 ```bash
-just build device=DEVICE
-sudo ./result-DEVICE/sw/bin/darwin-rebuild switch \
-  --flake "path:$PWD#DARWIN_CONFIGURATION"
+just switch
 ```
 
-Later switches use:
-
-```bash
-just switch-darwin DARWIN_CONFIGURATION
-```
-
-Bootstrap a standalone Home Manager host with:
-
-```bash
-just build device=DEVICE
-./result-DEVICE/activate
-```
-
-Later switches use the Home Manager command installed by that first
-activation:
-
-```bash
-just switch-home HOME_CONFIGURATION
-```
-
-`DARWIN_CONFIGURATION` and `HOME_CONFIGURATION` are the corresponding output
-names shown by `just show`.
+The explicit `switch-darwin CONFIGURATION` and `switch-home CONFIGURATION`
+recipes remain available for troubleshooting.
 
 ## Ownership
 
-Static configuration and scripts link into `/nix/store`. Neovim, Claude
-settings, and local Herdr plugins link into the writable checkout. Home Manager
-does not own credentials, histories, caches, SSH material, TPM checkouts, or
-application data.
-
-The Fish configuration stays in `fish/` for occasional use, but Nix does not
-install Fish or link that configuration into the home directory.
-
-Home Manager installs Prezto from the Nixpkgs revision in `flake.lock`.
-Personal Zsh code lives under `zsh/` as regular tracked files. Run
-`nix flake update` to update Prezto along with the other pinned packages.
+Static files link into `/nix/store`. Configuration that applications update at
+runtime links into the writable checkout. Home Manager does not own private or
+stateful data such as credentials, histories, caches, or application data.
 
 ## Packages
 
-Shared command-line tools come from Nix on every host. macOS keeps Homebrew
-for Restate, Sapling, and host-specific casks. nix-darwin does not run Homebrew
-cleanup, upgrades, or automatic updates during activation. See
-[`nix/README.md`](nix/README.md) for the module layout and package ownership.
+Shared packages come from Nix. macOS also uses Homebrew for packages managed
+outside Nix. Activation does not run Homebrew cleanup, upgrades, or automatic
+updates. See [`nix/README.md`](nix/README.md) for the module layout and package
+ownership.
 
 Update all pinned inputs explicitly:
 
 ```bash
 just update
 just check
-just build device=DEVICE
+just build
 ```
 
 ## Add a host
@@ -117,7 +89,8 @@ just build device=DEVICE
 Add a host module under `nix/hosts/`, add its manager output in `flake.nix`, and
 expose the resulting derivation as `packages.<system>.<device>`. Non-NixOS
 Linux hosts use `lib.mkHome`; macOS hosts use `nix-darwin.lib.darwinSystem`.
-Test configurations on their native platform before activation.
+Add its hostname, build alias, and manager output to the mappings at the top of
+the `justfile`. Test configurations on their native platform before activation.
 
 ## Roll back
 
