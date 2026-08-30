@@ -14,6 +14,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    tailcat = {
+      url = "github:tailscale/tailcat";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs =
