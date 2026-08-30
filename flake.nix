@@ -17,13 +17,7 @@
   };
 
   outputs =
-    inputs@{
-      self,
-      nixpkgs,
-      nix-darwin,
-      home-manager,
-      ...
-    }:
+    inputs@{ self, nixpkgs, ... }:
     let
       supportedSystems = [
         "aarch64-darwin"
@@ -97,6 +91,7 @@
       };
 
       lib.mkHome = import ./nix/lib/mk-home.nix { inherit inputs; };
+      lib.mkDarwin = import ./nix/lib/mk-darwin.nix { inherit inputs; };
 
       homeConfigurations."mbassem@mbassem-workstation" = self.lib.mkHome {
         system = "x86_64-linux";
@@ -107,20 +102,14 @@
         ];
       };
 
-      darwinConfigurations.Mohameds-Mac-mini = nix-darwin.lib.darwinSystem {
-        specialArgs = { inherit inputs; };
-        modules = [
-          home-manager.darwinModules.home-manager
-          ./nix/hosts/Mohameds-Mac-mini.nix
-        ];
+      darwinConfigurations.Mohameds-Mac-mini = self.lib.mkDarwin {
+        username = "mbassem";
+        modules = [ ./nix/hosts/Mohameds-Mac-mini.nix ];
       };
 
-      darwinConfigurations.Mohameds-MacBook-Pro = nix-darwin.lib.darwinSystem {
-        specialArgs = { inherit inputs; };
-        modules = [
-          home-manager.darwinModules.home-manager
-          ./nix/hosts/Mohameds-MacBook-Pro.nix
-        ];
+      darwinConfigurations.Mohameds-MacBook-Pro = self.lib.mkDarwin {
+        username = "mohamedbassem";
+        modules = [ ./nix/hosts/Mohameds-MacBook-Pro.nix ];
       };
 
       # Stable, platform-local aliases consumed by `just build <device>`.
@@ -133,7 +122,7 @@
 
       checks = {
         aarch64-darwin = repoChecks "aarch64-darwin" // {
-          darwin = self.darwinConfigurations.Mohameds-Mac-mini.system;
+          darwin-mac-mini = self.darwinConfigurations.Mohameds-Mac-mini.system;
           darwin-macbook-pro = self.darwinConfigurations.Mohameds-MacBook-Pro.system;
         };
 

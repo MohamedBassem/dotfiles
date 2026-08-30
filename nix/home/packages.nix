@@ -46,7 +46,6 @@
       serpl
       shellcheck
       sops
-      stow
       stripe-cli
       stylua
       tmux

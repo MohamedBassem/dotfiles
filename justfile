@@ -51,7 +51,7 @@ build:
         echo "No Nix configuration is defined for {{ host }} ({{ os }})" >&2
         exit 1
     fi
-    {{ nix }} build "path:$PWD#{{ device }}" --out-link "result-{{ device }}"
+    {{ nix }} build ".#{{ device }}" --out-link "result-{{ device }}"
 
 # Build and activate this machine's configuration
 switch: build
@@ -63,7 +63,7 @@ switch: build
     fi
     case "{{ os }}" in
         Darwin)
-            sudo "./result-{{ device }}/sw/bin/darwin-rebuild" switch --flake "path:$PWD#{{ configuration }}"
+            sudo "./result-{{ device }}/sw/bin/darwin-rebuild" switch --flake ".#{{ configuration }}"
             ;;
         Linux)
             "./result-{{ device }}/activate"
@@ -76,11 +76,11 @@ switch: build
 
 # Activate a nix-darwin configuration
 switch-darwin configuration:
-    sudo darwin-rebuild switch --flake "path:$PWD#{{ configuration }}"
+    sudo darwin-rebuild switch --flake ".#{{ configuration }}"
 
 # Activate a standalone Home Manager configuration
 switch-home configuration:
-    home-manager switch --flake "path:$PWD#{{ configuration }}"
+    home-manager switch --flake ".#{{ configuration }}"
 
 # Update every pinned input; review flake.lock and build affected devices afterward
 update:

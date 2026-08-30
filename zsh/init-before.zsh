@@ -16,7 +16,8 @@ path=(
   $path
 )
 
-# Prefer a Homebrew-managed ssh-agent over macOS's launchd socket.
+# Drop macOS's launchd agent socket so the Prezto ssh module starts its own
+# agent. Hosts with Secretive set SSH_AUTH_SOCK in .zshenv instead.
 if [[ "$OSTYPE" == darwin* && "$SSH_AUTH_SOCK" == /var/run/com.apple.launchd.* ]]; then
   unset SSH_AUTH_SOCK
 fi

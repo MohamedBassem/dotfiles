@@ -1,21 +1,10 @@
-{ inputs, pkgs, ... }:
+{ config, pkgs, ... }:
 let
-  username = "mohamedbassem";
-  homeDirectory = "/Users/${username}";
-  dotfilesRoot = "${homeDirectory}/repos/dotfiles";
+  username = config.system.primaryUser;
+  homeDirectory = config.users.users.${username}.home;
+  secretiveSocket = "${homeDirectory}/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh";
 in
 {
-  imports = [
-    ../darwin/fonts.nix
-    ../darwin/homebrew.nix
-    ../darwin/system.nix
-  ];
-
-  nixpkgs.hostPlatform = "aarch64-darwin";
-  system.primaryUser = username;
-  users.users.${username}.home = homeDirectory;
-  homebrew.user = username;
-
   # Newer macOS releases protect /etc/pam.d behind Full Disk Access. Since
   # Touch ID and Apple Watch sudo authentication are not enabled, avoid
   # installing nix-darwin's otherwise empty sudo_local file.
@@ -54,32 +43,17 @@ in
     trackpad.Clicking = true;
   };
 
-  home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    extraSpecialArgs = { inherit inputs dotfilesRoot; };
+  home-manager.users.${username} = {
+    home.packages = [ pkgs.secretive ];
 
-    users.${username} = {
-      imports = [
-        ../home/common.nix
-        ../home/darwin.nix
-      ];
-
-      home = {
-        inherit username homeDirectory;
-        packages = [ pkgs.secretive ];
-      };
-
-      programs.ssh = {
-        enable = true;
-        enableDefaultConfig = false;
-        settings."*".IdentityAgent =
-          "${homeDirectory}/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh";
-      };
-
-      programs.zsh.envExtra = ''
-        export SSH_AUTH_SOCK="${homeDirectory}/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh"
-      '';
+    programs.ssh = {
+      enable = true;
+      enableDefaultConfig = false;
+      settings."*".IdentityAgent = secretiveSocket;
     };
+
+    programs.zsh.envExtra = ''
+      export SSH_AUTH_SOCK="${secretiveSocket}"
+    '';
   };
 }

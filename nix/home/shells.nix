@@ -22,7 +22,6 @@ in
       "$HOME/.bun/bin"
       "$HOME/.volta/bin"
       "$HOME/.pulumi/bin"
-      "/usr/local/go/bin"
       "$HOME/repos/go/bin"
     ];
 
@@ -95,6 +94,7 @@ in
       enable = true;
       defaultCommand = "fd --type f --hidden --exclude .git";
       fileWidget.command = "fd --type f --hidden --exclude .git";
+      # An empty command leaves Ctrl-R unbound so Atuin can own it.
       historyWidget.command = "";
       colors = {
         "bg+" = "#313244";
