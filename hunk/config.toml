@@ -1,2 +1,6 @@
 theme = "catppuccin-mocha"
 mode = "split"
+
+[keybindings]
+"hunk.review.halfPageDown" = ["d", "ctrl+d"]
+"hunk.review.halfPageUp" = ["u", "ctrl+u"]
