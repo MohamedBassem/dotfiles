@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   username = config.system.primaryUser;
   homeDirectory = config.users.users.${username}.home;
@@ -10,13 +15,52 @@ in
   # installing nix-darwin's otherwise empty sudo_local file.
   security.pam.services.sudo_local.enable = false;
 
-  homebrew.casks = [
-    "bruno"
-    "claude-code"
-    "codex"
-    "neovide"
-    "stats"
-    "thaw"
+  nixpkgs.config.allowUnfreePredicate =
+    package:
+    builtins.elem (lib.getName package) [
+      "android-studio"
+      "chatgpt"
+      "claude-code"
+      "discord"
+      "firefox-bin"
+      "firefox-bin-unwrapped"
+      "google-chrome"
+      "notion-app"
+      "obsidian"
+      "orbstack"
+      "raycast"
+      "rectangle-pro"
+      "tailscale-gui"
+      "vscode"
+      "whatsapp-for-mac"
+    ];
+
+  environment.systemPackages = with pkgs; [
+    affine
+    android-studio
+    bitwarden-desktop
+    bruno
+    chatgpt
+    discord
+    element-desktop
+    firefox-bin
+    ghostty-bin
+    google-chrome
+    neovide
+    notion-app
+    obsidian
+    opencode-desktop
+    orbstack
+    raycast
+    rectangle-pro
+    stats
+    syncthing-macos
+    tailscale-gui
+    thaw
+    vlc-bin
+    vscode
+    whatsapp-for-mac
+    zed-editor
   ];
 
   system.defaults = {
@@ -44,7 +88,11 @@ in
   };
 
   home-manager.users.${username} = {
-    home.packages = [ pkgs.secretive ];
+    home.packages = with pkgs; [
+      claude-code
+      codex
+      secretive
+    ];
 
     programs.ssh = {
       enable = true;
