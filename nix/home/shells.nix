@@ -73,6 +73,7 @@ in
       la = "eza -a";
       ll = "eza -la --git";
       ls = "eza";
+      hg = "sl";
     };
   };
 
