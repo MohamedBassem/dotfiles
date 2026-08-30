@@ -8,20 +8,13 @@ function awkp() {
 
 if [[ -d "/Applications/Android Studio.app/Contents/jbr/Contents/Home" ]]; then
   export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
-  path=($JAVA_HOME/bin(N) $path)
 fi
 if [[ -d "$HOME/Library/Android/sdk" ]]; then
   export ANDROID_HOME="$HOME/Library/Android/sdk"
-  path=($ANDROID_HOME/platform-tools(N) $ANDROID_HOME/emulator(N) $path)
 fi
-
-[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
 [[ -s "$HOME/.bun/_bun" ]] && source "$HOME/.bun/_bun"
 
-if [[ -f "$HOME/repos/google-cloud-sdk/path.zsh.inc" ]]; then
-  source "$HOME/repos/google-cloud-sdk/path.zsh.inc"
-fi
 if [[ -f "$HOME/repos/google-cloud-sdk/completion.zsh.inc" ]]; then
   source "$HOME/repos/google-cloud-sdk/completion.zsh.inc"
 fi

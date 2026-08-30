@@ -5,35 +5,65 @@
   ...
 }:
 let
+  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
+  homebrewPrefix = if isDarwin then "/opt/homebrew" else "/home/linuxbrew/.linuxbrew";
+  homebrewRepository = if isDarwin then homebrewPrefix else "${homebrewPrefix}/Homebrew";
   pnpmHome =
-    if pkgs.stdenv.hostPlatform.isDarwin then
-      "${config.home.homeDirectory}/Library/pnpm"
-    else
-      "${config.xdg.dataHome}/pnpm";
+    if isDarwin then "${config.home.homeDirectory}/Library/pnpm" else "${config.xdg.dataHome}/pnpm";
+  sessionPath =
+    lib.optionals isDarwin [
+      "${config.home.homeDirectory}/Library/Android/sdk/platform-tools"
+      "${config.home.homeDirectory}/Library/Android/sdk/emulator"
+      "/Applications/Android Studio.app/Contents/jbr/Contents/Home/bin"
+    ]
+    ++ [
+      "${config.home.homeDirectory}/.volta/bin"
+      "${config.home.homeDirectory}/.bun/bin"
+      pnpmHome
+      "${config.home.homeDirectory}/bin"
+      "${config.home.homeDirectory}/usr/bin"
+      "${config.home.homeDirectory}/.local/bin"
+      "${config.home.homeDirectory}/.cargo/bin"
+      "${config.home.homeDirectory}/.pulumi/bin"
+      "${config.home.homeDirectory}/repos/go/bin"
+      "${config.home.homeDirectory}/repos/google-cloud-sdk/bin"
+      "${config.home.homeDirectory}/.nix-profile/bin"
+      "/etc/profiles/per-user/${config.home.username}/bin"
+      "/run/current-system/sw/bin"
+    ]
+    ++ lib.optionals isDarwin [
+      "/opt/homebrew/opt/sqlite/bin"
+      "${homebrewPrefix}/bin"
+      "${homebrewPrefix}/sbin"
+      "/usr/local/bin"
+      "/usr/local/sbin"
+      "/opt/local/bin"
+      "/opt/local/sbin"
+      "/Applications/Obsidian.app/Contents/MacOS"
+      "${config.home.homeDirectory}/.orbstack/bin"
+    ]
+    ++ lib.optionals (!isDarwin) [
+      "${homebrewPrefix}/bin"
+      "${homebrewPrefix}/sbin"
+    ];
 in
 {
   home = {
-    sessionPath = [
-      pnpmHome
-      "$HOME/bin"
-      "$HOME/usr/bin"
-      "$HOME/.local/bin"
-      "$HOME/.cargo/bin"
-      "$HOME/.bun/bin"
-      "$HOME/.volta/bin"
-      "$HOME/.pulumi/bin"
-      "$HOME/repos/go/bin"
-    ];
+    # This is the canonical executable order for every managed shell.
+    sessionPath = sessionPath;
 
     sessionVariables = {
       BUN_INSTALL = "${config.home.homeDirectory}/.bun";
       GOPATH = "${config.home.homeDirectory}/repos/go";
       HGEDITOR = "nvim";
       HOMEBREW_CASK_OPTS = "--require-sha";
+      HOMEBREW_CELLAR = "${homebrewPrefix}/Cellar";
       HOMEBREW_NO_ANALYTICS = "1";
       HOMEBREW_NO_AUTO_UPDATE = "1";
       HOMEBREW_NO_ENV_HINTS = "1";
       HOMEBREW_NO_INSECURE_REDIRECT = "1";
+      HOMEBREW_PREFIX = homebrewPrefix;
+      HOMEBREW_REPOSITORY = homebrewRepository;
       PNPM_HOME = pnpmHome;
       VOLTA_HOME = "${config.home.homeDirectory}/.volta";
     };
@@ -130,7 +160,16 @@ in
 
       profileExtra = builtins.readFile ../../zsh/profile.zsh;
       initContent = lib.mkMerge [
-        (lib.mkOrder 800 (builtins.readFile ../../zsh/init-before.zsh))
+        (lib.mkOrder 800 ''
+          # Prezto's stock zprofile prepends Homebrew. Reapply the canonical
+          # Home Manager order after Prezto has loaded it.
+          path=(
+            ${lib.concatMapStringsSep "\n  " lib.escapeShellArg sessionPath}
+            $path
+          )
+
+          ${builtins.readFile ../../zsh/init-before.zsh}
+        '')
         (lib.mkOrder 1000 (builtins.readFile ../../zsh/init-after.zsh))
       ];
 
