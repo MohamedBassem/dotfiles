@@ -17,13 +17,6 @@ fi
 
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
-# Load nvm only when first used.
-nvm() {
-  unset -f nvm
-  [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
-  nvm "$@"
-}
-
 [[ -s "$HOME/.bun/_bun" ]] && source "$HOME/.bun/_bun"
 
 if [[ -f "$HOME/repos/google-cloud-sdk/path.zsh.inc" ]]; then

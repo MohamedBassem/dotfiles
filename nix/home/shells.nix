@@ -34,7 +34,6 @@ in
       HOMEBREW_NO_AUTO_UPDATE = "1";
       HOMEBREW_NO_ENV_HINTS = "1";
       HOMEBREW_NO_INSECURE_REDIRECT = "1";
-      NVM_DIR = "${config.home.homeDirectory}/.nvm";
       PNPM_HOME = pnpmHome;
       VOLTA_HOME = "${config.home.homeDirectory}/.volta";
     };
