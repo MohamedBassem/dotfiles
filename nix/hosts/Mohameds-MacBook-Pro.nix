@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, pkgs, ... }:
 let
   username = "mohamedbassem";
   homeDirectory = "/Users/${username}";
@@ -67,7 +67,19 @@ in
 
       home = {
         inherit username homeDirectory;
+        packages = [ pkgs.secretive ];
       };
+
+      programs.ssh = {
+        enable = true;
+        enableDefaultConfig = false;
+        settings."*".IdentityAgent =
+          "${homeDirectory}/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh";
+      };
+
+      programs.zsh.envExtra = ''
+        export SSH_AUTH_SOCK="${homeDirectory}/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh"
+      '';
     };
   };
 }
