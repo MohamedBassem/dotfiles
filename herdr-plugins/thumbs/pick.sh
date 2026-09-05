@@ -84,7 +84,7 @@ restore_source() {
       --tab "$source_tab" \
       --target-pane "$plugin_pane" \
       --split right \
-      --no-focus >/dev/null 2>&1; then
+      --focus >/dev/null 2>&1; then
       return 0
     fi
     attempts=$((attempts + 1))

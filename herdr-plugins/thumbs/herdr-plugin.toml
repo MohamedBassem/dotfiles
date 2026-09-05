@@ -1,6 +1,6 @@
 id = "mbassem.thumbs"
 name = "Thumbs"
-version = "0.1.0"
+version = "0.2.0"
 min_herdr_version = "0.7.0"
 description = "Vimium-style hints for copying text from the visible Herdr pane"
 platforms = ["linux", "macos"]

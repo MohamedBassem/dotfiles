@@ -13,14 +13,33 @@ source_tab="${HERDR_THUMBS_SOURCE_TAB:-}"
 ready="${HERDR_THUMBS_READY:-}"
 own_pane="${HERDR_PANE_ID:-}"
 
+# macOS ships Bash 3.2, whose read builtin only accepts integer timeouts.
+key_timeout=0.05
+escape_timeout=0.02
+if [ "${BASH_VERSINFO[0]}" -lt 4 ]; then
+  key_timeout=1
+  escape_timeout=1
+fi
+
 mkdir -p "$state_dir"
 result="$(mktemp "${state_dir%/}/thumbs-result.XXXXXX")"
 input_socket="$(mktemp "${state_dir%/}/thumbs-input.XXXXXX")"
 old_stty=""
 thumbs_pid=""
+reader_pid=""
+
+stop_reader() {
+  if [ -n "$reader_pid" ]; then
+    kill "$reader_pid" 2>/dev/null || true
+    wait "$reader_pid" 2>/dev/null || true
+    reader_pid=""
+  fi
+}
 
 cleanup() {
   local attempts=0
+
+  stop_reader
 
   if [ -n "$thumbs_pid" ] && kill -0 "$thumbs_pid" 2>/dev/null; then
     kill "$thumbs_pid" 2>/dev/null || true
@@ -42,7 +61,7 @@ cleanup() {
         --tab "$source_tab" \
         --target-pane "$own_pane" \
         --split right \
-        --no-focus >/dev/null 2>&1; then
+        --focus >/dev/null 2>&1; then
         break
       fi
       attempts=$((attempts + 1))
@@ -64,6 +83,7 @@ if [ ! -x "$thumbs" ] || [ ! -x "$sender" ]; then
   exit 1
 fi
 
+# Wait until the replacement pane has its final dimensions before rendering.
 if [ "$replace_pane" = "1" ]; then
   while [ ! -s "$ready" ]; do
     sleep 0.01
@@ -88,49 +108,67 @@ while [ ! -S "$input_socket" ]; do
   sleep 0.01
 done
 
+
 old_stty="$(stty -g </dev/tty)"
 stty raw -echo </dev/tty
 
-while kill -0 "$thumbs_pid" 2>/dev/null; do
-  key=""
-  # The timeout lets us notice that the Rust process exited after a completed
-  # hint instead of blocking for one extra keypress.
-  if ! IFS= read -r -s -n 1 -t 0.05 key </dev/tty; then
-    continue
-  fi
-
-  event=""
-  case "$key" in
-    $'\003') event="esc" ;;
-    $'\010' | $'\177') event="backspace" ;;
-    "") event="enter" ;;
-    " ") event="space" ;;
-    $'\033')
-      second=""
-      third=""
-      if IFS= read -r -s -n 1 -t 0.02 second </dev/tty \
-        && [ "$second" = "[" ] \
-        && IFS= read -r -s -n 1 -t 0.02 third </dev/tty; then
-        case "$third" in
-          A) event="up" ;;
-          B) event="down" ;;
-          C) event="right" ;;
-          D) event="left" ;;
-          *) event="esc" ;;
-        esac
-      else
-        event="esc"
+# Read keys separately so completion never waits for another keyboard timeout.
+read_input() {
+  while kill -0 "$thumbs_pid" 2>/dev/null; do
+    key=""
+    # Keep reads bounded so the input worker can be stopped during cleanup.
+    if IFS= read -r -s -n 1 -t "$key_timeout" key </dev/tty; then
+      :
+    else
+      read_status=$?
+      # Bash 3 reports timeouts as 1; newer Bash versions use a signal status.
+      if [ "$read_status" -gt 128 ] \
+        || { [ "${BASH_VERSINFO[0]}" -lt 4 ] && [ "$read_status" -eq 1 ]; }; then
+        # Also avoid a tight loop if the terminal has reached EOF.
+        sleep 0.01
+        continue
       fi
-      ;;
-    [a-zA-Z]) event="hint:$key" ;;
-  esac
+      break
+    fi
 
-  if [ -n "$event" ]; then
-    "$sender" --input-socket "$input_socket" --send-input "$event" 2>/dev/null || break
-  fi
-done
+    event=""
+    case "$key" in
+      $'\003') event="esc" ;;
+      $'\010' | $'\177') event="backspace" ;;
+      "") event="enter" ;;
+      " ") event="space" ;;
+      $'\033')
+        second=""
+        third=""
+        if IFS= read -r -s -n 1 -t "$escape_timeout" second </dev/tty \
+          && [ "$second" = "[" ] \
+          && IFS= read -r -s -n 1 -t "$escape_timeout" third </dev/tty; then
+          case "$third" in
+            A) event="up" ;;
+            B) event="down" ;;
+            C) event="right" ;;
+            D) event="left" ;;
+            *) event="esc" ;;
+          esac
+        else
+          event="esc"
+        fi
+        ;;
+      [a-zA-Z]) event="hint:$key" ;;
+    esac
+
+    if [ -n "$event" ]; then
+      "$sender" --input-socket "$input_socket" --send-input "$event" 2>/dev/null || break
+    fi
+  done
+  # A failed reader must not leave the matcher waiting forever.
+  kill "$thumbs_pid" 2>/dev/null || true
+}
+read_input &
+reader_pid="$!"
 
 wait "$thumbs_pid" || true
+stop_reader
 stty "$old_stty" </dev/tty
 old_stty=""
 
