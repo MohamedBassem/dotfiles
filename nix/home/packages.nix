@@ -1,5 +1,4 @@
 {
-  inputs,
   lib,
   pkgs,
   ...
@@ -48,7 +47,7 @@
     sops
     stripe-cli
     stylua
-    inputs.tailcat.packages.${stdenv.hostPlatform.system}.default
+    tailcat
     tmux
     tree
     tree-sitter

@@ -13,12 +13,6 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    tailcat = {
-      url = "github:tailscale/tailcat";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
   };
 
   outputs =
