@@ -1,7 +1,5 @@
 {
   config,
-  lib,
-  pkgs,
   ...
 }:
 let
@@ -15,52 +13,32 @@ in
   # installing nix-darwin's otherwise empty sudo_local file.
   security.pam.services.sudo_local.enable = false;
 
-  nixpkgs.config.allowUnfreePredicate =
-    package:
-    builtins.elem (lib.getName package) [
-      "android-studio"
-      "chatgpt"
-      "claude-code"
-      "discord"
-      "firefox-bin"
-      "firefox-bin-unwrapped"
-      "google-chrome"
-      "notion-app"
-      "obsidian"
-      "orbstack"
-      "raycast"
-      "rectangle-pro"
-      "tailscale-gui"
-      "vscode"
-      "whatsapp-for-mac"
-    ];
-
-  environment.systemPackages = with pkgs; [
-    affine
-    android-studio
-    bitwarden-desktop
-    bruno
-    chatgpt
-    discord
-    element-desktop
-    firefox-bin
-    ghostty-bin
-    google-chrome
-    neovide
-    notion-app
-    obsidian
-    opencode-desktop
-    orbstack
-    raycast
-    rectangle-pro
-    stats
-    syncthing-macos
-    tailscale-gui
-    thaw
-    vlc-bin
-    vscode
-    whatsapp-for-mac
-    zed-editor
+  # Homebrew installs writable apps in /Applications, outside the Nix store.
+  # Chrome and Tailscale are installed separately.
+  homebrew.casks = [
+    "affine"
+    "android-studio"
+    "bitwarden"
+    "bruno"
+    "discord"
+    "element"
+    "firefox"
+    "ghostty"
+    "neovide-app"
+    "notion"
+    "obsidian"
+    "opencode-desktop"
+    "orbstack"
+    "raycast"
+    "rectangle-pro"
+    "secretive"
+    "stats"
+    "syncthing-app"
+    "thaw"
+    "visual-studio-code"
+    "vlc"
+    "whatsapp"
+    "zed"
   ];
 
   system.defaults = {
@@ -88,12 +66,6 @@ in
   };
 
   home-manager.users.${username} = {
-    home.packages = with pkgs; [
-      claude-code
-      codex
-      secretive
-    ];
-
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
