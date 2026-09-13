@@ -53,6 +53,16 @@ build:
     fi
     {{ nix }} build ".#{{ device }}" --out-link "result-{{ device }}"
 
+# Compare the running system with this machine's existing build
+diff:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if [[ -z "{{ device }}" ]]; then
+        echo "No Nix configuration is defined for {{ host }} ({{ os }})" >&2
+        exit 1
+    fi
+    {{ nix }} store diff-closures /run/current-system "./result-{{ device }}"
+
 # Build and activate this machine's configuration
 switch: build
     #!/usr/bin/env bash
