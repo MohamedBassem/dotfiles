@@ -13,6 +13,11 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -73,6 +78,7 @@
             packages = with pkgs; [
               deadnix
               just
+              nh
               nixfmt-tree
               shellcheck
               statix
@@ -82,7 +88,7 @@
         }
       );
 
-      # darwin.nix and files.nix expect a `dotfilesRoot` special arg.
+      # Common needs `inputs` and `dotfilesRoot`; Darwin needs `dotfilesRoot`.
       homeModules = {
         common = import ./nix/home/common.nix;
         darwin = import ./nix/home/darwin.nix;
@@ -111,7 +117,7 @@
         modules = [ ./nix/hosts/Mohameds-MacBook-Pro.nix ];
       };
 
-      # Stable, platform-local aliases consumed by `just build <device>`.
+      # Stable, platform-local aliases for `nix build .#<device>`.
       packages.aarch64-darwin = {
         mac-mini = self.darwinConfigurations.Mohameds-Mac-mini.system;
         macbook-pro = self.darwinConfigurations.Mohameds-MacBook-Pro.system;

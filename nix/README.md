@@ -41,10 +41,13 @@ alone.
 
 Project-specific toolchains belong in each project's flake development shell.
 Broadly used developer commands remain in the Home Manager package set.
+Occasional utilities run through Comma with `, tool-name`. The shared Home
+Manager module imports `nix-index-database` and enables its database-backed
+Comma package on macOS and Linux. The input follows the existing Nixpkgs input.
 Privileged system extensions and software requiring interactive installation
 remain outside the system configuration.
 
-The repository's default development shell includes `just`, `nixfmt-tree`,
+The repository's default development shell includes `just`, `nh`, `nixfmt-tree`,
 ShellCheck, Zsh, Deadnix, and Statix. The flake checks formatting, shell scripts,
 Zsh syntax, every real host, and a synthetic aarch64 Linux Home Manager
 configuration.

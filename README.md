@@ -34,16 +34,16 @@ cd ~/repos/dotfiles
 
 ## Check and build
 
-The default development shell provides `just`, the pinned formatter, and the
+The default development shell provides `just`, `nh`, the pinned formatter, and the
 repository lint tools. Use it before the first activation:
 
 ```bash
 nix develop -c just check
 ```
 
-After activation, the shorter commands work directly. `just build` detects the
-hostname and operating system, then builds the matching device alias. `just
-show` lists those aliases under the flake's `packages` output.
+After activation, the shorter commands work directly. `just build` uses `nh`
+to infer the Darwin hostname or Home Manager `username@hostname` configuration.
+`just show` lists the build aliases under the flake's `packages` output.
 
 ```bash
 just show
@@ -54,21 +54,27 @@ just build
 
 `just check` evaluates every host and runs the formatter, ShellCheck, and Zsh
 syntax checks for the current system. Builds write to the Nix store and create
-an ignored `result-BUILD_ALIAS` link; they do not activate anything. An unknown
-hostname fails instead of selecting another machine's configuration.
+an ignored `result` link; they do not activate anything. `nh` displays build-tree
+output and package differences against the active configuration when available.
+`just diff` is an alias for `just build`.
 
 ## Activate
 
-`just switch` detects the host, builds its configuration, and activates it. On
-macOS it runs the `darwin-rebuild` binary from the build result. On Linux it
-runs the Home Manager activation script. It works before the first activation.
+`just switch` uses `nh darwin switch` on macOS and `nh home switch` on Linux.
+It builds the inferred configuration, shows package differences, and asks for
+confirmation before activation. Before the first activation, run
+`nix develop -c just switch` to make `nh` available.
 
 ```bash
 just switch
 ```
 
 The explicit `switch-darwin CONFIGURATION` and `switch-home CONFIGURATION`
-recipes remain available for troubleshooting.
+recipes remain available for troubleshooting and also ask before activation.
+Recipes explicitly use the current checkout. Direct `nh` commands default to
+`dotfilesRoot`, set through `programs.nh.flake` in the shared Home Manager module.
+The existing weekly garbage collector keeps its 30-day retention; `nh` cleanup
+remains disabled.
 
 ## Ownership
 
@@ -89,6 +95,10 @@ Home Manager configures Atuin, direnv with nix-direnv, eza, fzf, Neovim, and
 zoxide for Bash and Zsh. Project-specific toolchains should use flake
 development shells and `.envrc` files instead of adding more global runtimes.
 
+For occasional utilities, use `, tool-name` to find and run a command from
+Nixpkgs without permanently installing it. Comma uses the prebuilt
+`nix-index-database` index, pinned in `flake.lock`; no local indexing is needed.
+
 Update all pinned inputs explicitly:
 
 ```bash
@@ -102,8 +112,8 @@ just build
 Add a host module under `nix/hosts/`, add its manager output in `flake.nix`, and
 expose the resulting derivation as `packages.<system>.<device>`. Non-NixOS
 Linux hosts use `lib.mkHome`; macOS hosts use `nix-darwin.lib.darwinSystem`.
-Add its hostname, build alias, and manager output to the mappings at the top of
-the `justfile`. Test configurations on their native platform before activation.
+Name the manager output after the Darwin hostname or Linux `username@hostname`
+so `nh` can infer it. Test configurations on their native platform before activation.
 
 ## Roll back
 

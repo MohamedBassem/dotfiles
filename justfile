@@ -1,25 +1,5 @@
 nix := "nix --extra-experimental-features 'nix-command flakes'"
 os := `uname -s`
-host := if os == "Darwin" { `scutil --get LocalHostName` } else { `hostname -s` }
-device := if host == "Mohameds-Mac-mini" {
-    "mac-mini"
-} else if host == "Mohameds-MacBook-Pro" {
-    "macbook-pro"
-} else if host == "mbassem-workstation" {
-    "workstation"
-} else {
-    ""
-}
-configuration := if host == "Mohameds-Mac-mini" {
-    "Mohameds-Mac-mini"
-} else if host == "Mohameds-MacBook-Pro" {
-    "Mohameds-MacBook-Pro"
-} else if host == "mbassem-workstation" {
-    "mbassem@mbassem-workstation"
-} else {
-    ""
-}
-
 # List available recipes
 default:
     @just --list
@@ -43,54 +23,36 @@ check:
 fmt:
     {{ nix }} fmt
 
-# Build this machine's configuration without activating it
+# Build this machine's configuration and show package differences
 build:
     #!/usr/bin/env bash
     set -euo pipefail
-    if [[ -z "{{ device }}" ]]; then
-        echo "No Nix configuration is defined for {{ host }} ({{ os }})" >&2
-        exit 1
-    fi
-    {{ nix }} build ".#{{ device }}" --out-link "result-{{ device }}"
-
-# Compare the running system with this machine's existing build
-diff:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    if [[ -z "{{ device }}" ]]; then
-        echo "No Nix configuration is defined for {{ host }} ({{ os }})" >&2
-        exit 1
-    fi
-    {{ nix }} store diff-closures /run/current-system "./result-{{ device }}"
-
-# Build and activate this machine's configuration
-switch: build
-    #!/usr/bin/env bash
-    set -euo pipefail
-    if [[ -z "{{ configuration }}" ]]; then
-        echo "No Nix configuration is defined for {{ host }} ({{ os }})" >&2
-        exit 1
-    fi
     case "{{ os }}" in
-        Darwin)
-            sudo "./result-{{ device }}/sw/bin/darwin-rebuild" switch --flake ".#{{ configuration }}"
-            ;;
-        Linux)
-            "./result-{{ device }}/activate"
-            ;;
-        *)
-            echo "Unsupported operating system: {{ os }}" >&2
-            exit 1
-            ;;
+        Darwin) nh darwin build . --out-link result ;;
+        Linux) nh home build . --out-link result ;;
+        *) echo "Unsupported operating system: {{ os }}" >&2; exit 1 ;;
     esac
 
-# Activate a nix-darwin configuration
-switch-darwin configuration:
-    sudo darwin-rebuild switch --flake ".#{{ configuration }}"
+# Build and compare against the active configuration
+alias diff := build
 
-# Activate a standalone Home Manager configuration
+# Build this machine's configuration and confirm before activation
+switch:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    case "{{ os }}" in
+        Darwin) nh darwin switch . --ask --out-link result ;;
+        Linux) nh home switch . --ask --out-link result ;;
+        *) echo "Unsupported operating system: {{ os }}" >&2; exit 1 ;;
+    esac
+
+# Activate a nix-darwin configuration after confirmation
+switch-darwin configuration:
+    nh darwin switch . --hostname "{{ configuration }}" --ask
+
+# Activate a standalone Home Manager configuration after confirmation
 switch-home configuration:
-    home-manager switch --flake ".#{{ configuration }}"
+    nh home switch . --configuration "{{ configuration }}" --ask
 
 # Update every pinned input; review flake.lock and build affected devices afterward
 update:
