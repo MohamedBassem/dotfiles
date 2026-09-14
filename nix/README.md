@@ -9,12 +9,14 @@ packages evaluate on `aarch64-darwin`, `aarch64-linux`, and `x86_64-linux`.
 |---|---|---|
 | `darwinConfigurations.Mohameds-Mac-mini` | `aarch64-darwin` | nix-darwin with Home Manager |
 | `darwinConfigurations.Mohameds-MacBook-Pro` | `aarch64-darwin` | nix-darwin with Home Manager |
+| `darwinConfigurations.Mohameds-Restate-MacBook-Pro` | `aarch64-darwin` | nix-darwin with Home Manager |
 | `homeConfigurations."mbassem@mbassem-workstation"` | `x86_64-linux` | Standalone Home Manager on Debian 13 |
 
 The Linux output expects the checkout at `/home/mbassem/repos/dotfiles`.
 The Mac mini output expects `/Users/mbassem/repos/dotfiles`, and the MacBook Pro
-output expects `/Users/mohamedbassem/repos/dotfiles`. These paths matter for the
-mutable out-of-store links and locally developed extensions.
+output expects `/Users/mohamedbassem/repos/dotfiles`. The Restate MacBook Pro
+output expects `/Users/mbassem/repos/dotfiles`. These paths matter for the mutable
+out-of-store links and locally developed extensions.
 
 ## Layout
 

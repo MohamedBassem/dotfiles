@@ -117,10 +117,16 @@
         modules = [ ./nix/hosts/Mohameds-MacBook-Pro.nix ];
       };
 
+      darwinConfigurations.Mohameds-Restate-MacBook-Pro = self.lib.mkDarwin {
+        username = "mbassem";
+        modules = [ ./nix/hosts/Mohameds-Restate-MacBook-Pro.nix ];
+      };
+
       # Stable, platform-local aliases for `nix build .#<device>`.
       packages.aarch64-darwin = {
         mac-mini = self.darwinConfigurations.Mohameds-Mac-mini.system;
         macbook-pro = self.darwinConfigurations.Mohameds-MacBook-Pro.system;
+        restate-macbook-pro = self.darwinConfigurations.Mohameds-Restate-MacBook-Pro.system;
       };
       packages.x86_64-linux.workstation =
         self.homeConfigurations."mbassem@mbassem-workstation".activationPackage;
@@ -129,6 +135,7 @@
         aarch64-darwin = repoChecks "aarch64-darwin" // {
           darwin-mac-mini = self.darwinConfigurations.Mohameds-Mac-mini.system;
           darwin-macbook-pro = self.darwinConfigurations.Mohameds-MacBook-Pro.system;
+          darwin-restate-macbook-pro = self.darwinConfigurations.Mohameds-Restate-MacBook-Pro.system;
         };
 
         aarch64-linux = repoChecks "aarch64-linux" // {
