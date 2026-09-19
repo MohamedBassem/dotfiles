@@ -35,7 +35,6 @@
     monolith
     mosh
     nixpacks
-    opencode
     openssh
     pipx
     rclone
