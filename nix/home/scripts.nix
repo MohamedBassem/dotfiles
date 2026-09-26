@@ -32,15 +32,12 @@ in
         pkgs.xsel
       ]
     ))
-    (writeScript "tmux-sessionizer" ../../scripts/tmux-sessionizer (
-      [
-        pkgs.coreutils
-        pkgs.fzf
-        pkgs.gnugrep
-        pkgs.neovim
-        pkgs.tmux
-      ]
-      ++ lib.optionals (!isDarwin) [ pkgs.procps ]
-    ))
+    (writeScript "tmux-sessionizer" ../../scripts/tmux-sessionizer [
+      pkgs.coreutils
+      pkgs.fzf
+      pkgs.gnugrep
+      pkgs.neovim
+      pkgs.tmux
+    ])
   ];
 }

@@ -1,5 +1,17 @@
 { pkgs, ... }:
 {
+  programs.ssh = {
+    enable = true;
+    enableDefaultConfig = false;
+    settings."*".AddKeysToAgent = "yes";
+  };
+
+  # Debian owns sshd; install this generated policy as root after activation.
+  xdg.configFile."sshd/00-disable-password-auth.conf".text = ''
+    PasswordAuthentication no
+    KbdInteractiveAuthentication no
+  '';
+
   home.packages = with pkgs; [
     kubectl
     lnav
