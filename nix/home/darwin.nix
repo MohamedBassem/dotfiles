@@ -1,4 +1,5 @@
 {
+  config,
   dotfilesRoot,
   lib,
   pkgs,
@@ -6,8 +7,10 @@
 }:
 {
   home.file = {
-    ".aerospace.toml".source = ../../aerospace/config.toml;
-    "Library/Preferences/sapling/sapling.conf".source = ../../sapling/macos.conf;
+    ".aerospace.toml".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesRoot}/aerospace/config.toml";
+    "Library/Preferences/sapling/sapling.conf".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesRoot}/sapling/macos.conf";
   };
 
   home.activation.linkHerdrPlugins = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

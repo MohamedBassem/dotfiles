@@ -1,10 +1,12 @@
 {
   config,
+  dotfilesRoot,
   lib,
   pkgs,
   ...
 }:
 let
+  sourceFile = path: "source ${lib.escapeShellArg "${dotfilesRoot}/${path}"}";
   isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
   homebrewPrefix = if isDarwin then "/opt/homebrew" else "/home/linuxbrew/.linuxbrew";
   homebrewRepository = if isDarwin then homebrewPrefix else "${homebrewPrefix}/Homebrew";
@@ -80,8 +82,8 @@ in
   # The Prezto module appends its own zlogin/zlogout runcoms to these files;
   # they print a fortune and a farewell banner, so replace them outright.
   home.file = {
-    "${config.lib.zsh.dotDirRel}/.zlogin".text = lib.mkForce (builtins.readFile ../../zsh/login.zsh);
-    "${config.lib.zsh.dotDirRel}/.zlogout".text = lib.mkForce (builtins.readFile ../../zsh/logout.zsh);
+    "${config.lib.zsh.dotDirRel}/.zlogin".text = lib.mkForce (sourceFile "zsh/login.zsh");
+    "${config.lib.zsh.dotDirRel}/.zlogout".text = lib.mkForce (sourceFile "zsh/logout.zsh");
   };
 
   programs = {
@@ -107,7 +109,7 @@ in
         "histappend"
         "checkwinsize"
       ];
-      initExtra = builtins.readFile ../../bash/bashrc;
+      initExtra = sourceFile "bash/bashrc";
     };
 
     direnv = {
@@ -159,7 +161,7 @@ in
       enable = true;
       dotDir = config.home.homeDirectory;
 
-      profileExtra = builtins.readFile ../../zsh/profile.zsh;
+      profileExtra = sourceFile "zsh/profile.zsh";
       initContent = lib.mkMerge [
         (lib.mkOrder 800 ''
           # Prezto's stock zprofile prepends Homebrew. Reapply the canonical
@@ -169,9 +171,9 @@ in
             $path
           )
 
-          ${builtins.readFile ../../zsh/init-before.zsh}
+          ${sourceFile "zsh/init-before.zsh"}
         '')
-        (lib.mkOrder 1000 (builtins.readFile ../../zsh/init-after.zsh))
+        (lib.mkOrder 1000 (sourceFile "zsh/init-after.zsh"))
       ];
 
       prezto = {
