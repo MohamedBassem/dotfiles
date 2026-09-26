@@ -9,16 +9,24 @@ SESSIONS_FILE=~/.tmux-sessions-cache
 
 touch "$SESSIONS_FILE"
 
+notify() {
+	if [[ -n ${TMUX_SESSIONIZER_CLIENT-} ]]; then
+		tmux display-message -c "$TMUX_SESSIONIZER_CLIENT" -l "$1"
+	else
+		printf '%s\n' "$1"
+	fi
+}
+
 if [[ $# -gt 0 ]]; then
 	case $1 in
 	-a | --add)
 		current_dir=$(realpath "$PWD")
 		if grep -Fxq -- "$current_dir" "$SESSIONS_FILE"; then
-			echo "$current_dir already exists in session file"
+			notify "Already bookmarked: $current_dir"
 			exit 0
 		fi
 		printf '%s\n' "$current_dir" >>"$SESSIONS_FILE"
-		echo "Added $current_dir to the sessions file"
+		notify "Bookmarked: $current_dir"
 		;;
 	-r | --rm)
 		selected=$(fzf <"$SESSIONS_FILE") || exit 0
@@ -40,7 +48,7 @@ if [[ $# -gt 0 ]]; then
 	-l | --list)
 		cat "$SESSIONS_FILE"
 		;;
-	-*)
+	*)
 		echo "Unknown option $1"
 		exit 1
 		;;
@@ -48,26 +56,124 @@ if [[ $# -gt 0 ]]; then
 	exit 0
 fi
 
-selected=$(fzf <"$SESSIONS_FILE") || exit 0
-if [[ -z $selected ]]; then
-	exit 0
-fi
-selected_name=$(basename "$selected" | tr . _)
-tmux_running=$(pgrep tmux || true)
+# Store the project path separately from the name so renamed sessions still match.
+# session_path also lets us recognize sessions created before this metadata existed.
+list_sessions() {
+	tmux list-sessions -F "#{session_id}"$'\t'"#{?@sessionizer_path,#{@sessionizer_path},#{session_path}}"$'\t'"#{session_name}"$'\t'"#{session_windows}" 2>/dev/null || true
+}
 
-if [[ -z ${TMUX-} ]] && [[ -z $tmux_running ]]; then
-	tmux new-session -s "$selected_name" -c "$selected"
-	exit 0
-fi
+sessions=$(list_sessions)
 
-if ! tmux has-session -t="$selected_name" 2>/dev/null; then
-	tmux new-session -ds "$selected_name" -c "$selected"
+find_session() {
+	local id path rest
+	while IFS=$'\t' read -r id path rest; do
+		[[ -n $id ]] || continue
+		path=$(realpath -- "$path" 2>/dev/null) || continue
+		if [[ $path == "$1" ]]; then
+			printf '%s\n' "$id"
+			return 0
+		fi
+	done <<<"$sessions"
+	return 1
+}
+
+short_path() {
+	case $1 in
+	"$HOME") REPLY='~' ;;
+	"$HOME"/*) REPLY="${1/#"$HOME"/\~}" ;;
+	*) REPLY=$1 ;;
+	esac
+}
+
+# Resolve the entire list with one process instead of resolving every session
+# again for every bookmark. Fall back per path if a batch contains an error.
+canonicalize_paths() {
+	[[ $# -gt 0 ]] || return 0
+	local resolved path
+	if resolved=$(realpath -m -- "$@" 2>/dev/null); then
+		printf '%s\n' "$resolved"
+	else
+		for path in "$@"; do
+			realpath -- "$path" 2>/dev/null || printf '%s\n' "$path"
+		done
+	fi
+}
+
+candidates() {
+	local id path name windows canonical state REPLY
+	local index=0
+	local -a paths=() projects=() canonical_paths=()
+	local -A running_paths=()
+	while IFS=$'\t' read -r id path name windows; do
+		[[ -n $id ]] || continue
+		paths+=("$path")
+	done <<<"$sessions"
+	while IFS= read -r path || [[ -n $path ]]; do
+		[[ -n $path ]] || continue
+		projects+=("$path")
+	done <"$SESSIONS_FILE"
+	mapfile -t canonical_paths < <(canonicalize_paths "${paths[@]}" "${projects[@]}")
+
+	while IFS=$'\t' read -r id path name windows; do
+		[[ -n $id ]] || continue
+		running_paths["${canonical_paths[index]}"]=1
+		index=$((index + 1))
+		short_path "$path"
+		printf 'session\t%s\t%s\trunning · %s windows\t%s\n' "$id" "$name" "$windows" "$REPLY"
+	done <<<"$sessions"
+	for path in "${projects[@]}"; do
+		canonical=${canonical_paths[index]}
+		index=$((index + 1))
+		if [[ -n ${running_paths["$canonical"]-} ]]; then
+			continue
+		fi
+		state=saved
+		[[ -d $path ]] || state='missing directory'
+		name=$path
+		while [[ $name != / && $name == */ ]]; do
+			name=${name%/}
+		done
+		name=${name##*/}
+		short_path "$path"
+		printf 'project\t%s\t%s\t%s\t%s\n' "$path" "${name:-/}" "$state" "$REPLY"
+	done
+}
+
+# The first two columns are hidden routing data; fzf returns the original row.
+selected=$(candidates | fzf --delimiter=$'\t' --with-nth=3.. \
+	--no-multi --no-sort --layout=reverse --prompt='Project > ' \
+	--header='Enter: switch or open · Esc: cancel') || exit 0
+[[ -n $selected ]] || exit 0
+IFS=$'\t' read -r kind target rest <<<"$selected"
+
+if [[ $kind == project ]]; then
+	if [[ ! -d $target ]]; then
+		notify "Directory no longer exists: $target"
+		exit 1
+	fi
+	project_path=$(realpath -- "$target")
+	# A session may have been created while the picker was open.
+	sessions=$(list_sessions)
+	if ! target=$(find_session "$project_path"); then
+		base_name=$(basename "$project_path" | tr '.:' '__')
+		[[ -n $base_name && $base_name != / ]] || base_name=project
+		name=$base_name
+		suffix=2
+		while tmux has-session -t "=$name" 2>/dev/null; do
+			name="$base_name-$suffix"
+			suffix=$((suffix + 1))
+		done
+		target=$(tmux new-session -dP -F '#{session_id}' -s "$name" -c "$project_path")
+		tmux set-option -t "$target" @sessionizer_path "$project_path"
+	fi
 fi
 
 # Switch if inside of Tmux
-if [[ "${TMUX-}" != '' ]]; then
-	exec tmux switch-client -t "$selected_name"
+if [[ -n ${TMUX_SESSIONIZER_CLIENT-} ]]; then
+	exec tmux switch-client -c "$TMUX_SESSIONIZER_CLIENT" -t "$target"
+elif [[ -n ${TMUX-} ]]; then
+	exec tmux switch-client -t "$target"
 fi
 
 # Attach if outside of Tmux
-exec tmux attach -t "$selected_name"
+exec tmux attach-session -t "$target"
