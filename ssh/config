@@ -1,0 +1,3 @@
+# Keep machine policy separate from private, manually maintained hosts.
+Include ~/.config/dotfiles/ssh.conf
+Include ~/.ssh/config.local

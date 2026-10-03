@@ -1,0 +1,22 @@
+[tools]
+node = "24"
+"npm:obsidian-headless" = "latest"
+
+[bootstrap.packages]
+"apt:zsh" = "latest"
+"brew:sapling" = "latest"
+"brew:kubernetes-cli" = "latest"
+"brew:lnav" = "latest"
+"brew:lsof" = "latest"
+"brew:sysbench" = "latest"
+"brew:watchman" = "latest"
+"apt:wl-clipboard" = "latest"
+"apt:xclip" = "latest"
+"apt:xsel" = "latest"
+
+[dotfiles]
+"~/.gitconfig.local" = "~/repos/dotfiles/git/local-linux.conf"
+"~/.config/dotfiles/ssh.conf" = "~/repos/dotfiles/ssh/agent.conf"
+"~/.config/sshd/00-disable-password-auth.conf" = "~/repos/dotfiles/ssh/00-disable-password-auth.conf"
+"~/.config/systemd/user/obsidian-sync.service" = "~/repos/dotfiles/systemd/obsidian-sync.service"
+"~/.config/systemd/user/t3code.service" = "~/repos/dotfiles/systemd/t3code.service"

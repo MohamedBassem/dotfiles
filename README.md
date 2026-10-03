@@ -1,163 +1,71 @@
 # Dotfiles
 
-Personal dotfiles managed with Nix, Home Manager, and nix-darwin. The same
-Home Manager modules cover macOS and Linux. Platform modules own shared
-behavior, while `nix/hosts/` binds that behavior to a device, user, home
-directory, and checkout path. The exact configured outputs are documented in
-[`nix/README.md`](nix/README.md).
+macOS and Debian dotfiles managed by mise. Shared packages and file links live in
+[mise/config.toml](mise/config.toml); `mise/config.<profile>.toml` adds host settings.
+Keep the checkout at `~/repos/dotfiles`.
 
-## Hosts
+## Setup
 
-| Host | Build alias | Platform | Manager output |
-|---|---|---|---|
-| Mohamed's Mac mini | `mac-mini` | Apple Silicon macOS | `darwinConfigurations.Mohameds-Mac-mini` |
-| Mohamed's MacBook Pro | `macbook-pro` | Apple Silicon macOS | `darwinConfigurations.Mohameds-MacBook-Pro` |
-| Workstation | `workstation` | x86_64 Linux | `homeConfigurations."mbassem@mbassem-workstation"` |
+macOS needs Xcode Command Line Tools. Install mise independently of Nix:
 
-## Install Nix
-
-Install upstream Nix with the NixOS community installer. Flakes must be
-enabled.
-
-```bash
-curl -sSfL https://artifacts.nixos.org/nix-installer \
-  | sh -s -- install --enable-flakes
-```
-
-Clone the repository at the path expected by the selected host module. The
-default layout is:
-
-```bash
-git clone git@github.com:MohamedBassem/dotfiles.git ~/repos/dotfiles
+```sh
+curl -fsSL https://mise.run | MISE_VERSION=v2026.10.0 sh
+export PATH="$HOME/.local/bin:$PATH"
 cd ~/repos/dotfiles
+host=mac-mini # choose a profile from the table
 ```
 
-## Check and build
+Before the first bootstrap, back up existing configs. Use `tar -h` to save the
+contents of Nix-managed symlinks. Move any existing `~/.config/mise` aside, and
+preserve custom SSH hosts in `~/.ssh/config.local`.
 
-The default development shell provides `just`, `nh`, the pinned formatter, and the
-repository lint tools. Use it before the first activation:
+Link the configuration and save this machine's profile:
 
-```bash
-nix develop -c just check
+```sh
+mkdir -p ~/.config/mise
+ln -s "$PWD"/mise/config*.toml "$HOME/.config/mise/"
+printf 'env = ["%s"]\n' "$host" > ~/.config/mise/miserc.local.toml
+mise bootstrap --dry-run --force-dotfiles
+mise bootstrap --force-dotfiles
 ```
 
-After activation, the shorter commands work directly. `just build` uses `nh`
-to infer the Darwin hostname or Home Manager `username@hostname` configuration.
-`just show` lists the build aliases under the flake's `packages` output.
+`--force-dotfiles` replaces conflicting managed files. Open a fresh terminal,
+then verify the links and tools:
 
-```bash
-just show
-just check
-just fmt
-just build
+```sh
+mise dot status --missing
+mise doctor
 ```
 
-`just check` evaluates every host and runs the formatter, ShellCheck, and Zsh
-syntax checks for the current system. Builds write to the Nix store and create
-an ignored `result` link; they do not activate anything. `nh` displays build-tree
-output and package differences against the active configuration when available.
-`just diff` is an alias for `just build`.
+On Debian, start the services after bootstrap. They require the existing vault
+at `~/vaults/MainVault` and launcher at `~/.t3/runtime/service-launcher.mjs`.
 
-## Activate
-
-`just switch` uses `nh darwin switch` on macOS and `nh home switch` on Linux.
-It builds the inferred configuration, shows package differences, and asks for
-confirmation before activation. Before the first activation, run
-`nix develop -c just switch` to make `nh` available.
-
-```bash
-just switch
+```sh
+systemctl --user daemon-reload
+systemctl --user enable --now obsidian-sync.service t3code.service
 ```
 
-The explicit `switch-darwin CONFIGURATION` and `switch-home CONFIGURATION`
-recipes remain available for troubleshooting and also ask before activation.
-Recipes explicitly use the current checkout. Direct `nh` commands default to
-`dotfilesRoot`, set through `programs.nh.flake` in the shared Home Manager module.
-The existing weekly garbage collector keeps its 30-day retention; `nh` cleanup
-remains disabled.
+## Daily use
 
-## Ownership
-
-Static files link into `/nix/store`. Personal commands are Nix packages with
-their runtime tools declared alongside them. Configuration that applications
-update at runtime links into the writable checkout. Home Manager does not own
-private or stateful data such as credentials, histories, caches, or application
-data.
-
-## Packages
-
-Shared packages come from Nix. macOS also uses Homebrew for packages managed
-outside Nix. Activation does not run Homebrew cleanup, upgrades, or automatic
-updates. See [`nix/README.md`](nix/README.md) for the module layout and package
-ownership.
-
-Home Manager configures Atuin, direnv with nix-direnv, eza, fzf, Neovim, and
-zoxide for Bash and Zsh. Project-specific toolchains should use flake
-development shells and `.envrc` files instead of adding more global runtimes.
-
-For occasional utilities, use `, tool-name` to find and run a command from
-Nixpkgs without permanently installing it. Comma uses the prebuilt
-`nix-index-database` index, pinned in `flake.lock`; no local indexing is needed.
-
-Update all pinned inputs explicitly:
-
-```bash
-just update
-just check
-just build
+```sh
+mise bootstrap --dry-run           # preview changes
+mise bootstrap                     # apply configuration
+mise upgrade                       # update versioned tools
+mise bootstrap packages upgrade    # update packages
 ```
 
-## Add a host
+Existing Homebrew-owned casks still need Homebrew for upgrades.
 
-Add a host module under `nix/hosts/`, add its manager output in `flake.nix`, and
-expose the resulting derivation as `packages.<system>.<device>`. Non-NixOS
-Linux hosts use `lib.mkHome`; macOS hosts use `nix-darwin.lib.darwinSystem`.
-Name the manager output after the Darwin hostname or Linux `username@hostname`
-so `nh` can infer it. Test configurations on their native platform before activation.
+## Sapling
 
-## Roll back
+Submit a stack, or create a shared working copy:
 
-On macOS, list or activate the previous nix-darwin generation:
-
-```bash
-just generations-mac
-just rollback-mac
-```
-
-On Linux, `home-manager generations` prints each generation's activation path.
-Run the selected `activate` script to switch back.
-
-## Sapling + GitHub stacked PRs
-
-The `sapling` package configures Sapling's single-commit PR topology and adds a
-`sl submit-stack` command. From the top commit of a stack, run:
-
-```bash
+```sh
 sl submit-stack --draft
-```
-
-This first runs `sl pr submit --stack`, then registers the resulting PRs as a
-native GitHub stack through the installed `github/gh-stack` extension. Re-run
-the same command after amending or restacking commits; both submission and
-stack linking are idempotent.
-
-### Shared Sapling working copies
-
-For native `.sl` repositories, `sl worktrees` wraps Sapling's hidden `share`
-extension with safer defaults. It creates named copies under a managed sibling
-directory and explicitly checks out the requested revision:
-
-```bash
-cd "$(sl worktrees add issue-123)"             # current commit
-cd "$(sl worktrees add issue-456 remote/main)" # another revision
+cd "$(sl worktrees add issue-123 remote/main)"
 sl worktrees list
-sl worktrees remove issue-123                   # prompts before removal
-sl worktrees rm issue-456 --yes                 # non-interactive removal
+sl worktrees remove issue-123
 ```
 
-Set `SL_SHARE_WORKTREE_ROOT` to choose a different parent directory. The list
-command reports each copy's clean/dirty status, current commit, and commit
-description. Removal only accepts managed, clean working copies belonging to
-the current shared repository. It deletes the working-copy directory directly;
-it does not use `sl unshare`, which is broken with the Git-compatible storage
-used by current public `.sl` repositories.
+Stack submission uses the `github/gh-stack` extension. Working copies default to
+a sibling directory; set `SL_SHARE_WORKTREE_ROOT` to choose another location.

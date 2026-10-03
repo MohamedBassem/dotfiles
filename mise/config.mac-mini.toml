@@ -1,0 +1,18 @@
+[bootstrap.packages]
+"brew:sapling" = { os = "macos" }
+"brew:restatedev/tap/restate" = { os = "macos" }
+"brew:restatedev/tap/restate-server" = { os = "macos" }
+"brew:restatedev/tap/restatectl" = { os = "macos" }
+
+[dotfiles]
+"~/Library/Fonts/System San Francisco Display Bold.ttf" = "~/repos/dotfiles/fonts/System San Francisco Display Bold.ttf"
+"~/Library/Fonts/System San Francisco Display Regular.ttf" = "~/repos/dotfiles/fonts/System San Francisco Display Regular.ttf"
+"~/Library/Fonts/System San Francisco Display Thin.ttf" = "~/repos/dotfiles/fonts/System San Francisco Display Thin.ttf"
+"~/Library/Fonts/System San Francisco Display Ultralight.ttf" = "~/repos/dotfiles/fonts/System San Francisco Display Ultralight.ttf"
+"~/Library/Fonts/fontawesome-webfont.ttf" = "~/repos/dotfiles/fonts/fontawesome-webfont.ttf"
+"~/.gitconfig.local" = "~/repos/dotfiles/git/local-darwin.conf"
+"~/Library/Preferences/sapling/sapling.conf" = "~/repos/dotfiles/sapling/macos.conf"
+"~/.config/dotfiles/ssh.conf" = "~/repos/dotfiles/ssh/mac-mini.conf"
+
+[tasks.bootstrap]
+depends = ["herdr"]

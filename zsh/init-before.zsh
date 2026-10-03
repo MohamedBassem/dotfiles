@@ -1,5 +1,5 @@
 # Prezto initializes completions, so add vendor functions first. PATH and the
-# Homebrew environment are declared by Home Manager.
+# Homebrew environment are declared in shell/environment.sh.
 if [[ "$OSTYPE" == darwin* ]]; then
   fpath=(
     /opt/homebrew/share/zsh/site-functions(N)

@@ -1,0 +1,71 @@
+[bootstrap.packages]
+"brew:sapling" = { os = "macos" }
+"brew:restatedev/tap/restate" = { os = "macos" }
+"brew:restatedev/tap/restate-server" = { os = "macos" }
+"brew:restatedev/tap/restatectl" = { os = "macos" }
+
+"brew-cask:affine" = { os = "macos" }
+"brew-cask:android-studio" = { os = "macos" }
+"brew-cask:bitwarden" = { os = "macos" }
+"brew-cask:bruno" = { os = "macos" }
+"brew-cask:discord" = { os = "macos" }
+"brew-cask:element" = { os = "macos" }
+"brew-cask:firefox" = { os = "macos" }
+"brew-cask:ghostty" = { os = "macos" }
+"brew-cask:neovide-app" = { os = "macos" }
+"brew-cask:notion" = { os = "macos" }
+"brew-cask:obsidian" = { os = "macos" }
+"brew-cask:opencode-desktop" = { os = "macos" }
+"brew-cask:orbstack" = { os = "macos" }
+"brew-cask:raycast" = { os = "macos" }
+"brew-cask:rectangle-pro" = { os = "macos" }
+"brew-cask:secretive" = { os = "macos" }
+"brew-cask:stats" = { os = "macos" }
+"brew-cask:syncthing-app" = { os = "macos" }
+"brew-cask:thaw" = { os = "macos" }
+"brew-cask:visual-studio-code" = { os = "macos" }
+"brew-cask:vlc" = { os = "macos" }
+"brew-cask:whatsapp" = { os = "macos" }
+"brew-cask:zed" = { os = "macos" }
+
+[dotfiles]
+"~/Library/Fonts/System San Francisco Display Bold.ttf" = "~/repos/dotfiles/fonts/System San Francisco Display Bold.ttf"
+"~/Library/Fonts/System San Francisco Display Regular.ttf" = "~/repos/dotfiles/fonts/System San Francisco Display Regular.ttf"
+"~/Library/Fonts/System San Francisco Display Thin.ttf" = "~/repos/dotfiles/fonts/System San Francisco Display Thin.ttf"
+"~/Library/Fonts/System San Francisco Display Ultralight.ttf" = "~/repos/dotfiles/fonts/System San Francisco Display Ultralight.ttf"
+"~/Library/Fonts/fontawesome-webfont.ttf" = "~/repos/dotfiles/fonts/fontawesome-webfont.ttf"
+"~/.config/dotfiles/host.env" = "~/repos/dotfiles/shell/host-secretive.env"
+"~/.gitconfig.local" = "~/repos/dotfiles/git/local-darwin.conf"
+"~/.aerospace.toml" = "~/repos/dotfiles/aerospace/config.toml"
+"~/Library/Preferences/sapling/sapling.conf" = "~/repos/dotfiles/sapling/macos.conf"
+"~/.config/dotfiles/ssh.conf" = "~/repos/dotfiles/ssh/secretive.conf"
+
+[bootstrap.macos.keyboard]
+key_repeat = 6
+initial_key_repeat = 25
+press_and_hold = false
+automatic_capitalization = false
+automatic_spelling_correction = false
+
+[bootstrap.macos.trackpad]
+tap_to_click = true
+
+[bootstrap.macos.defaults.NSGlobalDomain]
+AppleShowAllExtensions = true
+NSAutomaticPeriodSubstitutionEnabled = false
+"com.apple.swipescrolldirection" = false
+"com.apple.trackpad.scaling" = 1.5
+
+[bootstrap.macos.defaults."com.apple.finder"]
+AppleShowAllExtensions = true
+
+[bootstrap.macos.defaults."com.apple.WindowManager"]
+HideDesktop = true
+
+[bootstrap.macos.defaults."com.apple.menuextra.clock"]
+ShowDate = 0
+ShowDayOfWeek = true
+ShowSeconds = true
+
+[tasks.bootstrap]
+depends = ["herdr", "screenshots"]

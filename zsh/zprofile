@@ -1,0 +1,3 @@
+source "$DOTFILES_ROOT/zsh/profile.zsh"
+# Reapply after macOS path_helper and legacy system profiles.
+source "$DOTFILES_ROOT/shell/environment.sh"

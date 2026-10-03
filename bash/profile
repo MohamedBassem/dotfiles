@@ -1,0 +1,5 @@
+export DOTFILES_ROOT="$HOME/repos/dotfiles"
+. "$DOTFILES_ROOT/shell/environment.sh"
+if [ -r "$HOME/.bashrc" ]; then
+  . "$HOME/.bashrc"
+fi

@@ -1,0 +1,33 @@
+name: Mise migration
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: jdx/mise-action@v4
+        with:
+          version: '2026.10.0'
+          install: false
+      - name: Install validation tools on Linux
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y shellcheck zsh
+      - name: Install validation tools on macOS
+        if: runner.os == 'macOS'
+        run: |
+          mise bootstrap packages apply brew:shellcheck --yes
+      - name: Validate migration
+        run: |
+          export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
+          python3 scripts/check-migration

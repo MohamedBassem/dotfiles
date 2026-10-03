@@ -1,3 +1,6 @@
+> Legacy configuration retained during the mise migration. Use `just nix-check`
+> or `just nix-switch` from the repo root. See the root README for migration.
+
 # Nix configuration
 
 The flake pins one Nixpkgs revision for Home Manager and nix-darwin. Common

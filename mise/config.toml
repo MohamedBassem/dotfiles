@@ -1,0 +1,129 @@
+# Link into ~/.config/mise and select the host in miserc.local.toml.
+min_version = "2026.10.0"
+
+[tools]
+go = "1"
+
+# Installed directly by mise; the brew executable is not required.
+[bootstrap.packages]
+"brew:act" = "latest"
+"brew:age" = "latest"
+"brew:awscli" = "latest"
+"brew:btop" = "latest"
+"brew:cloudflared" = "latest"
+"brew:cmake" = "latest"
+"brew:curl" = "latest"
+"brew:git-delta" = "latest"
+"brew:dust" = "latest"
+"brew:fd" = "latest"
+"brew:gh" = "latest"
+"brew:git" = "latest"
+"brew:git-filter-repo" = "latest"
+"brew:gnuplot" = "latest"
+"brew:graphviz" = "latest"
+"brew:grpcurl" = "latest"
+"brew:herdr" = "latest"
+"brew:htop" = "latest"
+"brew:hunk" = "latest"
+"brew:httpie" = "latest"
+"brew:iperf3" = "latest"
+"brew:jq" = "latest"
+"brew:jj" = "latest"
+"brew:just" = "latest"
+"brew:lazygit" = "latest"
+"brew:argon2" = "latest"
+"brew:monolith" = "latest"
+"brew:mosh" = "latest"
+"brew:nixpacks" = "latest"
+"brew:openssh" = "latest"
+"brew:pipx" = "latest"
+"brew:rclone" = "latest"
+"brew:ripgrep" = "latest"
+"brew:rsync" = "latest"
+"brew:rtk" = "latest"
+"brew:serpl" = "latest"
+"brew:shellcheck" = "latest"
+"brew:sops" = "latest"
+"brew:stripe-cli" = "latest"
+"brew:stylua" = "latest"
+"brew:tailcat" = "latest"
+"brew:tmux" = "latest"
+"brew:tree" = "latest"
+"brew:tree-sitter" = "latest"
+"brew:viu" = "latest"
+"brew:watch" = "latest"
+"brew:wget" = "latest"
+"brew:wrk" = "latest"
+"brew:yq" = "latest"
+"brew:yt-dlp" = "latest"
+"brew:zizmor" = "latest"
+"brew:bash" = "latest"
+"brew:zsh" = "latest"
+"brew:neovim" = "latest"
+"brew:atuin" = "latest"
+"brew:direnv" = "latest"
+"brew:eza" = "latest"
+"brew:fzf" = "latest"
+"brew:zoxide" = "latest"
+"brew:coreutils" = "latest"
+"brew:gawk" = "latest"
+"brew:grep" = "latest"
+"brew:python@3.13" = "latest"
+
+[bootstrap.repos]
+"~/.local/share/prezto" = { url = "https://github.com/sorin-ionescu/prezto.git", ref = "cff2d01871425b1b80710f8ec6a475c5a53145b4" }
+
+# Home-relative sources stay correct when this file is symlinked globally.
+# As before, the checkout lives at ~/repos/dotfiles.
+[dotfiles]
+"~/.profile" = "~/repos/dotfiles/shell/profile.sh"
+"~/.gitconfig" = "~/repos/dotfiles/git/config"
+"~/.gitignore" = "~/repos/dotfiles/git/ignore"
+"~/.tmux.conf" = "~/repos/dotfiles/tmux/tmux.conf"
+"~/.vimrc" = "~/repos/dotfiles/vim/vimrc"
+"~/.bash_aliases" = "~/repos/dotfiles/bash/aliases"
+"~/.wezterm.lua" = "~/repos/dotfiles/wezterm/config.lua"
+"~/.config/ghostty/config" = "~/repos/dotfiles/ghostty/config"
+"~/.config/hunk/config.toml" = "~/repos/dotfiles/hunk/config.toml"
+"~/.config/herdr/config.toml" = "~/repos/dotfiles/herdr/config.toml"
+"~/.config/sapling/sapling.conf" = "~/repos/dotfiles/sapling/config"
+"~/.config/nvim" = "~/repos/dotfiles/nvim"
+"~/.claude/settings.json" = "~/repos/dotfiles/claude/settings.json"
+"~/.claude/statusline-command.sh" = "~/repos/dotfiles/claude/statusline-command.sh"
+"~/.config/atuin/config.toml" = "~/repos/dotfiles/atuin/config.toml"
+"~/.zshenv" = "~/repos/dotfiles/zsh/zshenv"
+"~/.zprofile" = "~/repos/dotfiles/zsh/zprofile"
+"~/.zshrc" = "~/repos/dotfiles/zsh/zshrc"
+"~/.zpreztorc" = "~/repos/dotfiles/zsh/zpreztorc"
+"~/.zlogin" = "~/repos/dotfiles/zsh/login.zsh"
+"~/.zlogout" = "~/repos/dotfiles/zsh/logout.zsh"
+"~/.bash_profile" = "~/repos/dotfiles/bash/profile"
+"~/.bashrc" = "~/repos/dotfiles/bash/rc"
+"~/.ssh/config" = "~/repos/dotfiles/ssh/config"
+"~/.config/dotfiles/host.env" = "~/repos/dotfiles/shell/host-empty.env"
+"~/.local/bin/sl-share-worktree" = "~/repos/dotfiles/scripts/sl-share-worktree"
+"~/.local/bin/sl-submit-stack" = "~/repos/dotfiles/scripts/sl-submit-stack"
+"~/.local/bin/tmux-cpu" = "~/repos/dotfiles/scripts/tmux-cpu"
+"~/.local/bin/tmux-paste" = "~/repos/dotfiles/scripts/tmux-paste"
+"~/.local/bin/tmux-sessionizer" = "~/repos/dotfiles/scripts/tmux-sessionizer"
+
+[bootstrap.user]
+login_shell = "/bin/zsh"
+
+[tasks.bootstrap]
+depends = ["prezto"]
+
+[tasks.prezto]
+run = 'git -C "$HOME/.local/share/prezto" submodule update --init --recursive'
+
+[tasks.herdr]
+run = [
+  'herdr plugin link "$HOME/repos/dotfiles/herdr-plugins/nvim-navigation" --enabled',
+  'herdr plugin link "$HOME/repos/dotfiles/herdr-plugins/thumbs" --enabled',
+]
+
+[tasks.screenshots]
+run = [
+  'mkdir -p "$HOME/Screenshots"',
+  'defaults write com.apple.screencapture location "$HOME/Screenshots"',
+]

@@ -1,0 +1,22 @@
+[Unit]
+Description=T3 Code server
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+WorkingDirectory=%h
+Environment="T3CODE_HOME=%h/.t3"
+Environment="T3_BOOT_SERVICE_UNIT=t3code.service"
+Environment="T3CODE_HOST=0.0.0.0"
+Environment="PATH=%h/.local/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:/usr/bin:/bin"
+ExecStart=%h/.local/bin/mise exec -- node %h/.t3/runtime/service-launcher.mjs
+KillMode=mixed
+OOMPolicy=continue
+Restart=always
+RestartSec=5
+StandardOutput=append:%h/.t3/userdata/logs/boot-service.log
+StandardError=append:%h/.t3/userdata/logs/boot-service.log
+
+[Install]
+WantedBy=default.target

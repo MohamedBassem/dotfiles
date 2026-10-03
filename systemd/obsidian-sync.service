@@ -1,0 +1,15 @@
+[Unit]
+Description=Obsidian continuous sync for MainVault
+Documentation=https://obsidian.md/help/sync/headless
+
+[Service]
+Type=simple
+WorkingDirectory=%h/vaults/MainVault
+ExecStart=%h/.local/bin/mise exec -- ob sync --path %h/vaults/MainVault --continuous
+Environment="PATH=%h/.local/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:/usr/bin:/bin"
+Restart=always
+RestartSec=5s
+TimeoutStopSec=20s
+
+[Install]
+WantedBy=default.target
