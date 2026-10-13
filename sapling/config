@@ -7,6 +7,7 @@ s = !$HG show $@ | hunk pager
 main = goto remote/main
 submit-stack = !sl-submit-stack "$@"
 worktrees = !sl-share-worktree "$@"
+ls = log -r 'reverse(::.)' -T '{label("green", node|short)} {label("yellow", "[{date|age}]")}{if(bookmarks, label("red", " ({join(bookmarks, ", ")})"))}{if(remotenames, label("red", " ({join(remotenames, ", ")})"))} {desc|firstline}{label("blue", " [{author|person}]")}\n'
 
 [fsmonitor]
 mode = on
