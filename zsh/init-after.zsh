@@ -18,3 +18,6 @@ fi
 if [[ -f "$HOME/repos/google-cloud-sdk/completion.zsh.inc" ]]; then
   source "$HOME/repos/google-cloud-sdk/completion.zsh.inc"
 fi
+
+# Prezto's directory module unsets CLOBBER; let agent shells overwrite files with >.
+[[ -n $CLAUDECODE || -n $CODEX_THREAD_ID ]] && setopt CLOBBER
