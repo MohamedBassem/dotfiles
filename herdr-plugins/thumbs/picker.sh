@@ -93,8 +93,11 @@ fi
 
 # The Rust matcher consumes the Herdr capture on stdin, renders directly into
 # this overlay, and listens for the same socket events as the tmux integration.
+# --reverse assigns the shortest hints to the bottom of the capture first,
+# so the most recent command output gets the easiest labels.
 "$thumbs" \
   --format '%U:%H' \
+  --reverse \
   --target "$result" \
   --input-socket "$input_socket" \
   <"$capture" &
