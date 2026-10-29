@@ -1,39 +1,21 @@
 [bootstrap.packages]
 "brew:sapling" = { os = "macos" }
-"brew:restatedev/tap/restate" = { os = "macos" }
-"brew:restatedev/tap/restate-server" = { os = "macos" }
-"brew:restatedev/tap/restatectl" = { os = "macos" }
 
-"brew-cask:affine" = { os = "macos" }
 "brew-cask:android-studio" = { os = "macos" }
 "brew-cask:bitwarden" = { os = "macos" }
-"brew-cask:bruno" = { os = "macos" }
 "brew-cask:discord" = { os = "macos" }
-"brew-cask:element" = { os = "macos" }
-"brew-cask:firefox" = { os = "macos" }
 "brew-cask:ghostty" = { os = "macos" }
-"brew-cask:neovide-app" = { os = "macos" }
 "brew-cask:notion" = { os = "macos" }
 "brew-cask:obsidian" = { os = "macos" }
-"brew-cask:opencode-desktop" = { os = "macos" }
 "brew-cask:orbstack" = { os = "macos" }
-"brew-cask:raycast" = { os = "macos" }
-"brew-cask:rectangle-pro" = { os = "macos" }
 "brew-cask:secretive" = { os = "macos" }
 "brew-cask:stats" = { os = "macos" }
 "brew-cask:syncthing-app" = { os = "macos" }
 "brew-cask:thaw" = { os = "macos" }
-"brew-cask:visual-studio-code" = { os = "macos" }
-"brew-cask:vlc" = { os = "macos" }
 "brew-cask:whatsapp" = { os = "macos" }
 "brew-cask:zed" = { os = "macos" }
 
 [dotfiles]
-"~/Library/Fonts/System San Francisco Display Bold.ttf" = "~/repos/dotfiles/fonts/System San Francisco Display Bold.ttf"
-"~/Library/Fonts/System San Francisco Display Regular.ttf" = "~/repos/dotfiles/fonts/System San Francisco Display Regular.ttf"
-"~/Library/Fonts/System San Francisco Display Thin.ttf" = "~/repos/dotfiles/fonts/System San Francisco Display Thin.ttf"
-"~/Library/Fonts/System San Francisco Display Ultralight.ttf" = "~/repos/dotfiles/fonts/System San Francisco Display Ultralight.ttf"
-"~/Library/Fonts/fontawesome-webfont.ttf" = "~/repos/dotfiles/fonts/fontawesome-webfont.ttf"
 "~/.config/dotfiles/host.env" = "~/repos/dotfiles/shell/host-secretive.env"
 "~/.gitconfig.local" = "~/repos/dotfiles/git/local-darwin.conf"
 "~/.aerospace.toml" = "~/repos/dotfiles/aerospace/config.toml"
